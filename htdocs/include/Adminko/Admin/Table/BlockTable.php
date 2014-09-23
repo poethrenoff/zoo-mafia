@@ -42,7 +42,7 @@ class BlockTable extends BuilderTable
         $record = $this->getRecord();
         $primary_field = $record[$this->primary_field];
 
-        parent::actionEditAave(false);
+        parent::actionEditSave(false);
 
         if ($record['block_module'] != init_string('block_module')) {
             $this->applyDefaultParams($primary_field);

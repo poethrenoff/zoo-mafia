@@ -1,18 +1,94 @@
-table.main {
-	width: 100%;
+body {
+	padding: 0px;
+	margin: 0px;
+	color: #000000;
+	background-color: #ffffff;
 }
 
-	table.main td.header, table.main td.footer {
-		height: 50px;
-	}
+p, a, div, td, input, textarea, select {
+	font-size: 14px;
+	font-family: Helvetica, sans-serif;
+}
 
-	table.main td.menu, table.main td.news {
-		width: 200px;
-		vertical-align: top;
-	}
+.wrapper {
+    width: 980px;
+    margin: auto;
+}
 
-	table.main td.content {
-		height: 500px;
-		vertical-align: top;
-	}
+.header {
+    height: 120px;
+    border: 1px solid green;
+}
+    .header .left {
+        width: 600px;        
+        float: left;
+    }
+        .header .left .logo {
+            float: left;
+        }
+        .header .left .phone {
+            float: right;
+        }
+        .header .left .callback {
+            float: right;
+        }
+    
+    .header .right {
+        width: 300px;
+        float: right;
+    }
+        .header .right .search {
+            float: right;
+        }
+        .header .right .cart {
+            float: right;
+        }
+        .header .right .compare {
+            float: right;
+        }
+        .header .right .purchase {
+            float: right;
+        }
+        .header .right .client {
+            float: right;
+        }
 
+.menu {
+    height: 30px;
+    text-align: center;
+    border: 1px solid blue;
+}
+    .menu a {
+        margin: 50px; 
+    }
+
+.sidebar {
+    float: left;
+    width: 200px;
+    min-height: 200px;
+    border: 1px solid cyan;
+}
+
+.content {
+    padding-left: 200px;
+    min-height: 300px;
+    border: 1px solid magenta;  
+}
+
+.footer {
+    height: 70px;
+    border: 1px solid red;
+}
+    .footer .submenu {
+
+    }
+    .footer .copyright {
+
+    }
+    .footer .subcontact {
+        float: right;
+    }
+
+.clear {
+    clear: both;
+}
