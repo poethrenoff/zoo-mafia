@@ -24,21 +24,7 @@ class NewsModule extends Module
         
         $this->content = $this->view->fetch('module/news/list');
     }
-    
-    // Вывод краткого списка новостей
-    protected function actionPreview()
-    {
-        $model_news = Model::factory('news');
-        
-        $count = max(1, intval($this->getParam('count')));
-        
-        $item_list = $model_news->getList(array(), array(), $count);
-        
-        $this->view->assign('item_list', $item_list);
-        
-        $this->content = $this->view->fetch('module/news/short');
-    }
-    
+
     // Вывод конкретной новости
     protected function actionItem()
     {
