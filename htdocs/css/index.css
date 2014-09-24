@@ -87,6 +87,7 @@ p, a, div, td, input, textarea, select {
     }
     .footer .subcontact {
         float: right;
+        text-align: right;
     }
 
 .clear {

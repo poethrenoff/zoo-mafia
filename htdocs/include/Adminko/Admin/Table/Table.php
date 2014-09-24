@@ -1154,10 +1154,10 @@ class Table extends Admin
         if (isset($_FILES[$field_name . '_file']['name']) && $_FILES[$field_name . '_file']['name']) {
             $allowed_types = ($field_desc['type'] == 'image') ? 'gif|jpg|jpe|jpeg|png' : '';
 
-            $upload = Upload::fetch($field_name . '_file', array('upload_path' => $field_desc['upload_dir'], 'allowed_types' => $allowed_types));
-
-            if ($upload->is_error()) {
-                throw new \AlarmException('Ошибка. Поле "' . $field_desc['title'] . '": ' . $upload->get_error() . '.');
+            try {
+                $upload = Upload::process($field_name . '_file', array('upload_path' => $field_desc['upload_dir'], 'allowed_types' => $allowed_types));
+            } catch (\AlarmException $e) {
+                throw new \AlarmException('Ошибка. Поле "' . $field_desc['title'] . '": ' . $e->getMessage() . '.');
             }
 
             return $upload->getFileLink();

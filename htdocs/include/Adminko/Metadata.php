@@ -47,6 +47,20 @@ class Metadata
             ),
         ),
         
+        /**
+         * Таблица "Баннеры"
+         */
+        'banner' => array(
+            'title' => 'Баннеры',
+            'fields' => array(
+                'banner_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'banner_title' => array('title' => 'Заголовок', 'type' => 'string', 'show' => 1, 'main' => 1, 'errors' => 'require'),
+                'banner_image' => array('title' => 'Изображение', 'type' => 'image', 'upload_dir' => 'banner', 'errors' => 'require'),
+                'banner_url' => array('title' => 'URL', 'type' => 'string', 'show' => 1, 'errors' => 'require'),
+                'banner_active' => array('title' => 'Видимость', 'type' => 'active'),
+            ),
+        ),        
+        
         ////////////////////////////////////////////////////////////////////////////////////////
         
         /**
