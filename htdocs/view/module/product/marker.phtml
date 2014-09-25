@@ -1,0 +1,43 @@
+<? if ($this->product_list) { ?>
+							<div class="block marker">
+								<h2 class="line"><i></i><?= $this->marker->get_marker_title() ?><? if (action() == 'index') { ?> <a href="<?= url_for(array('controller' => 'product', 'action' => 'marker_list', 'marker' => $this->marker->get_marker_name())) ?>" style="float: right">Все <?= $this->marker->get_marker_title() ?></a><? } ?></h2>
+								<div class="catalog marker">
+<? foreach ($this->product_list as $product_item) { ?>
+									<div class="item">
+										<div class="wrap">
+											<div class="name">
+												<a href="<?= $product_item->get_product_url() ?>"><?= $product_item->get_product_title() ?></a>
+											</div>
+											<div class="info">
+												<div class="photo">
+<? 		$marker_list = $product_item->get_marker_list(); ?>
+<? 		if ($marker_list) { ?>
+													<div class="marker">
+<? 			foreach ($marker_list as $marker) { ?>
+														<img src="<?= $marker->get_marker_picture() ?>"><br/>
+<? 			} ?>
+													</div>
+<? 		} ?>
+													<a href="<?= $product_item->get_product_url() ?>">
+														<img src="<?= $product_item->get_product_image() ?>" class="image">
+													</a>
+												</div>
+												<div class="price-container">
+													<div class="old-price">
+<? 		if ($product_item->get_product_price_old()) { ?>
+														<?= $product_item->get_product_price_old() ?> р.
+<? 		} ?>
+													</div>
+													<div class="price">
+														<?= $product_item->get_product_price() ?> р.
+													</div>
+													<a href="<?= $product_item->get_product_url() ?>"><img src="/image/btn-more.png"></a>
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+									</div>
+<? } ?>
+								</div>
+							</div>
+<? } ?>

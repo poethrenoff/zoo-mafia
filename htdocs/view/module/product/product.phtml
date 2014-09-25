@@ -1,0 +1,15 @@
+<h3><?= $this->catalogue->getCatalogueTitle() ?></h3>
+<?php foreach ($this->product_list as $product_item) { ?>
+<div style="display: inline-block; width: 200px;">
+    <a href="<?= $product_item->getProductUrl() ?>">
+        <img src="<?= $product_item->getProductImage() ?>/c/200/200"/>
+    </a><br/>
+<?php $marker_list = $product_item->getMarkerList(); ?>
+<?php if ($marker_list) { ?>
+<?php      foreach ($marker_list as $marker) { ?>
+    <img src="<?= $marker->getMarkerImage() ?>"><br/>
+<?php      } ?>
+<?php } ?>
+    <a href="<?= $product_item->getProductUrl() ?>"><?= $product_item->getProductTitle() ?></a>
+</div>
+<?php } ?>

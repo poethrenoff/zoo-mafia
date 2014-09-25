@@ -144,9 +144,7 @@ class Upload
      */
     private function prepareFilename($file_name)
     {
-        $file_name = strtolower(to_translit($file_name));
-        $file_name = preg_replace('/\s/', '_', $file_name);
-        $file_name = preg_replace('/[^a-z0-9_\.\,\[\]\(\)\~\-]/i', '', $file_name);
+        $file_name = to_file_name($file_name);
         
         $pathinfo = pathinfo($file_name);
         $base = $pathinfo['filename'];

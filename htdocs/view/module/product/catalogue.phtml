@@ -1,0 +1,16 @@
+<?php if ($this->catalogue) { ?>
+<h3><?= $this->catalogue->getCatalogueTitle() ?></h3>
+<?php } ?>
+
+<? foreach ($this->catalogue_list as $catalogue_item) { ?>
+<div style="display: inline-block; width: 200px;">
+    <a href="<?= $catalogue_item->getCatalogueUrl() ?>">
+        <img src="<?= $catalogue_item->getCatalogueImage() ?>"/>
+    </a><br/>
+    <a href="<?= $catalogue_item->getCatalogueUrl() ?>"><?= $catalogue_item->getCatalogueTitle() ?></a>
+</div>
+<? } ?>
+
+<?php if ($this->catalogue) { ?>
+<?= $this->catalogue->getCatalogueDescription() ?>
+<?php } ?>

@@ -104,6 +104,8 @@ class Metadata
                 'catalogue_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'catalogue_parent' => array('title' => 'Родительский раздел', 'type' => 'parent'),
                 'catalogue_title' => array('title' => 'Название', 'type' => 'string', 'show' => 1, 'main' => 1, 'errors' => array('require')),
+                'catalogue_name' => array( 'title' => 'Ссылка', 'type' => 'string', 'no_add' => 1, 'group' => array(), 'errors' => array('require')),
+                'catalogue_image' => array( 'title' => 'Изображение', 'type' => 'image', 'upload_dir' => 'catalogue', 'errors' => array('require')),
                 'catalogue_description' => array('title' => 'Описание', 'type' => 'text', 'editor' => 1),
                 'catalogue_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('catalogue_parent')),
                 'catalogue_active' => array('title' => 'Видимость', 'type' => 'active'),
@@ -176,7 +178,7 @@ class Metadata
                 'marker_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'marker_title' => array('title' => 'Название', 'type' => 'string', 'main' => 1, 'sort' => 'asc', 'errors' => array('require')),
                 'marker_name' => array('title' => 'Системное имя', 'type' => 'string', 'show' => 1, 'errors' => array('require'), 'group' => array()),
-                'marker_picture' => array('title' => 'Картинка', 'type' => 'image', 'upload_dir' => 'marker'),
+                'marker_image' => array('title' => 'Картинка', 'type' => 'image', 'upload_dir' => 'marker'),
             ),
             'relations' => array(
                 'product' => array('secondary_table' => 'product', 'relation_table' => 'product_marker',

@@ -1,0 +1,14 @@
+							<div class="catalog">
+								<ul class="lvl1">
+<? foreach ($this->get_children() as $group_item) { ?>
+									<li>
+										<a href="<?= $group_item->get_catalogue_url() ?>"><?= $group_item->get_catalogue_title() ?></a>
+										<ul class="lvl2">
+<? 		foreach ($group_item->get_children() as $category_item) { ?>
+											<li><a href="<?= $category_item->get_catalogue_url() ?>"><?= $category_item->get_catalogue_title() ?></a></li>
+<? 		} ?>
+										</ul>
+									</li>
+<? } ?>
+								</ul>
+							</div>

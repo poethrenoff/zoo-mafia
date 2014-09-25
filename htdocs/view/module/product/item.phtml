@@ -1,0 +1,15 @@
+<h3><?= $this->getProductTitle() ?></h3>
+<div>
+    <img src="<?= $this->getProductImage() ?>/c/300/300"/>
+    <br/>
+<?php $marker_list = $this->getMarkerList(); ?>
+<?php if ($marker_list) { ?>
+<?php      foreach ($marker_list as $marker) { ?>
+    <img src="<?= $marker->getMarkerImage() ?>"><br/>
+<?php      } ?>
+<?php } ?>
+</div>
+
+<?= $this->getProductDescription() ?>
+
+
