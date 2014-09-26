@@ -62,22 +62,6 @@ class Metadata
         ),
         
         // Каталог //
-
-        /**
-         * Таблица "Страны"
-         */
-        'country' => array(
-            'title' => 'Страны',
-            'fields' => array(
-                'country_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
-                'country_title' => array('title' => 'Название', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
-                'country_flag' => array('title' => 'Флаг', 'type' => 'image', 'upload_dir' => 'country', 'errors' => array('require')),
-                'country_order' => array('title' => 'Порядок', 'type' => 'order'),
-            ),
-            'links' => array(
-                'brand' => array('table' => 'brand', 'field' => 'brand_country'),
-            ),
-        ),
         
         /**
          * Таблица "Бренды"
@@ -86,9 +70,10 @@ class Metadata
             'title' => 'Бренды',
             'fields' => array(
                 'brand_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
-                'brand_country' => array('title' => 'Страна', 'type' => 'table', 'table' => 'country', 'errors' => array('require')),
                 'brand_title' => array('title' => 'Название', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
-                'brand_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('brand_country')),
+                'brand_name' => array( 'title' => 'Ссылка', 'type' => 'string', 'no_add' => 1, 'group' => array(), 'errors' => array('require')),
+                'brand_image' => array('title' => 'Логитип', 'type' => 'image', 'upload_dir' => 'brand', 'errors' => array('require')),
+                'brand_order' => array('title' => 'Порядок', 'type' => 'order'),
             ),
             'links' => array(
                 'product' => array('table' => 'product', 'field' => 'product_brand'),
@@ -127,8 +112,9 @@ class Metadata
                 'product_brand' => array('title' => 'Бренд', 'type' => 'table', 'table' => 'brand', 'errors' => array('require')),
                 'product_title' => array('title' => 'Название', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
                 'product_description' => array('title' => 'Описание', 'type' => 'text', 'editor' => 1, 'errors' => array('require')),
+                'product_price' => array('title' => 'Цена', 'type' => 'float', 'no_add' => true, 'no_edit' => true),
                 'product_rating' => array('title' => 'Рейтинг', 'type' => 'float', 'no_add' => true),
-                'product_voters' => array('title' => 'Количество голосов', 'type' => 'int', 'no_add' => true),
+                'product_voters' => array('title' => 'Количество голосов', 'type' => 'int', 'no_add' => true, 'no_edit' => true),
                 'product_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('product_catalogue')),
                 'product_active' => array('title' => 'Видимость', 'type' => 'active'),
             ),
@@ -151,8 +137,8 @@ class Metadata
                 'package_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'package_product' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product', 'errors' => array('require')),
                 'package_title' => array('title' => 'Название', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
-                'package_price' => array('title' => 'Цена', 'type' => 'float', 'errors' => array('require')),
-                'picture_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('package_product')),
+                'package_price' => array('title' => 'Цена', 'type' => 'float', 'show' => 1, 'errors' => array('require')),
+                'package_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('package_product')),
             )
         ),
         
@@ -208,7 +194,6 @@ class Metadata
                 'property_catalogue' => array('title' => 'Каталог', 'type' => 'table', 'table' => 'catalogue', 'errors' => array('require')),
                 'property_title' => array('title' => 'Название', 'type' => 'string', 'show' => 1, 'main' => 1, 'errors' => array('require')),
                 'property_kind' => array('title' => 'Тип свойства', 'type' => 'select', 'show' => 1, 'filter' => 1, 'values' => array(
-                        array('value' => 'string', 'title' => 'Строка'),
                         array('value' => 'number', 'title' => 'Число'),
                         array('value' => 'boolean', 'title' => 'Флаг'),
                         array('value' => 'select', 'title' => 'Список')), 'errors' => array('require')),

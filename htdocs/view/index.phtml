@@ -6,6 +6,7 @@
         <meta name="keywords" content="<?= $this -> meta_keywords ?>"/> 
         <meta name="description" content="<?= $this -> meta_description ?>"/> 
         <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -55,6 +56,9 @@
 <?php } ?>
 <?php if ($this->marker) { ?>
 <?= $this->marker ?> 
+<?php } ?>
+<?php if ($this->brand) { ?>
+<?= $this->brand ?> 
 <?php } ?>
 <?= $this->content ?> 
             </div>

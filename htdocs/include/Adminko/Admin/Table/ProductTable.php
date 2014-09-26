@@ -13,9 +13,17 @@ class ProductTable extends Table
 
         // Копируем свойства товара
         $product_properties = Db::selectAll('
-                select property_id, value from product_property where product_id = :product_id', array('product_id' => System::id()));
+            select property_id, value from product_property where product_id = :product_id', array('product_id' => System::id()));
         foreach ($product_properties as $product_property) {
             Db::insert('product_property', array('product_id' => $primary_field) + $product_property);
+        }
+
+        // Копируем фасовки товара
+        $product_packages = Db::selectAll('
+            select * from package where package_product = :product_id', array('product_id' => System::id()));
+        foreach ($product_packages as $product_package) {
+            unset($product_package['package_id']);
+            Db::insert('package', array('package_product' => $primary_field) + $product_package);
         }
 
         if ($redirect) {

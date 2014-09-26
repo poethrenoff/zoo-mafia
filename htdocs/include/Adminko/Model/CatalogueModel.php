@@ -4,7 +4,7 @@ namespace Adminko\Model;
 use Adminko\System;
 use Adminko\Db\Db;
 
-class CatalogueModel extends Model
+class CatalogueModel extends HierarchyModel
 {
     // Возвращает объект каталога по системному имени
     public function getByName($catalogue_name)
@@ -15,6 +15,12 @@ class CatalogueModel extends Model
             throw new \AlarmException("Ошибка. Запись {$this->object}({$catalogue_name}) не найдена.");
         }
         return $this->get($record['catalogue_id'], $record);
+    }
+    
+    // Возвращает список брендов внутри каталога
+    public function getBrandList()
+    {
+        return Model::factory('brand')->getByCatalogue($this);
     }
     
     // Возвращает URL каталога
