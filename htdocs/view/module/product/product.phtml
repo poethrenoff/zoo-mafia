@@ -7,7 +7,7 @@
         <option value="<?= $brand->getId() ?>"<?php if ($this->inRequest('brand', $brand->getId())) { ?> selected="selected"<?php } ?>><?= $brand->getBrandTitle() ?></option>
 <?php   } ?>
     </select>
-<?php   foreach ($this->catalogue->getPropertyList() as $property) { ?>
+<?php   foreach ($this->catalogue->getPropertyList(true) as $property) { ?>
     <b><?= $property->getPropertyTitle() ?></b>
 <?php       if ($property->getPropertyKind() == 'number') { ?>
     от <input type="text" name="property[<?= $property->getId() ?>][from]" value="<?= $this->escape($this->fromRequest("property[" . $property->getId() . "][from]")) ?>" style="width: 30px"/>

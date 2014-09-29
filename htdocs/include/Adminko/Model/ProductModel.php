@@ -92,5 +92,38 @@ class ProductModel extends Model
         );
         
         return $this;
-    }  
+    }
+    
+    // Поисковый запрос
+    public function getSearchResult($search_value, $order = array())
+    {
+        $search_words = preg_split('/\s+/', $search_value);
+            
+        $filter_clause = array();
+        foreach (array('product_title', 'product_description') as $field_name) {
+            $field_filter_clause = array();
+            foreach ($search_words as $search_index => $search_word) {
+                $field_prefix = $field_name . '_' . $search_index;
+                $field_filter_clause[] = 'lower(' . $field_name . ') like :' . $field_prefix;
+                $filter_binds[$field_prefix] = '%' . mb_strtolower($search_word , 'utf-8') . '%';
+            }
+            $filter_clause[] = join(' and ', $field_filter_clause);
+        }
+        
+        $order_conds = array();
+        foreach ($order as $field => $dir) {
+            $order_conds[] = "{$field} {$dir}";
+        }
+        
+        $records = Db::selectAll('
+            select product.* from product
+                inner join catalogue on product.product_catalogue = catalogue.catalogue_id
+            where (' . join(' or ', $filter_clause) . ') and
+                product_active = :product_active and catalogue_active = :catalogue_active
+            ' . ($order_conds ? 'order by ' . join(', ', $order_conds) : ''),
+            $filter_binds + array('product_active' => 1, 'catalogue_active' => 1)
+        );
+        
+        return $this->getBatch($records);
+    }
 }

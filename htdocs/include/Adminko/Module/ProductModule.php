@@ -45,7 +45,7 @@ class ProductModule extends Module
             }
             
             $property_request = init_array('property');
-            foreach ($catalogue->getPropertyList() as $property) {
+            foreach ($catalogue->getPropertyList(true) as $property) {
                 if ($property->getPropertyKind() == 'select' && isset($property_request[$property->getId()]) && !is_empty($property_request[$property->getId()])) {
                     $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = " . intval($property_request[$property->getId()]) . ")";
                 }

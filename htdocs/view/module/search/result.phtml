@@ -1,0 +1,30 @@
+<h3>Результаты поиска ("<?= $this->escape($this->fromRequest('search')) ?>")</h3>
+
+<div>
+<?php if ($this->sort == 'price') { ?>
+    <b><a href="<?= Adminko\System::requestUrl(array('sort' => 'price', 'order' => $this->order == 'asc' ? 'desc' : 'asc')) ?>">По цене</a></b><?php if ($this->order == 'asc') { ?>&darr;<?php } else { ?>&uarr;<?php } ?></b>
+<?php } else { ?>
+    <a href="<?= Adminko\System::requestUrl(array('sort' => 'price', 'order' => 'asc')) ?>">По цене</a>
+<?php } ?>
+<?php if ($this->sort == 'name') { ?>
+    <b><a href="<?= Adminko\System::requestUrl(array('sort' => 'name', 'order' => $this->order == 'asc' ? 'desc' : 'asc')) ?>">По названию</a></b><?php if ($this->order == 'asc') { ?>&darr;<?php } else { ?>&uarr;<?php } ?></b>
+<?php } else { ?>
+    <a href="<?= Adminko\System::requestUrl(array('sort' => 'name', 'order' => 'asc')) ?>">По названию</a>
+<?php } ?>
+</div>
+
+<?php foreach ($this->product_list as $product_item) { ?>
+<div style="display: inline-block; width: 200px;">
+    <a href="<?= $product_item->getProductUrl() ?>">
+        <img src="<?= $product_item->getProductImage() ?>/c/200/200"/>
+    </a><br/>
+<?php $marker_list = $product_item->getMarkerList(); ?>
+<?php if ($marker_list) { ?>
+<?php      foreach ($marker_list as $marker) { ?>
+    <img src="<?= $marker->getMarkerImage() ?>"><br/>
+<?php      } ?>
+<?php } ?>
+    <a href="<?= $product_item->getProductUrl() ?>"><?= $product_item->getProductTitle() ?></a><br/>
+    <?= $product_item->getProductPrice() ?>
+</div>
+<?php } ?>
