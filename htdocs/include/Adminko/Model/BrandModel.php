@@ -34,6 +34,12 @@ class BrandModel extends Model
         
         return $this->getBatch($records);        
     }
+        
+    // Возвращает список брендов внутри каталога
+    public function getCatalogueList()
+    {
+        return Model::factory('catalogue')->getByBrand($this);
+    }
     
     // Возвращает URL бренда
     public function getBrandUrl()

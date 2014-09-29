@@ -3,10 +3,31 @@
 <form action="<?= Adminko\System::selfUrl() ?>" method="get">
     <select name="brand" onchange="$(this).parent().submit()">
         <option value="">Выберите бренд</option>
-<?php foreach ($this->catalogue->getBrandList() as $brand) { ?>
+<?php   foreach ($this->catalogue->getBrandList() as $brand) { ?>
         <option value="<?= $brand->getId() ?>"<?php if ($this->inRequest('brand', $brand->getId())) { ?> selected="selected"<?php } ?>><?= $brand->getBrandTitle() ?></option>
-<?php } ?>
+<?php   } ?>
     </select>
+<?php   foreach ($this->catalogue->getPropertyList() as $property) { ?>
+    <b><?= $property->getPropertyTitle() ?></b>
+<?php       if ($property->getPropertyKind() == 'number') { ?>
+    от <input type="text" name="property[<?= $property->getId() ?>][from]" value="<?= $this->escape($this->fromRequest("property[" . $property->getId() . "][from]")) ?>" style="width: 30px"/>
+    до <input type="text" name="property[<?= $property->getId() ?>][to]" value="<?= $this->escape($this->fromRequest("property[" . $property->getId() . "][to]")) ?>" style="width: 30px" />
+<?php       } elseif ($property->getPropertyKind() == 'boolean') { ?>
+    <select name="property[<?= $property->getId() ?>]" style="width: 50px">
+        <option value=""></option>
+        <option value="yes"<?php if ($this->inRequest("property[" . $property->getId() . "]", 'yes')) { ?> selected="selected"<?php } ?>>Да</option>
+        <option value="no"<?php if ($this->inRequest("property[" . $property->getId() . "]", 'no')) { ?> selected="selected"<?php } ?>>Нет</option>
+    </select>
+<?php       } elseif ($property->getPropertyKind() == 'select') { ?>
+    <select name="property[<?= $property->getId() ?>]" style="width: 100px">
+        <option value=""></option>
+<?php           foreach ($property->getValueList() as $value) { ?>
+        <option value="<?= $value->getId() ?>"<?php if ($this->inRequest("property[" . $property->getId() . "]", $value->getId())) { ?> selected="selected"<?php } ?>><?= $value->getValueTitle() ?></option>
+<?php           } ?>
+    </select>
+<?php       } ?>
+<?php   } ?>
+    <input type="submit" value="Найти" />
 </form>
 <?php } ?>
 <?php if ($this->brand) { ?>
@@ -14,6 +35,13 @@
 <form action="<?= Adminko\System::selfUrl() ?>" method="get">
     <select name="catalogue" onchange="$(this).parent().submit()">
         <option value="">Выберите раздел</option>
+<?php   foreach ($this->brand->getCatalogueList()->getChildren() as $catalogue_group) { ?>
+        <optgroup label="<?= $catalogue_group->getCatalogueTitle() ?>">
+<?php       foreach ($catalogue_group->getChildren() as $catalogue) { ?>
+            <option value="<?= $catalogue->getId() ?>"<?php if ($this->inRequest('catalogue', $catalogue->getId())) { ?> selected="selected"<?php } ?>><?= $catalogue->getCatalogueTitle() ?></option>
+<?php       } ?>
+        </optgroup>
+<?php   } ?>
     </select>
 </form>
 <?php } ?>

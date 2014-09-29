@@ -142,8 +142,12 @@ class Model
     public function getFilterCondition($where = array()) {
         $filter_conds = $filter_binds = array();
         foreach ($where as $name => $value) {
-            $filter_conds[] = "{$name} = :{$name}";
-            $filter_binds[$name] = $value;
+            if (is_numeric($name)) {
+                $filter_conds[] = "{$value}";
+            } else {
+                $filter_conds[] = "{$name} = :{$name}";
+                $filter_binds[$name] = $value;
+            }
         }
         $filter_clause = $filter_conds ? 'where ' . join(' and ', $filter_conds) : '';
         return array($filter_clause, $filter_binds);

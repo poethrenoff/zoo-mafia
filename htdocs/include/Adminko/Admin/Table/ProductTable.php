@@ -124,13 +124,11 @@ class ProductTable extends Table
             $property_type = $property_value['property_kind'] == 'number' ? 'float' : $property_value['property_kind'];
             $property_errors = $property_type == 'float' ? array('float') : array();
 
-            if (isset($property_values[$property_value['property_id']]) && !is_empty($property_values[$property_value['property_id']])) {
-                $field = Field::factory($property_type)->set($property_values[$property_value['property_id']]);
-                if (!($field->check($property_errors))) {
-                    throw new \AlarmException('Ошибочное значение поля "' . $property_value['property_title'] . '".');
-                }
-                $insert_fields[$property_value['property_id']] = $field->get();
+            $field = Field::factory($property_type)->set($property_values[$property_value['property_id']]);
+            if (!($field->check($property_errors))) {
+                throw new \AlarmException('Ошибочное значение поля "' . $property_value['property_title'] . '".');
             }
+            $insert_fields[$property_value['property_id']] = $field->get();
         }
 
         Db::delete('product_property', array('product_id' => $primary_field));

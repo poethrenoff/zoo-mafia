@@ -43,7 +43,23 @@ class ProductModule extends Module
             if ($brand_id = init_string('brand')) {
                 $product_filter['product_brand'] = $brand_id;
             }
-
+            
+            $property_request = init_array('property');
+            foreach ($catalogue->getPropertyList() as $property) {
+                if ($property->getPropertyKind() == 'select' && isset($property_request[$property->getId()]) && !is_empty($property_request[$property->getId()])) {
+                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = " . intval($property_request[$property->getId()]) . ")";
+                }
+                if ($property->getPropertyKind() == 'boolean' && isset($property_request[$property->getId()]) && !is_empty($property_request[$property->getId()]) && in_array($property_request[$property->getId()], array('yes', 'no'))) {
+                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = " . ($property_request[$property->getId()] == 'no' ? 0 : 1) . ")";
+                }
+                if ($property->getPropertyKind() == 'number' && isset($property_request[$property->getId()]['from']) && !is_empty($property_request[$property->getId()]['from'])) {
+                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value >= " . intval($property_request[$property->getId()]['from']) . ")";
+                }
+                if ($property->getPropertyKind() == 'number' && isset($property_request[$property->getId()]['to']) && !is_empty($property_request[$property->getId()]['to'])) {
+                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value <= " . intval($property_request[$property->getId()]['to']) . ")";
+                }
+            }
+            
             $this->setSortMode();
             
             $product_list = model::factory('product')->getList($product_filter,
