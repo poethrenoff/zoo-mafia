@@ -7,6 +7,7 @@
         <meta name="description" content="<?= $this -> meta_description ?>"/> 
         <link rel="stylesheet" type="text/css" href="/css/index.css"/>
         <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/js/interface.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -16,7 +17,7 @@
                         <a href="/">Логотип</a>
                     </div>
                     <div class="phone">
-<?= Adminko\Module\TextModule::getByTag('phone') ?> 
+<?= Adminko\Module\TextModule::getByTag('phone') ?>
                     </div>
                     <div class="clear"></div>
                     <div class="callback">
@@ -25,11 +26,11 @@
                 </div>
                 <div class="right">
                     <div class="search">
-<?= $this->search ?> Форма поиска
+<?= $this->search ?>
                     </div>
                     <div class="clear"></div>
                     <div class="compare">
-<?= $this->compare ?> Сравнение 
+<?= $this->compare ?>
                     </div>
                     <div class="cart">
 <?= $this->cart ?> Корзина
@@ -52,15 +53,15 @@
             </div>
             <div class="content">
 <?php if ($this->banner) { ?>
-<?= $this->banner ?> 
+<?= $this->banner ?>
 <?php } ?>
 <?php if ($this->marker) { ?>
-<?= $this->marker ?> 
+<?= $this->marker ?>
 <?php } ?>
 <?php if ($this->brand) { ?>
-<?= $this->brand ?> 
+<?= $this->brand ?>
 <?php } ?>
-<?= $this->content ?> 
+<?= $this->content ?>
             </div>
             <div class="footer">
                 <div class="subcontact">

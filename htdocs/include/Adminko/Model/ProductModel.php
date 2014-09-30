@@ -126,4 +126,31 @@ class ProductModel extends Model
         
         return $this->getBatch($records);
     }
+        
+    // Возвращает свойства товара
+    public function getPropertyList()
+    {
+        $product_property_list = Db::selectAll('
+                select
+                    property.*, ifnull(property_value.value_title, product_property.value) as property_value
+                from
+                    property
+                    left join product_property on product_property.property_id = property.property_id
+                    left join property_value on property_value.value_property = property.property_id and
+                        property_value.value_id = product_property.value
+                where
+                    product_property.product_id = :product_id and property.property_active = :property_active
+                order by
+                    property.property_order',
+            array('product_id' => $this->getId(), 'property_active' => 1)
+        );
+        
+        $property_list = array();
+        foreach ($product_property_list as $product_property) {
+            $property = Model::factory('property')->get($product_property['property_id'], $product_property)
+                ->setPropertyValue($product_property['property_value']);
+            $property_list[$property->getId()] = $property;
+        }
+        return $property_list;
+    }
 }

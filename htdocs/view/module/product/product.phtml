@@ -59,6 +59,7 @@
 <?php } ?>
 </div>
 
+<?php $compare = Adminko\Compare::factory(); ?>
 <?php foreach ($this->product_list as $product_item) { ?>
 <div style="display: inline-block; width: 200px;">
     <a href="<?= $product_item->getProductUrl() ?>">
@@ -71,6 +72,9 @@
 <?php      } ?>
 <?php } ?>
     <a href="<?= $product_item->getProductUrl() ?>"><?= $product_item->getProductTitle() ?></a><br/>
-    <?= $product_item->getProductPrice() ?>
+    <?= $product_item->getProductPrice() ?><br/>
+<? if (!$compare->in($product_item->getId())) { ?>
+    <a href="" onclick="return compareItem(<?= $product_item->getId() ?>, this);">Сравнить</a>
+<? } ?>    
 </div>
 <?php } ?>

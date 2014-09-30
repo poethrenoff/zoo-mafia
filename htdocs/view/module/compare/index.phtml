@@ -1,0 +1,60 @@
+<h3>Результаты сравнения</h3>
+<?php if (count($this->product_list)) { ?>
+    <table border="1" cellpadding="1" cellspacing="1">
+        <tr>
+            <td rowspan="2" style="text-align: center;">
+                Характеристики
+            </td>
+<?php foreach ($this->product_list as $product) { ?>
+            <td style="text-align: center; vertical-align: top;">
+                <a href="<?= $product->getProductUrl() ?>"><?= $product->getProductTitle() ?></a>
+            </td>
+<?php } ?>
+        </tr>
+        <tr>
+<?php foreach ($this->product_list as $product) { ?>
+            <td style="text-align: center;">
+                <img src="<?= $product->getProductImage() . '/c/104/104' ?>" alt="" align="top"/>&nbsp;&nbsp;<a href="<?= Adminko\System::urlFor(array('controller' => 'compare', 'action' => 'delete', 'id' => $product->getId())) ?>" onclick="return confirm( 'Вы уверены, что хотите удалить товар из сравнения?' )">Удалить</a>
+            </td>
+<?php } ?>
+        </tr>
+<?php 			foreach ($this->property_list as $property) { ?>
+<?php 				if (count($this->property_compare_list[$property->getId()])) { ?>
+        <tr<?php if ($this->property_compare_list[$property->getId()]['equals']) { ?> style="color: lightgray"<?php } ?>>
+            <td style="width: 200px;">
+                <?= $property->getPropertyTitle() ?>
+            </td>
+<?php 					foreach ($this->product_list as $product) { ?>
+            <td style="vertical-align: top; width: 190px;">
+<?php                       if ($property->getPropertyKind() == 'boolean') { ?>
+                <?= $this->property_compare_list[$property->getId()][$product->getId()] ? 'Да' : 'Нет' ?>
+<?php						} else { ?>
+                <?= $this->property_compare_list[$property->getId()][$product->getId()] ?>
+<?php						} ?>
+<?php						if ($this->property_compare_list[$property->getId()][$product->getId()]) { ?>
+                <?= $property->getPropertyUnit() ? ' ' . $property->getPropertyUnit() : '' ?>
+<?php						} ?>
+            </td>
+<?php 					} ?>
+        </tr>
+<?php 				} ?>
+<?php 			} ?>
+    </table>
+    <br/>
+    <table style="width: 100%">
+        <tr>
+            <td style="text-align: left">
+<?php if ($this->inRequest('show', 'diff')) { ?>
+                <a href="<?= Adminko\System::urlFor(array('controller' => 'compare', 'show' => 'all')) ?>">Показать все свойства</a>
+<?php } else { ?>
+                <a href="<?= Adminko\System::urlFor(array('controller' => 'compare', 'show' => 'diff')) ?>">Показать только отличия</a>
+<?php } ?>
+            </td>
+            <td style="text-align: right">
+                <a href="<?= Adminko\System::urlFor(array('controller' => 'compare', 'action' => 'clear')) ?>" onclick="return confirm( 'Вы уверены, что хотите очистить сравнение?' )">Очистить результаты сравнения</a>
+            </td>
+        </tr>
+    </table>
+<?php } else { ?>
+<h3>Нет товаров для сравнения</h3>
+<?php } ?>
