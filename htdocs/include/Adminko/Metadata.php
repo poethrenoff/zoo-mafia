@@ -114,7 +114,7 @@ class Metadata
                 'product_description' => array('title' => 'Описание', 'type' => 'text', 'editor' => 1, 'errors' => array('require')),
                 'product_price' => array('title' => 'Цена', 'type' => 'float', 'no_add' => true, 'no_edit' => true),
                 'product_rating' => array('title' => 'Рейтинг', 'type' => 'float', 'no_add' => true),
-                'product_voters' => array('title' => 'Количество голосов', 'type' => 'int', 'no_add' => true, 'no_edit' => true),
+                'product_voters' => array('title' => 'Количество голосов', 'type' => 'int', 'no_add' => true),
                 'product_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('product_catalogue')),
                 'product_active' => array('title' => 'Видимость', 'type' => 'active'),
             ),
@@ -229,6 +229,37 @@ class Metadata
                 'product_id' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product', 'errors' => array('require')),
                 'property_id' => array('title' => 'Свойство', 'type' => 'table', 'table' => 'property', 'errors' => array('require')),
                 'value' => array('title' => 'Значение', 'type' => 'string', 'errors' => array('require')),
+            ),
+        ),
+                
+        /**
+         * Таблица "Пользователи"
+         */
+        'client' => array(
+            'title' => 'Пользователи',
+            'fields' => array(
+                'client_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'client_title' => array('title' => 'Контактное лицо', 'type' => 'string', 'main' => 1, 'errors' => 'require'),
+                'client_email' => array('title' => 'Email', 'type' => 'string', 'show' => 1,  'errors' => 'require|email'),
+                'client_password' => array('title' => 'Пароль', 'type' => 'password'),
+                'client_phone' => array('title' => 'Телефон', 'type' => 'string', 'errors' => 'require'),
+                'client_discount' => array('title' => 'Скидка', 'type' => 'float', 'no_add' => true),
+            ),
+            'links' => array(
+                'address' => array('table' => 'address', 'field' => 'address_client'),
+            ),
+        ),
+                
+        /**
+         * Таблица "Адреса"
+         */
+        'address' => array(
+            'title' => 'Адреса',
+            'fields' => array(
+                'address_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'address_client' => array('title' => 'Пользователь', 'type' => 'table', 'table' => 'client', 'errors' => array('require')),
+                'address_title' => array('title' => 'Адрес', 'type' => 'string', 'main' => 1, 'errors' => 'require'),
+                'address_default' => array('title' => 'По умолчанию', 'type' => 'default', 'group' => array('address_client')),
             ),
         ),
         

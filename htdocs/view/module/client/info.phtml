@@ -1,0 +1,8 @@
+<? if ($this->client) { ?>
+Вы вошли как 
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client')) ?>"><?= $this->escape($this->client->getClientTitle()) ?></a>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'logout')) ?>">Выход</a>
+<? } else { ?>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client')) ?>">Войти</a>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client/registration')) ?>">Зарегистрироваться</a>
+<? } ?>
