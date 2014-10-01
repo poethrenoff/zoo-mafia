@@ -27,4 +27,24 @@ class ClientModel extends Model
             array('purchase_client' => $this->getId()), array('purchase_date' => 'desc')
         );
     }
+    
+    // Возвращает список адресов
+    public function getAddressList()
+    {
+        return model::factory('address')->getList(
+            array('address_client' => $this->getId()), array('address_default' => 'desc')
+        );
+    }
+       
+    // Возвращает адрес по умолчанию
+    public function getDefaultAddress()
+    {
+        $address_list = Model::factory('address')->getList(
+            array('address_client' => $this->getId(), 'address_default' => 1), array(), 1
+        );
+        if (empty($address_list)) {
+            return false;
+        }
+        return current($address_list);
+    }    
 }

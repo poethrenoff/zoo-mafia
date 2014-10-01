@@ -118,6 +118,7 @@ class ClientModule extends Module
             $this->client = self::getInfo();
             $error = !empty($_POST) ? $this->addAddress() : array();
             
+            $this->view->assign('error', $error);
             $this->view->assign('client', $this->client);
             $this->content = $this->view->fetch('module/client/address/add');
         }
@@ -132,8 +133,12 @@ class ClientModule extends Module
             System::redirectTo(array('controller' => 'client'));
         } else {
             $this->client = self::getInfo();
-            $error = !empty($_POST) ? $this->saveAddress() : array();
+            $address = $this->getAddress();
             
+            $error = !empty($_POST) ? $this->saveAddress($address) : array();
+            
+            $this->view->assign('error', $error);
+            $this->view->assign('address', $address);
             $this->view->assign('client', $this->client);
             $this->content = $this->view->fetch('module/client/address/edit');
         }
@@ -147,8 +152,13 @@ class ClientModule extends Module
         if (!self::isAuth()) {
             System::redirectTo(array('controller' => 'client'));
         } else {
-            $this->client = self::getInfo();            
-            $this->deleteAddress();
+            $this->client = self::getInfo();   
+            $address = $this->getAddress();
+            
+            $address->delete();
+            $address->assignDefault();
+            
+            System::redirectBack();
         }
     }
     
@@ -160,8 +170,12 @@ class ClientModule extends Module
         if (!self::isAuth()) {
             System::redirectTo(array('controller' => 'client'));
         } else {
-            $this->client = self::getInfo();            
-            $this->defaultAddress();
+            $this->client = self::getInfo();   
+            $address = $this->getAddress();
+            
+            $address->makeDefault();
+            
+            System::redirectBack();
         }
     }
     
@@ -188,10 +202,11 @@ class ClientModule extends Module
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    
     /**
      * Добавление нового пользователя
      */
-    protected function addClient()
+    public function addClient()
     {
         $error = array();
 
@@ -244,7 +259,7 @@ class ClientModule extends Module
     /**
      * Изменение личных данных
      */
-    protected function saveClient()
+    public function saveClient()
     {
         $error = array();
 
@@ -315,7 +330,7 @@ class ClientModule extends Module
     /**
      * Отправка нового пароля
      */
-    protected function recoveryPassword()
+    public function recoveryPassword()
     {
         $error = array();
 
@@ -352,7 +367,86 @@ class ClientModule extends Module
 
         System::redirectBack();
     }
+      
+    /**
+     * Добавление нового адреса
+     */
+    public function addAddress()
+    {
+        $error = array();
 
+        $address_title = trim(init_string('address_title'));
+        $address_default = trim(init_string('address_default'));
+        
+        if (is_empty($address_title)) {
+            $error['address_title'] = 'Поле заполнено некорректно';
+        }
+
+        if (count($error)) {
+            return $error;
+        }
+
+        // Добавление адреса
+        $address = Model::factory('address')
+            ->setAddressTitle($address_title)
+            ->setAddressClient($this->client->getId())
+            ->save();
+        
+        if ($address_default) {
+            $address->makeDefault();
+        } else {
+            $address->assignDefault();
+        }
+        
+        System::redirectTo(array('controller' => 'client/address'));
+    }
+  
+    /**
+     * Изменение нового адреса
+     */
+    public function saveAddress($address)
+    {
+        $error = array();
+
+        $address_title = trim(init_string('address_title'));
+        $address_default = trim(init_string('address_default'));
+        
+        if (is_empty($address_title)) {
+            $error['address_title'] = 'Поле заполнено некорректно';
+        }
+
+        if (count($error)) {
+            return $error;
+        }
+
+        // Сохранение адреса
+        $address
+            ->setAddressTitle($address_title)
+            ->save();
+        
+        if ($address_default) {
+            $address->makeDefault();
+        }
+        
+        System::redirectTo(array('controller' => 'client/address'));
+    }
+  
+    /**
+     * Получение адреса
+     */
+    public function getAddress()
+    {
+        try {
+            $address = Model::factory('address')->get(System::id());
+        } catch (\AlarmException $e) {
+            System::notFound();
+        }
+        if ($address->getAddressClient() != $this->client->getId()) {
+            System::notFound();
+        }
+        return $address;
+    }
+    
     /**
      * Аутентификация из формы
      */
