@@ -20,7 +20,7 @@ class ProductModel extends Model
     }
     
     // Возвращает изображения товара
-    public function getProductImageList()
+    public function getImageList()
     {
         return Model::factory('picture')->getList(
             array('picture_product' => $this->getId()), array('picture_order' => 'asc')
@@ -63,7 +63,7 @@ class ProductModel extends Model
     }
         
     // Возвращает фасовки товара
-    public function getProductPackageList()
+    public function getPackageList()
     {
         return Model::factory('package')->getList(
             array('package_product' => $this->getId()), array('package_order' => 'asc')
@@ -71,7 +71,7 @@ class ProductModel extends Model
     }
     
     // Возвращает фасовку по умолчанию
-    public function getProductPackage()
+    public function getDefaultPackage()
     {
         $package_list = model::factory('package')->getList(
             array('package_product' => $this->getId()), array('package_order' => 'asc'), 1
@@ -85,7 +85,7 @@ class ProductModel extends Model
     // Устанавливает цену по умолчанию
     public function setDefaultPrice()
     {
-        $package = $this->getProductPackage();
+        $package = $this->getDefaultPackage();
         
         $this->setProductPrice(
             $package ? $package->getPackagePrice() : 0

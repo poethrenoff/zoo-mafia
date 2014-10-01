@@ -1,4 +1,4 @@
-<h1>Авторизация</h1>
+<h3>Авторизация</h3>
 <form action="<?= Adminko\System::selfUrl() ?>" method="post">
     E-mail *
     <input type="text" value="<?= $this->escape($this->fromRequest('client_email')) ?>" name="client_email" />
@@ -17,5 +17,5 @@
     <br/>
     <input type="submit" value="Войти" />
 </form>
-<a href="<?= Adminko\System::urlFor(array('controller' => 'client/registration')) ?>">Регистрация</a>
-<a href="<?= Adminko\System::urlFor(array('controller' => 'client/recovery')) ?>">Забыли пароль?</a>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'registration')) ?>">Регистрация</a>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'recovery')) ?>">Забыли пароль?</a>

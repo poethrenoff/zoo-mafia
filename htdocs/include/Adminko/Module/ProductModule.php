@@ -167,7 +167,7 @@ class ProductModule extends Module
             $this->sort_field = 'product_title';
             $this->view->assign('sort', 'name');
         } else {
-            $this->sort_field = 'product_price';
+            $this->sort_field = 'product_order';
             $this->view->assign('sort', 'order');
         }
     }

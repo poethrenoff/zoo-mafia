@@ -73,8 +73,18 @@
 <?php } ?>
     <a href="<?= $product_item->getProductUrl() ?>"><?= $product_item->getProductTitle() ?></a><br/>
     <?= $product_item->getProductPrice() ?><br/>
-<? if (!$compare->in($product_item->getId())) { ?>
+<?php $package_list = $product_item->getPackageList(); ?>
+<?php if ($package_list) { ?>
+    <select>
+<?php   foreach ($package_list as $package) { ?>
+        <option value="<?= $package->getId() ?>"><?= $package->getPackageTitle() ?></option>
+<?php   } ?>
+    </select>
+    <input type="text" value="1" style="width: 10px" maxlength="1" />
+    <a href="" onclick="return buyItem(this); return false;">Купить</a>
+<?php } ?>
+<?php if (!$compare->in($product_item->getId())) { ?>
     <a href="" onclick="return compareItem(<?= $product_item->getId() ?>, this);">Сравнить</a>
-<? } ?>    
+<?php } ?>
 </div>
 <?php } ?>

@@ -1,0 +1,83 @@
+<script type="text/javascript" src="/js/jquery.form.min.js"></script>
+<h3>Корзина</h3>
+<?php if ($this->getQuantity()) { ?>
+<form method="post" id="cart" action="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'save')) ?>">
+    <table class="items" border="1">
+        <tr>
+            <td width="50">
+                &nbsp;
+            </td>
+            <td class="ac">
+                <b>Товар</b>
+            </td>
+            <td width="50">
+                <b>Цена</b>
+            </td>
+            <td width="50">
+                <b>Кол-во</b>
+            </td>
+            <td width="50">
+                <b>Стоимость</b>
+            </td>
+            <td width="50">
+                <b>Изменить</b>
+            </td>
+            <td width="50">
+                <b>Удалить</b>
+            </td>
+        </tr>
+<?php 		foreach ($this->get() as $item) { ?>
+<?php 			$package = Adminko\Model\Model::factory('package')->get($item->id); ?>
+<?php 			$product = Adminko\Model\Model::factory('product')->get($package->getPackageProduct()); ?>
+        <tr>
+            <td width="50">
+                <img src="<?= $product->getProductImage() ?>/c/50/50" />
+            </td>
+            <td>
+                <?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?>
+            </td>
+            <td width="50">
+                <?= $item->price ?>
+            </td>
+            <td width="50">
+                <?= $item->quantity ?>
+            </td>
+            <td width="50">
+                <?= $item->quantity * $item->price ?>
+            </td>
+            <td width="50">
+                <input type="hidden" value="<?= $item->price ?>" name="price[<?= $package->getId() ?>]"/>
+                <input type="hidden" value="<?= $item->quantity ?>" name="quantity[<?= $package->getId() ?>]"/>
+                <a href="" onclick="return incItem(this)">+</a> / <a href="" onclick="return decItem(this)">-</a>
+            </td>
+            <td width="50">
+                <a href="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'delete', 'id' => $package->getId())) ?>" onclick="return confirm('Вы уверены, что хотите удалить товар?')">X</a>
+            </td>
+        </tr>
+<?php 		} ?>
+        <tr>
+            <td colspan="3">
+                <strong>Итого:</strong>
+            </td>
+            <td width="50">
+                <strong><?= $this->getQuantity() ?></strong>
+            </td>
+            <td width="50">
+                <strong><?= $this->getSum() ?>
+            </td>
+            <td width="50">
+                &nbsp;
+            </td>
+            <td width="50">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+</form>
+<br/>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'order')) ?>">Оформить заказ</a>
+&nbsp;&nbsp;&nbsp;
+<a href="<?= Adminko\System::urlFor(array('controller' => 'clear')) ?>" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</a>
+<?php } else { ?>
+<h4>Ваша корзина пуста.</h4>
+<?php } ?>
