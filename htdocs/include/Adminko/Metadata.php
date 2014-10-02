@@ -237,13 +237,14 @@ class Metadata
          */
         'client' => array(
             'title' => 'Пользователи',
+            'no_add' => true, 'no_delete' => true,            
             'fields' => array(
                 'client_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'client_title' => array('title' => 'Контактное лицо', 'type' => 'string', 'main' => 1, 'errors' => 'require'),
                 'client_email' => array('title' => 'Email', 'type' => 'string', 'show' => 1,  'errors' => 'require|email'),
                 'client_password' => array('title' => 'Пароль', 'type' => 'password'),
                 'client_phone' => array('title' => 'Телефон', 'type' => 'string', 'errors' => 'require'),
-                'client_discount' => array('title' => 'Скидка', 'type' => 'float', 'no_add' => true),
+                'client_sum' => array('title' => 'Сумма заказов', 'type' => 'float', 'no_add' => true),
             ),
             'links' => array(
                 'address' => array('table' => 'address', 'field' => 'address_client'),
@@ -258,10 +259,79 @@ class Metadata
             'fields' => array(
                 'address_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'address_client' => array('title' => 'Пользователь', 'type' => 'table', 'table' => 'client', 'errors' => array('require')),
-                'address_title' => array('title' => 'Адрес', 'type' => 'string', 'main' => 1, 'errors' => 'require'),
+                'address_text' => array('title' => 'Адрес', 'type' => 'text', 'main' => 1, 'errors' => array('require')),
                 'address_default' => array('title' => 'По умолчанию', 'type' => 'default', 'group' => array('address_client')),
             ),
         ),
+                
+        /**
+         * Таблица "Способы доставки"
+         */
+        'delivery' => array(
+            'title' => 'Способы доставки',
+            'fields' => array(
+                'delivery_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'delivery_title' => array( 'title' => 'Название', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
+                'delivery_price' => array('title' => 'Цена', 'type' => 'float', 'show' => 1, 'errors' => array('require')),
+                'delivery_active' => array('title' => 'Активный', 'type' => 'active'),
+            )
+        ),
+        
+        /**
+         * Таблица "Скидки"
+         */
+        'discount' => array(
+            'title' => 'Скидки',
+            'fields' => array(
+                'discount_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'discount_value' => array( 'title' => 'Величина скидки (%)', 'type' => 'float', 'main' => 1, 'errors' => array('require')),
+                'discount_sum' => array('title' => ' Сумма заказов', 'type' => 'float', 'show' => 1, 'errors' => array('require')),
+            )
+        ),
+        
+        /**
+         * Таблица "Заказы"
+         */
+        'purchase' => array(
+            'title' => 'Заказы',
+            'no_add' => true, 'no_delete' => true,
+            'fields' => array(
+                'purchase_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'purchase_client' => array('title' => 'Пользователь', 'type' => 'table', 'table' => 'client', 'main' => 1, 'errors' => 'require'),
+                'purchase_phone' => array('title' => 'Телефон', 'type' => 'string', 'errors' => 'require'),
+                'purchase_address' => array('title' => 'Адрес', 'type' => 'text'),
+                'purchase_request' => array('title' => 'Дата и время доставки', 'type' => 'string'),
+                'purchase_comment' => array('title' => 'Комментарий', 'type' => 'text'),
+                'purchase_delivery' => array('title' => 'Способ доставки', 'type' => 'table', 'table' => 'delivery', 'errors' => 'require'),
+                'purchase_date' => array('title' => 'Дата заказа', 'type' => 'datetime', 'show' => 1, 'sort' => 'desc', 'errors' => 'require', 'no_edit' => 1),
+                'purchase_sum' => array('title' => 'Сумма заказа', 'type' => 'float', 'show' => 1, 'errors' => 'require'),
+                'purchase_status' => array('title' => 'Статус заказа', 'type' => 'select', 'filter' => 1, 'values' => array(
+                        array('value' => 'new', 'title' => 'Новый'),
+                        array('value' => 'confirm', 'title' => 'Подтвержден'),
+                        array('value' => 'deliver', 'title' => 'Доставляется'),
+                        array('value' => 'complete', 'title' => 'Выполнен'),
+                        array('value' => 'cancel', 'title' => 'Отменен')), 'show' => 1, 'errors' => 'require'),
+            ),
+            'links' => array(
+                'purchase_item' => array('table' => 'purchase_item', 'field' => 'item_purchase'),
+            )
+        ),
+        
+        /**
+         * Таблица "Позиции заказа"
+         */
+        'purchase_item' => array(
+            'title' => 'Позиции заказа',
+            'no_add' => true, 'no_edit' => true,
+            'fields' => array(
+                'item_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'item_purchase' => array('title' => 'Заказ', 'type' => 'table', 'table' => 'purchase', 'errors' => 'require'),
+                'item_product' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product', 'main' => 1, 'errors' => array('require')),
+                'item_package' => array('title' => 'Фасовка', 'type' => 'table', 'table' => 'package', 'show' => 1, 'errors' => array('require')),
+                'item_price' => array('title' => 'Цена', 'type' => 'float', 'show' => 1, 'errors' => array('require')),
+                'item_quantity' => array('title' => 'Количество', 'type' => 'int', 'show' => 1, 'errors' => array('require'))
+            )
+        ),        
         
         ////////////////////////////////////////////////////////////////////////////////////////
 

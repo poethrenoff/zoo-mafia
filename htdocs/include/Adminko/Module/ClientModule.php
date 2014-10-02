@@ -285,13 +285,16 @@ class ClientModule extends Module
         $field_list = array(
             'client_password_old', 'client_password', 'client_password_confirm');
         $change_password = false;
-        foreach ($field_list as $field_name)
+        foreach ($field_list as $field_name) {
             $change_password |=!is_empty($$field_name = trim(init_string($field_name)));
+        }
 
         if ($change_password) {
-            foreach ($field_list as $field_name)
-                if (is_empty($$field_name))
+            foreach ($field_list as $field_name) {
+                if (is_empty($$field_name)) {
                     $error[$field_name] = 'Поле обязательно для заполнения';
+                }
+            }
 
             if (!isset($error['client_password_old']) && strcmp(md5($client_password_old), $this->client->getClientPassword())) {
                 $error['client_password_old'] = 'Неверное значение старого пароля';
@@ -375,11 +378,11 @@ class ClientModule extends Module
     {
         $error = array();
 
-        $address_title = trim(init_string('address_title'));
+        $address_text = trim(init_string('address_text'));
         $address_default = trim(init_string('address_default'));
         
-        if (is_empty($address_title)) {
-            $error['address_title'] = 'Поле заполнено некорректно';
+        if (is_empty($address_text)) {
+            $error['address_text'] = 'Поле обязательно для заполнения';
         }
 
         if (count($error)) {
@@ -388,7 +391,7 @@ class ClientModule extends Module
 
         // Добавление адреса
         $address = Model::factory('address')
-            ->setAddressTitle($address_title)
+            ->setAddressText($address_text)
             ->setAddressClient($this->client->getId())
             ->save();
         
@@ -408,11 +411,11 @@ class ClientModule extends Module
     {
         $error = array();
 
-        $address_title = trim(init_string('address_title'));
+        $address_text = trim(init_string('address_text'));
         $address_default = trim(init_string('address_default'));
         
-        if (is_empty($address_title)) {
-            $error['address_title'] = 'Поле заполнено некорректно';
+        if (is_empty($address_text)) {
+            $error['address_text'] = 'Поле обязательно для заполнения';
         }
 
         if (count($error)) {
@@ -421,7 +424,7 @@ class ClientModule extends Module
 
         // Сохранение адреса
         $address
-            ->setAddressTitle($address_title)
+            ->setAddressText($address_text)
             ->save();
         
         if ($address_default) {
@@ -456,9 +459,11 @@ class ClientModule extends Module
 
         $field_list = array(
             'client_email', 'client_password');
-        foreach ($field_list as $field_name)
-            if (is_empty($$field_name = trim(init_string($field_name))))
+        foreach ($field_list as $field_name) {
+            if (is_empty($$field_name = trim(init_string($field_name)))) {
                 $error[$field_name] = 'Поле обязательно для заполнения';
+            }
+        }
 
         if (!isset($error['client_email']) && !Valid::factory('email')->check($client_email)) {
             $error['client_email'] = 'Поле заполнено некорректно';

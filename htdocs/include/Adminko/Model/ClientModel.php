@@ -46,5 +46,11 @@ class ClientModel extends Model
             return false;
         }
         return current($address_list);
+    }
+    
+    // Возвращает скидку пользователя
+    public function getClientDiscount()
+    {
+        return 1;
     }    
 }

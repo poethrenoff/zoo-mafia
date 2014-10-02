@@ -5,8 +5,8 @@
 <?php if ($address_list) { ?>
 <?php   foreach ($address_list as $address) { ?>
 <div style="padding: 10px;<?php if ($address->getAddressDefault()) { ?> background: #f0f0f0;<?php } ?>">
-    <?= $this->escape($address->getAddressTitle()) ?>
-    <br/>
+    <b><?= $this->escape($address->getAddressTitle()) ?></b>
+    <p><?= $this->escape($address->getAddressText()) ?></p>
     <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'edit_address', 'id' => $address->getId())) ?>">Изменить</a>
     <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'delete_address', 'id' => $address->getId())) ?>" onclick="return confirm('Вы действительно хотите удалить адрес?')">Удалить</a>
 <?php if (!$address->getAddressDefault()) { ?>
