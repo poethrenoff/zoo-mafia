@@ -6,7 +6,7 @@ use Adminko\Db\Db;
 
 class ProductModel extends Model
 {
-// Возвращает каталог товара
+    // Возвращает каталог товара
     public function getCatalogue()
     {
         return Model::factory('catalogue')->get($this->getProductCatalogue());
@@ -152,5 +152,18 @@ class ProductModel extends Model
             $property_list[$property->getId()] = $property;
         }
         return $property_list;
+    }
+            
+    // Возвращает список товаров пользователя
+    public function getByClient($client)
+    {
+        $records = Db::selectAll('
+            select distinct product.*
+            from product
+                inner join client_product using(product_id)
+            where client_id = :client_id and product_active = :product_active',
+                array('client_id' => $client->getId(), 'product_active' => 1));
+        
+        return $this->getBatch($records);
     }
 }

@@ -1,3 +1,19 @@
 <?= Adminko\View::block('module/client/menu') ?>
 
 <h3>Ваши заказы</h3>
+<?php foreach ($this->purchase_list as $purchase) { ?>
+<p>
+    <?= Adminko\Date::get($purchase->getPurchaseDate(), 'long') ?><br/>
+<?php $item_index = 1; ?>
+<?php foreach ($purchase->getItemList() as $purchase_item) { ?>
+<?php   $package = Adminko\Model\Model::factory('package')->get($purchase_item->getItemPackage()); ?>
+<?php 	$product = Adminko\Model\Model::factory('product')->get($purchase_item->getItemProduct()); ?>
+    <?= $item_index ?>. <?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?> - <?= $purchase_item->getItemQuantity() ?> шт.<br/>
+<?php   $item_index++; ?>
+<?php } ?>
+    Общая стоимость заказа: <?= $purchase->getPurchaseSum() ?> р.<br/>
+    Статус заказа: <?= $purchase->getPurchaseStatusTitle() ?><br/>
+</p>
+<?php } ?>
+
+<?= $this->pages ?>

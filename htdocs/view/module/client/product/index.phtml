@@ -1,0 +1,24 @@
+<?= Adminko\View::block('module/client/menu') ?>
+
+<h3>Ваши продукты</h3>
+
+<?php foreach ($this->client->getClientProductList() as $product_item) { ?>
+<div style="display: inline-block; width: 200px;">
+    <a href="<?= $product_item->getProductUrl() ?>">
+        <img src="<?= $product_item->getProductImage() ?>/c/200/200"/>
+    </a><br/>
+    <a href="<?= $product_item->getProductUrl() ?>"><?= $product_item->getProductTitle() ?></a><br/>
+    <?= $product_item->getProductPrice() ?><br/>
+<?php $package_list = $product_item->getPackageList(); ?>
+<?php if ($package_list) { ?>
+    <select>
+<?php   foreach ($package_list as $package) { ?>
+        <option value="<?= $package->getId() ?>"><?= $package->getPackageTitle() ?></option>
+<?php   } ?>
+    </select>
+    <input type="text" value="1" style="width: 10px" maxlength="1" />
+    <a href="" onclick="return buyItem(this); return false;">Купить</a>
+    <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'deleteProduct', 'id' => $product_item->getId())) ?>">Удалить</a>
+<?php } ?>
+</div>
+<?php } ?>

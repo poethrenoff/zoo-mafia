@@ -244,7 +244,7 @@ class Metadata
                 'client_email' => array('title' => 'Email', 'type' => 'string', 'show' => 1,  'errors' => 'require|email'),
                 'client_password' => array('title' => 'Пароль', 'type' => 'password'),
                 'client_phone' => array('title' => 'Телефон', 'type' => 'string', 'errors' => 'require'),
-                'client_sum' => array('title' => 'Сумма заказов', 'type' => 'float', 'no_add' => true),
+                'client_sum' => array('title' => 'Сумма заказов', 'type' => 'float', 'no_add' => true, 'no_edit' => true),
             ),
             'links' => array(
                 'address' => array('table' => 'address', 'field' => 'address_client'),
@@ -261,6 +261,18 @@ class Metadata
                 'address_client' => array('title' => 'Пользователь', 'type' => 'table', 'table' => 'client', 'errors' => array('require')),
                 'address_text' => array('title' => 'Адрес', 'type' => 'text', 'main' => 1, 'errors' => array('require')),
                 'address_default' => array('title' => 'По умолчанию', 'type' => 'default', 'group' => array('address_client')),
+            ),
+        ),
+        
+        /**
+         * Таблица "Товары пользователя"
+         */
+        'client_product' => array(
+            'title' => 'Товары пользователя',
+            'internal' => true,
+            'fields' => array(
+                'client_id' => array('title' => 'Пользователь', 'type' => 'table', 'table' => 'client'),
+                'product_id' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product'),
             ),
         ),
                 
@@ -322,7 +334,7 @@ class Metadata
          */
         'purchase_item' => array(
             'title' => 'Позиции заказа',
-            'no_add' => true, 'no_edit' => true,
+            'no_add' => true,
             'fields' => array(
                 'item_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'item_purchase' => array('title' => 'Заказ', 'type' => 'table', 'table' => 'purchase', 'errors' => 'require'),

@@ -1,10 +1,40 @@
 <?php
-    $cart_sum = $this->cart->getSum();
-    $purchase_sum = $cart_sum * ($this->client ? $this->client->getClientDiscount() : 1);
-    $free_delivery = $purchase_sum >= $this->free_delivery_sum;
+    $cart_sum = $purchase_sum = $this->cart->getSum();
+    if ($this->client) {
+        $purchase_sum = floor($cart_sum * $this->client->getClientDiscount());
+    }
+    $free_delivery = $cart_sum >= $this->free_delivery_sum;
+    
+    $delivery_sum = array();
+    foreach ($this->delivery_list as $delivery) {
+        $delivery_sum[$delivery->getId()] = $free_delivery ? "0" : $delivery->getDeliveryPrice();
+    }
 ?>
 <h3>Оформление заказа</h3>
 <?php if ($this->cart->getQuantity()) { ?>
+<script type="text/javascript">
+    var purchase_sum = "<?= $purchase_sum ?>";
+    var delivery_sum = <?= json_encode($delivery_sum) ?>;
+
+    $(function(){
+        var $total_sum = $('#total_sum');
+        var $delivery = $('select[name="purchase_delivery"]');
+        $delivery.change(function() {
+            var total_sum = parseInt(purchase_sum) +
+                ($delivery.val() ? parseInt(delivery_sum[$delivery.val()]) : 0);
+            $total_sum.html(parseInt(total_sum));
+        }).change();
+        
+        var $client_address = $('div#client_address');
+        var $client_address_text = $('textarea[name="client_address_text"]');
+        var $client_address_new = $('input[name="client_address_new"]');
+        $client_address_new.change(function() {
+            var checked = $client_address_new.prop('checked');
+            $client_address.toggle(!checked);
+            $client_address_text.toggle(checked);
+        }).change();
+    });
+</script>
 <h3>Вы заказали:</h3>
 <table border="1">
     <tr>
@@ -46,29 +76,23 @@
     </tr>
 <?php 		} ?>
 </table>
-<h4>Стоимость товаров: <b><?= $cart_sum ?></b> руб</h4>
-<?php   if ($purchase_sum < $cart_sum) { ?>
-<h4>Стоимость с учетом скидки: <b><?= $purchase_sum ?></b> руб</h4>
+<h4>Стоимость товаров: <?= $cart_sum ?> руб</h4>
+<?php if ($this->client && $purchase_sum < $cart_sum) { ?>
+<h4>Стоимость с учетом <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'discount')) ?>">скидки</a>: <?= $purchase_sum ?> руб</h4>
 <?php } ?>
-
-<?php if ($free_delivery) { ?>
-<h4>Доставка бесплатна!</h4>
-<?php } ?>
-
 <form action="<?= Adminko\System::selfUrl() ?>" method="post">
     Способ доставки *<br/>
     <select name="purchase_delivery">
 <?php foreach ($this->delivery_list as $delivery) { ?>
         <option value="<?= $delivery->getId() ?>"<?php if ($this->inRequest('purchase_delivery', $delivery->getId())) { ?> selected="selected"<?php } ?>>
-           <?= $delivery->getDeliveryTitle() ?>
-           <?php if (!$free_delivery) { ?>, <?= $delivery->getDeliveryPrice() ?><?php } ?>
-      </option>
+           <?= $delivery->getDeliveryTitle() ?>, <?php if (!$free_delivery) { ?><?= $delivery->getDeliveryPrice() ?> руб<?php } else { ?>бесплатно<?php } ?>
+        </option>
 <?php } ?>
     </select>
 <?php if ($this->error['purchase_delivery']) { ?>
     <span class="error"><?= $this->error['purchase_delivery'] ?></span>
 <?php } ?>
-    <br/>
+    <h4>Итоговая стоимость заказа: <span id="total_sum"></span> руб</h4>
 <?php   if (!$this->client) { ?>
     Имя *
     <input type="text" value="<?= $this->escape($this->fromRequest('client_title')) ?>" name="client_title" />
@@ -89,9 +113,9 @@
 <?php } ?>
     <br/>
     Адрес доставки *<br/>
-    <textarea name="client_address_text"><?= $this->escape($this->fromRequest('client_address')) ?></textarea>
-<?php if ($this->error['client_address']) { ?>
-    <span class="error"><?= $this->error['client_address'] ?></span>
+    <textarea name="client_address_text"><?= $this->escape($this->fromRequest('client_address_text')) ?></textarea>
+<?php if ($this->error['client_address_text']) { ?>
+    <span class="error"><?= $this->error['client_address_text'] ?></span>
 <?php } ?>
     <br/>
 <?php   } else { ?>
@@ -103,14 +127,16 @@
     <br/>
     Адрес доставки *<br/>
 <?php   if ($address_list = $this->client->getAddressList()) { ?>
+    <div id="client_address">
 <?php       foreach ($address_list as $address) { ?>
-    <input type="radio" name="client_address"<?php if ($this->inRequest('client_address', $address->getId())) { ?> checked="checked"<?php } ?>/> <?= $this->escape($address->getAddressText()) ?><br/>
+        <input type="radio" name="client_address" value="<?= $address->getId() ?>"<?php if (!$this->inRequest('client_address') && $address->getAddressDefault() || $this->inRequest('client_address', $address->getId())) { ?> checked="checked"<?php } ?>/> <?= $this->escape($address->getAddressText()) ?><br/>
 <?php       } ?>
-    <input type="checkbox" name="client_address_new"<?php if ($this->inRequest('client_address_new')) { ?> checked="checked"<?php } ?>/> Новый адрес<br/>
+    </div>
+    <input type="checkbox" name="client_address_new" value="on"<?php if ($this->inRequest('client_address_new')) { ?> checked="checked"<?php } ?>/> Новый адрес<br/>
 <?php   } ?>
     <textarea name="client_address_text"><?= $this->escape($this->fromRequest('client_address_text')) ?></textarea>
-<?php if ($this->error['client_address']) { ?>
-    <span class="error"><?= $this->error['client_address'] ?></span>
+<?php if ($this->error['client_address_text']) { ?>
+    <span class="error"><?= $this->error['client_address_text'] ?></span>
 <?php } ?>
     <br/>    
 <?php   } ?>
@@ -120,7 +146,7 @@
     Комментарий<br/>
     <textarea name="purchase_comment"><?= $this->escape($this->fromRequest('purchase_comment')) ?></textarea>
     <br/>
-    <input type="submit" value="Зарегистрироваться" />
+    <input type="submit" value="Отправить" />
     <a href="/cart">Изменить заказ</a>
 </form>
 <?php } else { ?>

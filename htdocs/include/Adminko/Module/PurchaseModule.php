@@ -2,9 +2,11 @@
 namespace Adminko\Module;
 
 use Adminko\Cart;
+use Adminko\Date;
 use Adminko\Mail;
-use Adminko\Session;
 use Adminko\View;
+use Adminko\System;
+use Adminko\Session;
 use Adminko\Model\Model;
 use Adminko\Module\Module;
 use Adminko\Valid\Valid;
@@ -68,23 +70,27 @@ class PurchaseModule extends Module
                 $error['client_phone'] = 'Поле обязательно для заполнения';
             }
             
-            if ($client_address_new) {
-                if (is_empty($client_address_text)) {
-                    $error['client_address'] = 'Поле обязательно для заполнения';
-                }
-            } else {
+            if (!is_empty($client_address)) {
                 try {
                     $address = Model::factory('address')->get($client_address);
                 } catch (\AlarmException $e) {
-                    $error['client_address'] = 'Поле обязательно для заполнения';
+                    $error['client_address_text'] = 'Поле обязательно для заполнения';
                 }
-                if (is_empty($error['client_address']) &&
+                if (!isset($error['client_address_text']) &&
                         $address->getAddressClient() != $this->client->getId()) {
-                    $error['client_address'] = 'Поле обязательно для заполнения';
-                }
-                if (is_empty($error['client_address'])) {
-                    $client_address_text = $address->getAddressText();
-                }
+                    $error['client_address_text'] = 'Поле обязательно для заполнения';
+                }                
+            }
+            if (!isset($error['client_address_text'])) {
+                if (is_empty($client_address)) {
+                    if (is_empty($client_address_text)) {
+                        $error['client_address_text'] = 'Поле обязательно для заполнения';
+                    }
+                } else {
+                    if (!is_empty($client_address_text) && is_empty($client_address_new)) {
+                        $client_address_text = $address->getAddressText();
+                    }
+                }          
             }
         } else {
             $field_list = array(
@@ -126,7 +132,6 @@ class PurchaseModule extends Module
             
             // Добавление адреса
             $address = Model::factory('address')
-                ->setAddressTitle('Основной адрес')
                 ->setAddressText($client_address_text)
                 ->setAddressClient($client->getId())
                 ->setAddressDefault(true)
@@ -144,10 +149,9 @@ class PurchaseModule extends Module
             
             $this->client = $client;
         } else {
-            if ($client_address_new) {
+            if (is_empty($client_address) || !is_empty($client_address_text)) {
                 // Добавление адреса
                 $address = Model::factory('address')
-                    ->setAddressTitle('Новый адрес')
                     ->setAddressText($client_address_text)
                     ->setAddressClient($this->client->getId())
                     ->save();
@@ -155,14 +159,14 @@ class PurchaseModule extends Module
             }
         }
         
-        $purchase_sum = $this->cart->getSum() * $this->client->getClientDiscount();
-        if ($purchase_sum < get_preference('free_delivery_sum')) {
+        $purchase_sum = floor($this->cart->getSum() * $this->client->getClientDiscount());
+        if ($this->cart->getSum() < get_preference('free_delivery_sum')) {
             $purchase_sum += $delivery->getDeliveryPrice();
         }
         
         // Сохранение заказа
         $purchase = Model::factory('purchase')
-            ->setPurchaseClient($this->client->get_id())
+            ->setPurchaseClient($this->client->getId())
             ->setPurchasePhone($client_phone)
             ->setPurchaseAddress($address->getAddressText())
             ->setPurchaseRequest($purchase_request)
@@ -175,7 +179,7 @@ class PurchaseModule extends Module
         
         // Сохранение позиций заказа
         foreach($this->cart->get() as $item) {
-            $package = Adminko\Model\Model::factory('package')->get($item->id);
+            $package = Model::factory('package')->get($item->id);
 
             Model::factory('purchase_item')
                 ->setItemPurchase($purchase->getId())
@@ -186,11 +190,14 @@ class PurchaseModule extends Module
                 ->save();
         }
         
+        // Обновляем список товаров пользователя
+        $this->client->updateClientProduct($purchase);
+        
         // Отправка сообщения
         $from_email = get_preference('from_email');
         $from_name = get_preference('from_name');
         
-        $client_email = $this->client->get_client_email();
+        $client_email = $this->client->getClientEmail();
         $client_subject = get_preference('client_subject');
         
         $manager_email = get_preference('manager_email');

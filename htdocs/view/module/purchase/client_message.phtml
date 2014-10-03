@@ -1,31 +1,31 @@
-<p>Спасибо Вам за заказ авторской бижутерии в интернет-магазине ДекорБижу!</p>
+<p>Спасибо Вам за заказ в интернет-магазине ЗооМафия!</p>
 
-<p>Ваш заказ №<?= $this->purchase->get_id() ?>:</p>
+<p>Ваш заказ №<?= $this->purchase->getId() ?>:</p>
 
 <p>
-<? $item_index = 1; ?>
-<? foreach ($this->purchase->get_item_list() as $purchase_item) { ?>
-<?= $item_index ?>. <?= $purchase_item->get_product()->get_product_title() ?> - <?= $purchase_item->get_product()->get_product_price() ?>р.<br/>
-<? 		$item_index++; ?>
-<? } ?>
+<?php $item_index = 1; ?>
+<?php foreach ($this->purchase->getItemList() as $purchase_item) { ?>
+<?php   $package = Adminko\Model\Model::factory('package')->get($purchase_item->getItemPackage()); ?>
+<?php 	$product = Adminko\Model\Model::factory('product')->get($purchase_item->getItemProduct()); ?>
+<?= $item_index ?>. <?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?> - <?= $purchase_item->getItemQuantity() ?> шт.<br/>
+<?php   $item_index++; ?>
+<?php } ?>
 </p>
 
 <p>
-<? $package = model::factory('package')->get($this->purchase->get_purchase_package()) ?>
-Вид упаковки: <?= $package->get_package_title() ?> - <?= $package->get_package_price() ?>р.<br/>
-<? $delivery = model::factory('delivery')->get($this->purchase->get_purchase_delivery()) ?>
-Способ доставки: <?= $delivery->get_delivery_title() ?> - <?= $delivery->get_delivery_price() ?>р.
+<?php $delivery = Adminko\Model\Model::factory('delivery')->get($this->purchase->getPurchaseDelivery()) ?>
+Способ доставки: <?= $delivery->getDeliveryTitle() ?>
 </p>
 
-<p>Общая стоимость заказа: <?= $this->purchase->get_purchase_sum() ?> р.</p>
+<p>Общая стоимость заказа: <?= $this->purchase->getPurchaseSum() ?> р.</p>
 
 <p>
 Вы указали следующие контактные данные:<br/>
-<?= $this->purchase->get_purchase_phone() ?><br/>
-<?= $this->purchase->get_purchase_address() ?>
+<?= $this->purchase->getPurchasePhone() ?><br/>
+<?= $this->purchase->getPurchaseAddress() ?>
 </p>
 
 <p>В ближайшее время менеджер свяжется с Вами для уточнения всех деталей.<br>
 Если Вы случайно ошиблись при указании адреса или телефона, пожалуйста, перезвоните нам по номерам <?= get_preference('manager_phone') ?>.</p>
 
-<p>Состояние Вашего заказа Вы можете посмотреть, перейдя по ссылке <a href="http://decorbijou.ru/client/purchase">http://decorbijou.ru/client/purchase</a>.</p>
+<p>Состояние Вашего заказа Вы можете посмотреть, перейдя по ссылке <a href="http://zoo-mafia.ru/client/purchase">http://zoo-mafia.ru/client/purchase</a>.</p>

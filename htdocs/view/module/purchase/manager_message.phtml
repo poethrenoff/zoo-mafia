@@ -1,27 +1,29 @@
-<p>Заказ №<?= $this->purchase->get_id() ?></p>
+<p>Заказ №<?= $this->purchase->getId() ?></p>
 
 <p>
-<? $item_index = 1; ?>
-<? foreach ($this->purchase->get_item_list() as $purchase_item) { ?>
-<?= $item_index ?>. <?= $purchase_item->get_product()->get_product_title() ?> - <?= $purchase_item->get_product()->get_product_price() ?>р.<br/>
-<? 		$item_index++; ?>
-<? } ?>
+<?php $item_index = 1; ?>
+<?php foreach ($this->purchase->getItemList() as $purchase_item) { ?>
+<?php   $package = Adminko\Model\Model::factory('package')->get($purchase_item->getItemPackage()); ?>
+<?php 	$product = Adminko\Model\Model::factory('product')->get($purchase_item->getItemProduct()); ?>
+<?= $item_index ?>. <?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?> - <?= $purchase_item->getItemQuantity() ?> шт.<br/>
+<?php   $item_index++; ?>
+<?php } ?>
 </p>
 
 <p>
-<? $package = model::factory('package')->get($this->purchase->get_purchase_package()) ?>
-Вид упаковки: <?= $package->get_package_title() ?> - <?= $package->get_package_price() ?>р.<br/>
-<? $delivery = model::factory('delivery')->get($this->purchase->get_purchase_delivery()) ?>
-Способ доставки: <?= $delivery->get_delivery_title() ?> - <?= $delivery->get_delivery_price() ?>р.
+<?php $delivery = Adminko\Model\Model::factory('delivery')->get($this->purchase->getPurchaseDelivery()) ?>
+Способ доставки: <?= $delivery->getDeliveryTitle() ?>
 </p>
 
-<p>Общая стоимость заказа: <?= $this->purchase->get_purchase_sum() ?> р.</p>
+<p>Общая стоимость заказа: <?= $this->purchase->getPurchaseSum() ?> р.</p>
 
 <p>
-ФИО: <?= $this->client->get_client_title() ?><br/>
-Email: <?= $this->client->get_client_email() ?><br/>
-Телефон: <?= $this->purchase->get_purchase_phone() ?><br/>
-Адрес: <?= $this->purchase->get_purchase_address() ?><br/>
-Дата и время доставки: <?= $this->purchase->get_purchase_request() ?><br/>
-Комментарий: <?= $this->purchase->get_purchase_comment() ?>
+ФИО: <?= $this->client->getClientTitle() ?><br/>
+Email: <?= $this->client->getClientEmail() ?><br/>
+Телефон: <?= $this->purchase->getPurchasePhone() ?><br/>
+Адрес: <?= $this->purchase->getPurchaseAddress() ?><br/>
+Дата и время доставки: <?= $this->purchase->getPurchaseRequest() ?><br/>
+Комментарий: <?= $this->purchase->getPurchaseComment() ?>
 </p>
+
+<p>Перейти к редактированию заказов <a href="http://zoo-mafia.ru/admin/purchase">http://zoo-mafia.ru/admin/purchase</a>.</p>

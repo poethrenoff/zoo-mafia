@@ -5,6 +5,7 @@ use Adminko\Cookie;
 use Adminko\Mail;
 use Adminko\Session;
 use Adminko\System;
+use Adminko\Paginator;
 use Adminko\Model\Model;
 use Adminko\Module\Module;
 use Adminko\Valid\Valid;
@@ -88,11 +89,68 @@ class ClientModule extends Module
             System::redirectTo(array('controller' => 'client'));
         } else {
             $this->client = self::getInfo();
+
+            $total = $this->client->getPurchaseCount();
+            $count = max(1, intval($this->getParam('count', 5)));
+            $pages = Paginator::create($total, array('by_page' => $count));
+            $purchase_list = $this->client->getPurchaseList($pages['by_page'], $pages['offset']);
+            
             $this->view->assign('client', $this->client);
+            $this->view->assign('purchase_list', $purchase_list);
+            $this->view->assign('pages', Paginator::fetch($pages));
             $this->content = $this->view->fetch('module/client/purchase/index');
         }
     }
+    
+    /**
+     * Ваш скидка
+     */
+    public function actionDiscount()
+    {
+        if (!self::isAuth()) {
+            System::redirectTo(array('controller' => 'client'));
+        } else {
+            $discount_list = Model::factory('discount')
+                ->getList(array(), array('discount_value' => 'asc'));
+            $this->view->assign('discount_list', $discount_list);            
+            
+            $this->client = self::getInfo();
+            $this->view->assign('client', $this->client);
+            $this->content = $this->view->fetch('module/client/discount/index');
+        }
+    }
+    
+    /**
+     * Ваши товары
+     */
+    public function actionProduct()
+    {
+        if (!self::isAuth()) {
+            System::redirectTo(array('controller' => 'client'));
+        } else {
+            $this->client = self::getInfo();
+            $this->view->assign('client', $this->client);
+            $this->content = $this->view->fetch('module/client/product/index');
+        }
+    }
 
+    /**
+     * Удаление товара
+     */
+    public function actionDeleteProduct()
+    {
+        if (!self::isAuth()) {
+            System::redirectTo(array('controller' => 'client'));
+        } else {
+            $this->client = self::getInfo();   
+            $product = $this->getProduct();
+            
+            $this->client->deleteClientProduct($product);
+            
+            System::redirectBack();
+        }
+    }
+    
     /**
      * Ваши адреса
      */
@@ -451,6 +509,22 @@ class ClientModule extends Module
     }
     
     /**
+     * Получение товара
+     */
+    public function getProduct()
+    {
+        try {
+            $product = Model::factory('product')->get(System::id());
+        } catch (\AlarmException $e) {
+            System::notFound();
+        }
+        if (!$product->getProductActive()) {
+            System::notFound();
+        }
+        return $product;
+    }
+    
+    /**
      * Аутентификация из формы
      */
     public static function authFromRequest()
@@ -485,7 +559,7 @@ class ClientModule extends Module
             self::setClientCookie($client);
         }
 
-        $_SESSION[self::SESSION_VAR] = $client;
+        $_SESSION[self::SESSION_VAR] = $client->getId();
 
         System::redirectBack();
     }
@@ -503,7 +577,7 @@ class ClientModule extends Module
             return false;
         }
 
-        $_SESSION[self::SESSION_VAR] = $client;
+        $_SESSION[self::SESSION_VAR] = $client->getId();
 
         return true;
     }
@@ -525,7 +599,11 @@ class ClientModule extends Module
     public static function getInfo()
     {
         if (self::isAuth()) {
-            return $_SESSION[self::SESSION_VAR];
+            try {
+                return Model::factory('client')->get($_SESSION[self::SESSION_VAR]);
+            } catch (\AlarmException $e) {
+                return false;
+            }
         } else {
             return false;
         }
