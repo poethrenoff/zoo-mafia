@@ -171,9 +171,7 @@ class View
     {
         $view = new View();
 
-        foreach ($params as $key => $value) {
-            $view->assign($key, $value);
-        }
+        $view->assign($params);
 
         return $view->fetch($template);
     }

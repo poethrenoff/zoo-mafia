@@ -1,30 +1,29 @@
 <h3><?= $this->getProductTitle() ?></h3>
-<div>
-    <img src="<?= $this->getProductImage() ?>/c/300/300"/>
-    <br/>
+
+<img src="<?= $this->getProductImage() ?>/c/300/300"/>
+<br/>
 <?php $marker_list = $this->getMarkerList(); ?>
 <?php if ($marker_list) { ?>
 <?php      foreach ($marker_list as $marker) { ?>
-    <img src="<?= $marker->getMarkerImage() ?>"><br/>
+<img src="<?= $marker->getMarkerImage() ?>"><br/>
 <?php      } ?>
 <?php } ?>
-    <?= $this->getProductPrice() ?>
-</div>
-
-<?= $this->getProductDescription() ?>
-
+<span class="product_price" product-id="<?= $this->getProductId() ?>"><?= $this->getProductPrice() ?></span><br/>
 <?php $package_list = $this->getPackageList(); ?>
 <?php if ($package_list) { ?>
-    <select>
+<select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" product-id="<?= $this->getProductId() ?>">
 <?php   foreach ($package_list as $package) { ?>
-        <option value="<?= $package->getId() ?>"><?= $package->getPackageTitle() ?></option>
+    <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
 <?php   } ?>
-    </select>
-    <input type="text" value="1" style="width: 10px" maxlength="1" />
-    <a href="" onclick="return buyItem(this); return false;">Купить</a>
+</select>
+<a href="" class="product_dec" product-id="<?= $this->getProductId() ?>">-</a>
+<input type="text" value="1" style="width: 10px" maxlength="1" class="product_value" product-id="<?= $this->getProductId() ?>" />
+<a href="" class="product_inc" product-id="<?= $this->getProductId() ?>">+</a>
+<a href="" onclick="return buyItem(this);">Купить</a>
 <?php } ?>
 <?php if (!Adminko\Compare::factory()->in($this->getId())) { ?>
-    <a href="" onclick="return compareItem(<?= $this->getId() ?>, this);">Сравнить</a>
+<a href="" onclick="return compareItem(<?= $this->getId() ?>, this);">Сравнить</a>
 <?php } ?>
-    <a href="" onclick="return consultItem(<?= $this->getId() ?>);">Консультация ветеринара</a>
+<a href="" onclick="return consultItem(<?= $this->getId() ?>);">Консультация ветеринара</a>
 
+<?= $this->getProductDescription() ?>

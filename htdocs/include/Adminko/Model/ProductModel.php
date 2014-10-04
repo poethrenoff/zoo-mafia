@@ -66,7 +66,7 @@ class ProductModel extends Model
     public function getPackageList()
     {
         return Model::factory('package')->getList(
-            array('package_product' => $this->getId()), array('package_order' => 'asc')
+            array('package_product' => $this->getId()), array('package_price' => 'asc')
         );
     }
     
@@ -74,7 +74,7 @@ class ProductModel extends Model
     public function getDefaultPackage()
     {
         $package_list = model::factory('package')->getList(
-            array('package_product' => $this->getId()), array('package_order' => 'asc'), 1
+            array('package_product' => $this->getId()), array('package_price' => 'asc'), 1
         );
         if (empty($package_list)) {
             return false;

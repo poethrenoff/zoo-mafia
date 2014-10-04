@@ -76,7 +76,7 @@
 <br/>
 <a href="<?= Adminko\System::urlFor(array('controller' => 'purchase')) ?>">Оформить заказ</a>
 &nbsp;&nbsp;&nbsp;
-<a href="<?= Adminko\System::urlFor(array('controller' => 'clear')) ?>" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</a>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'clear')) ?>" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</a>
 <?php } else { ?>
 <h4>Ваша корзина пуста.</h4>
 <?php } ?>

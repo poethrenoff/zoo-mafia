@@ -67,7 +67,7 @@ class ProductModule extends Module
             );
 
             $this->view->assign('product_list', $product_list);
-            $this->content = $this->view->fetch('module/product/product');
+            $this->content = $this->view->fetch('module/product/list');
         }
     }
 
@@ -96,7 +96,7 @@ class ProductModule extends Module
         );
 
         $this->view->assign('product_list', $product_list);
-        $this->content = $this->view->fetch('module/product/product');
+        $this->content = $this->view->fetch('module/product/list');
     }
 
     protected function actionItem()
