@@ -1,0 +1,33 @@
+<div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#consult').ajaxForm({
+                target: ".simplemodal-wrap"
+            });
+        });
+    </script>
+    
+    <h3>Заказать консультацию ветеринара</h4>
+
+    <form id="consult" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'consult', 'id' => $this->product->getId())) ?>">
+        Ваше имя, фамилия, отчество *<br/>
+        <input type="text" name="consult_person" value="<?= $this->escape($this->fromRequest('consult_person', $this->client ? $this->escape($this->client->getClientTitle()): '')) ?>" />
+    <?php if ($this->error['consult_person']) { ?>
+        <span class="error"><?= $this->error['consult_person'] ?></span>
+    <?php } ?>
+        <br/>
+        Телефон *<br/>
+        <input type="text" name="consult_phone" value="<?= $this->escape($this->fromRequest('consult_phone', $this->client ? $this->escape($this->client->getClientPhone()): '')) ?>" />
+    <?php if ($this->error['consult_phone']) { ?>
+        <span class="error"><?= $this->error['consult_phone'] ?></span>
+    <?php } ?>
+        <br/>
+        Ваш вопрос *<br/>
+        <textarea name="consult_question"><?= $this->escape($this->fromRequest('consult_question', preg_replace('/{product_title}/', $this->product->getProductTitle(), get_preference('consult_question')))) ?></textarea>
+    <?php if ($this->error['consult_question']) { ?>
+        <span class="error"><?= $this->error['consult_question'] ?></span>
+    <?php } ?>
+        <br/>
+        <input type="submit" value="Заказать консультацию" />
+    </form>
+</div>

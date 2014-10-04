@@ -78,7 +78,18 @@ function updateCart(){
 }
 
 function callback() {
-    $.get('/callback/', function (response){
+    $.get('/callback', function (response){
+        $(response).modal({
+            opacity: 30,
+            overlayClose: true,
+            closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
+        });
+    });
+    return false;
+}
+
+function consultItem(id){
+    $.get('/consult/' + id, function (response){
         $(response).modal({
             opacity: 30,
             overlayClose: true,
