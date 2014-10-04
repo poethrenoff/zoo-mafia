@@ -76,3 +76,14 @@ function updateCart(){
         $(".cart").html(response);
     });
 }
+
+function callback() {
+    $.get('/callback/', function (response){
+        $(response).modal({
+            opacity: 30,
+            overlayClose: true,
+            closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
+        });
+    });
+    return false;
+}

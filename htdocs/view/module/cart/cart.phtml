@@ -1,7 +1,6 @@
-<script type="text/javascript" src="/js/jquery.form.min.js"></script>
 <h3>Корзина</h3>
 <?php if ($this->getQuantity()) { ?>
-<form method="post" id="cart" action="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'save')) ?>">
+<form id="cart" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'save')) ?>">
     <table border="1">
         <tr>
             <td width="50">

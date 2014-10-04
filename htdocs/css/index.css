@@ -93,3 +93,28 @@ p, a, div, td, input, textarea, select {
 .clear {
     clear: both;
 }
+
+/* Modal dialog */
+
+#simplemodal-overlay {
+    background-color: #000;
+}
+#simplemodal-container {
+    background-color: #fff;
+    border: 1px solid #000; 
+    padding: 20px; 
+    width: 530px;
+    height: 350px;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.5);
+}
+#simplemodal-container a.modalCloseImg {
+    background: url(/image/close.png) no-repeat;
+    width: 25px;
+    height: 29px;
+    display: inline;
+    z-index: 3200;
+    position: absolute;
+    top: -12px;
+    right: -13px;
+    cursor: pointer;
+}
