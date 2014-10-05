@@ -143,7 +143,7 @@ class ClientModule extends Module
             System::redirectTo(array('controller' => 'client'));
         } else {
             $this->client = self::getInfo();   
-            $product = $this->getProduct();
+            $product = $this->getProduct(System::id());
             
             $this->client->deleteClientProduct($product);
             
@@ -511,10 +511,10 @@ class ClientModule extends Module
     /**
      * Получение товара
      */
-    public function getProduct()
+    public function getProduct($id)
     {
         try {
-            $product = Model::factory('product')->get(System::id());
+            $product = Model::factory('product')->get($id);
         } catch (\AlarmException $e) {
             System::notFound();
         }

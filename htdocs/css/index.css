@@ -118,3 +118,21 @@ p, a, div, td, input, textarea, select {
     right: -13px;
     cursor: pointer;
 }
+
+
+/* Rating */
+
+.vote{
+    width: 100px;
+    height: 20px;
+    cursor: default;
+}
+.vote .star{
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background: url(/image/stars.png) 13px 0px;
+}
+.vote .star.active{
+    background: url(/image/stars.png) 0px 0px;
+}

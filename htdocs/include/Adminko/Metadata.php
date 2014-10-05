@@ -119,8 +119,9 @@ class Metadata
                 'product_active' => array('title' => 'Видимость', 'type' => 'active'),
             ),
             'links' => array(
-                'product_package' => array('table' => 'package', 'field' => 'package_product', 'title' => 'Фасовки'),
-                'product_picture' => array('table' => 'picture', 'field' => 'picture_product', 'title' => 'Изображения'),
+                'package' => array('table' => 'package', 'field' => 'package_product'),
+                'picture' => array('table' => 'picture', 'field' => 'picture_product'),
+                'review' => array('table' => 'review', 'field' => 'review_product'),
             ),
             'relations' => array(
                 'marker' => array('secondary_table' => 'marker', 'relation_table' => 'product_marker',
@@ -247,6 +248,7 @@ class Metadata
             ),
             'links' => array(
                 'address' => array('table' => 'address', 'field' => 'address_client'),
+                'review' => array('table' => 'review', 'field' => 'review_client'),
             ),
         ),
                 
@@ -314,7 +316,7 @@ class Metadata
                 'purchase_request' => array('title' => 'Дата и время доставки', 'type' => 'string'),
                 'purchase_comment' => array('title' => 'Комментарий', 'type' => 'text'),
                 'purchase_delivery' => array('title' => 'Способ доставки', 'type' => 'table', 'table' => 'delivery', 'errors' => 'require'),
-                'purchase_date' => array('title' => 'Дата заказа', 'type' => 'datetime', 'show' => 1, 'sort' => 'desc', 'errors' => 'require', 'no_edit' => 1),
+                'purchase_date' => array('title' => 'Дата заказа', 'type' => 'datetime', 'show' => 1, 'sort' => 'desc', 'errors' => 'require'),
                 'purchase_sum' => array('title' => 'Сумма заказа', 'type' => 'float', 'show' => 1, 'errors' => 'require'),
                 'purchase_status' => array('title' => 'Статус заказа', 'type' => 'select', 'filter' => 1, 'values' => array(
                         array('value' => 'new', 'title' => 'Новый'),
@@ -342,7 +344,26 @@ class Metadata
                 'item_price' => array('title' => 'Цена', 'type' => 'float', 'show' => 1, 'errors' => array('require')),
                 'item_quantity' => array('title' => 'Количество', 'type' => 'int', 'show' => 1, 'errors' => array('require'))
             )
-        ),        
+        ),
+        
+        /**
+         * Таблица "Отзывы"
+         */
+        'review' => array(
+            'title' => 'Отзывы',
+            'no_add' => true,
+            'fields' => array(
+                'review_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'review_client' => array('title' => 'Пользователь', 'type' => 'table', 'table' => 'client', 'errors' => 'require'),
+                'review_product' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product', 'errors' => 'require'),
+                'review_text' => array('title' => 'Отзыв', 'type' => 'text', 'main' => 1, 'errors' => array('require')),
+                'review_date' => array('title' => 'Дата отзыва', 'type' => 'datetime', 'show' => 1, 'sort' => 'desc', 'errors' => 'require'),
+                'review_status' => array('title' => 'Статус отзыва', 'type' => 'select', 'filter' => 1, 'values' => array(
+                        array('value' => 'new', 'title' => 'Новый'),
+                        array('value' => 'public', 'title' => 'Опубликован'),
+                        array('value' => 'reject', 'title' => 'Отклонен')), 'show' => 1, 'errors' => 'require'),
+            )
+        ),      
         
         ////////////////////////////////////////////////////////////////////////////////////////
 

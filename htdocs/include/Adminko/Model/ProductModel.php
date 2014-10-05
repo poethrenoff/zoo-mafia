@@ -19,6 +19,12 @@ class ProductModel extends Model
             'catalogue' => $this->getCatalogue()->getCatalogueName(), 'action' => 'item', 'id' => $this->getId()));
     }
     
+    // Возвращает бренд товара
+    public function getBrand()
+    {
+        return Model::factory('brand')->get($this->getProductBrand());
+    }
+    
     // Возвращает изображения товара
     public function getImageList()
     {
@@ -165,5 +171,41 @@ class ProductModel extends Model
                 array('client_id' => $client->getId(), 'product_active' => 1));
         
         return $this->getBatch($records);
+    }
+            
+    // Возвращает список товаров по бренду
+    public function getByBrand($limit = 3)
+    {
+        $records = Db::selectAll('
+            select product.* from product
+                inner join catalogue on product_catalogue = catalogue_id
+            where product_brand = :product_brand and product_id <> :product_id and 
+                product_active = :product_active and catalogue_active = :catalogue_active
+            order by rand() limit ' . $limit,
+            array('product_brand' => $this->getProductBrand(), 'product_id' => $this->getId(),
+                'product_active' => 1, 'catalogue_active' => 1));
+        
+        return $this->getBatch($records);
+    }
+    
+    // Добавляет оценку товару
+    public function addMark($mark)
+    {
+        $voters = $this->getProductVoters();
+        $rating = $this->getProductRating();
+        
+        $this->setProductVoters($voters + 1);
+        $this->setProductRating(($rating * $voters + $mark) / ($voters + 1));
+        
+        return $this;
+    }
+
+    // Возвращает отзывы к товару
+    public function getReviewList()
+    {
+        return Model::factory('review')->getList(
+            array('review_product' => $this->getId(), 'review_status' => 'public'),
+                array('review_date' => 'desc')
+        );
     }
 }

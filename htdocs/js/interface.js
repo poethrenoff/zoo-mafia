@@ -99,6 +99,19 @@ function consultItem(id){
     return false;
 }
 
+function product_shift(productLink, shift) {
+    var pid = $(productLink).attr('pid');
+    var $product_value = $('.product_value[pid=' + pid + ']');
+    var product_value = parseInt($product_value.val());
+    if (!isNaN(product_value)) {
+        product_value = product_value + shift;
+        if (product_value > 0 && product_value < 10) {
+            $product_value.val(product_value);
+        }
+    }
+    return false;        
+}
+
 $(function() {
     $('.product_select').change(function() {
         var pid = $(this).attr('pid');
@@ -112,17 +125,4 @@ $(function() {
     $('.product_dec').click(function() {
         return product_shift(this, -1);
     });
-    
-    function product_shift(productLink, shift) {
-        var pid = $(productLink).attr('pid');
-        var $product_value = $('.product_value[pid=' + pid + ']');
-        var product_value = parseInt($product_value.val());
-        if (!isNaN(product_value)) {
-            product_value = product_value + shift;
-            if (product_value > 0 && product_value < 10) {
-                $product_value.val(product_value);
-            }
-        }
-        return false;        
-    }
 });

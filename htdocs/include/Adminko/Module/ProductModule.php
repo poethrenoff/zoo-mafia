@@ -1,6 +1,7 @@
 <?php
 namespace Adminko\Module;
 
+use Adminko\Date;
 use Adminko\System;
 use Adminko\View;
 use Adminko\Model\Model;
@@ -18,15 +19,8 @@ class ProductModule extends Module
         $catalogue_name = System::getParam('catalogue');
 
         if ($catalogue_name) {
-            try {
-                $catalogue = model::factory('catalogue')->getByName($catalogue_name);
-            } catch (\AlarmException $e) {
-                System::notFound();
-            }
-            if (!$catalogue->getCatalogueActive()) {
-                System::notFound();
-            }
-
+            $catalogue = $this->getCatalogue($catalogue_name);
+            
             $catalogue_id = $catalogue->getId();
             $this->view->assign('catalogue', $catalogue);
         }
@@ -101,27 +95,43 @@ class ProductModule extends Module
 
     protected function actionItem()
     {
-        try {
-            $product = Model::factory('product')->get(System::id());
-        } catch (\AlarmException $e) {
-            System::notFound();
-        }
-        if (!$product->getProductActive()) {
-            System::notFound();
-        }
-
-        $catalogue_name = System::getParam('catalogue');
-        try {
-            $catalogue = model::factory('catalogue')->getByName($catalogue_name);
-        } catch (\AlarmException $e) {
-            System::notFound();
-        }
-        if (!$catalogue->getCatalogueActive()) {
-            System::notFound();
-        }
-
+        $product = $this->getProduct(System::id());
+        
         $this->view->assign($product);
+        $this->view->assign('client', ClientModule::getInfo());
         $this->content = $this->view->fetch('module/product/item');
+    }
+    
+    protected function actionVote()
+    {
+        $product = $this->getProduct(System::id());
+        $product->addMark(min(5, max(1, init_string('mark'))))->save();
+        
+        $this->content = json_encode(
+            array('rating' => $product->getProductRating())
+        );
+    }
+
+    protected function actionReview()
+    {
+        if (!ClientModule::isAuth()) {
+            System::redirectTo(array('controller' => 'client'));
+        } else {
+            $client = ClientModule::getInfo();
+            $product = $this->getProduct(System::id());
+
+            try {
+                $this->addReview($client, $product);
+                
+                $this->content = json_encode(
+                    array('message' => get_preference('review_message'))
+                );
+            } catch (\AlarmException $e) {
+                $this->content = json_encode(
+                    array('error' => $e->getMessage())
+                );
+            }
+        }
     }
 
     protected function actionMenu()
@@ -171,4 +181,58 @@ class ProductModule extends Module
             $this->view->assign('sort', 'order');
         }
     }
+  
+    // Добавляет отзыв к товару
+    public function addReview($client, $product)
+    {
+        $review_text = trim(init_string('review_text'));
+        
+        if (is_empty($review_text)) {
+            throw new \AlarmException('Поле обязательно для заполнения');
+        }
+
+        // Добавление отзыва
+        $review = Model::factory('review')
+            ->setReviewClient($client->getId())
+            ->setReviewProduct($product->getId())
+            ->setReviewText($review_text)
+            ->setReviewDate(Date::now())
+            ->setReviewStatus('new')
+            ->save();
+        
+        return $review;
+    }
+    
+    /**
+     * Получение товара
+     */
+    public function getProduct($id)
+    {
+        try {
+            $product = Model::factory('product')->get($id);
+        } catch (\AlarmException $e) {
+            System::notFound();
+        }
+        if (!$product->getProductActive()) {
+            System::notFound();
+        }
+        return $product;
+    }
+    
+    /**
+     * Получение каталога
+     */
+    public function getCatalogue($catalogue_name)
+    {
+        try {
+            $catalogue = model::factory('catalogue')->getByName($catalogue_name);
+        } catch (\AlarmException $e) {
+            System::notFound();
+        }
+        if (!$catalogue->getCatalogueActive()) {
+            System::notFound();
+        }
+        return $catalogue;
+    }
+
 }

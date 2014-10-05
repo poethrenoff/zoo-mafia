@@ -1,5 +1,44 @@
-<h3><?= $this->getProductTitle() ?></h3>
+<script type="text/javascript">
+    function setMark(mark) {
+        $('.vote .star').removeClass('active');
+        $('.vote .star:lt(' + mark + ')').addClass('active');
+    }
+    function addReview() {
+        $('#review').show('slow');
+        return false;
+    }
 
+    $(function(){
+        $('.vote .star').mouseenter(function(){
+            setMark($(this).attr('mark'));
+        }).click(function(){
+            $.post('/product/vote/<?= $this->getId() ?>', {mark: $(this).attr('mark')}, function(data){
+                var rating = Math.round(data.rating);
+                $('.vote').attr('rating', rating); $('.vote').mouseleave();
+            }, 'json');
+        });
+        $('.vote').mouseleave(function(){
+            setMark($(this).attr('rating'));
+        });
+        
+        $('#review').ajaxForm({
+            dataType: 'json',
+            success: function (response){
+                if (response.error) {
+                    alert(response.error);
+                } else if (response.message) {
+                    $('#review').hide(function() {
+                        $('#review textarea').val('');
+                        alert(response.message);
+                    });
+                }
+            }
+        });
+    });
+</script>
+<?php $pid = uniqid(); ?>
+<h3><?= $this->getProductTitle() ?></h3>
+<h4><?= $this->getBrand()->getBrandTitle() ?></h4>
 <img src="<?= $this->getProductImage() ?>/c/300/300"/>
 <br/>
 <?php $marker_list = $this->getMarkerList(); ?>
@@ -8,17 +47,17 @@
 <img src="<?= $marker->getMarkerImage() ?>"><br/>
 <?php      } ?>
 <?php } ?>
-<span class="product_price" product-id="<?= $this->getProductId() ?>"><?= $this->getProductPrice() ?></span><br/>
+<span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?></span><br/>
 <?php $package_list = $this->getPackageList(); ?>
 <?php if ($package_list) { ?>
-<select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" product-id="<?= $this->getProductId() ?>">
+<select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
 <?php   foreach ($package_list as $package) { ?>
     <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
 <?php   } ?>
 </select>
-<a href="" class="product_dec" product-id="<?= $this->getProductId() ?>">-</a>
-<input type="text" value="1" style="width: 10px" maxlength="1" class="product_value" product-id="<?= $this->getProductId() ?>" />
-<a href="" class="product_inc" product-id="<?= $this->getProductId() ?>">+</a>
+<a href="" class="product_dec" pid="<?= $pid ?>">-</a>
+<input type="text" value="1" style="width: 10px" maxlength="1" class="product_value" pid="<?= $pid ?>" />
+<a href="" class="product_inc" pid="<?= $pid ?>">+</a>
 <a href="" onclick="return buyItem(this);">Купить</a>
 <?php } ?>
 <?php if (!Adminko\Compare::factory()->in($this->getId())) { ?>
@@ -26,4 +65,48 @@
 <?php } ?>
 <a href="" onclick="return consultItem(<?= $this->getId() ?>);">Консультация ветеринара</a>
 
+<h4>Рейтинг</h4>
+<? $rating = round($this->getProductRating()); ?>
+<div class="vote" rating="<?= $rating ?>">
+<? for ($i = 1; $i <= 5; $i++) { ?>
+    <div class="star<? if ($rating >= $i) { ?> active<? } ?>" mark="<?= $i ?>"></div>
+<? } ?>
+</div>
+<div class="clear"></div>
+
+<h4>Свойства</h4>
+<?php foreach ($this->getPropertyList() as $property) { ?>
+    <?= $property->getPropertyTitle() ?>:
+<?php       if ($property->getPropertyKind() == 'boolean') { ?>
+                <?= $property->getPropertyValue() ? 'Да' : 'Нет' ?>
+<?php       } else { ?>
+                <?= $property->getPropertyValue() ?>
+<?php		} ?>
+    <?= $property->getPropertyUnit() ?>
+    <br/>
+<?php } ?>
+
+<h4>Описание</h4>
 <?= $this->getProductDescription() ?>
+
+<h4>Отзывы</h4>
+<?php if ($this->client) { ?>
+<a href="" onclick="return addReview();">Оставить отзыв</a><br/>
+<form id="review" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'product', 'action' => 'review', 'id' => $this->getId())) ?>" style="display: none">
+    <textarea name="review_text"></textarea>
+    <br/>
+    <input type="submit" value="Оставить отзыв" />
+</form>
+<?php } else { ?>
+<a href="<?= Adminko\System::urlFor(array('controller' => 'client')) ?>">Авторизуйтесь, чтобы добавить отзыв</a><br/>
+<?php } ?>
+
+<?php foreach ($this->getReviewList() as $review) { ?>
+<p><b><?= $this->escape($review->getClient()->getClientTitle()) ?></b>, <?= Adminko\date::get($review->getReviewDate()) ?><br/>
+<p><?= nl2br($this->escape($review->getReviewText())) ?><p>
+<?php } ?>
+
+<h4>Другие товары от <?= $this->getBrand()->getBrandTitle() ?></h4>
+<?php foreach ($this->getByBrand() as $product_item) { ?>
+<?= Adminko\View::block('module/product/product', $product_item) ?>
+<?php } ?>

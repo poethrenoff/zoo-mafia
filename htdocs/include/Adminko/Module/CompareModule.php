@@ -52,14 +52,7 @@ class CompareModule extends Module
     
     protected function actionAdd()
     {
-        try {
-            $product = Model::factory('product')->get(System::id());
-        } catch (\AlarmException $e) {
-            Sytem::notFound();
-        }
-        if (!$product->getProductActive()) {
-            Sytem::notFound();
-        }
+        $product = $this->getProduct(System::id());
         
         $compare = Compare::factory();
         $limit = max(1, intval($this->getParam('limit')));
@@ -94,6 +87,22 @@ class CompareModule extends Module
     {
         Compare::factory()->clear();
         System::redirectBack();
+    }
+       
+    /**
+     * Получение товара
+     */
+    public function getProduct($id)
+    {
+        try {
+            $product = Model::factory('product')->get($id);
+        } catch (\AlarmException $e) {
+            System::notFound();
+        }
+        if (!$product->getProductActive()) {
+            System::notFound();
+        }
+        return $product;
     }
     
     // Отключаем кеширование
