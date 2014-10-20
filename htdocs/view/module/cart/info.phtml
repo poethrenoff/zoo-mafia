@@ -1,5 +1,5 @@
 <?php if ($this->getQuantity()) { ?>
-<a href="/cart">Корзина (<?= $this->getQuantity() ?>, <?= $this->getSum() ?> руб.)</a>
+<b><a href="/cart">Корзина</a> (<?= $this->getQuantity() ?>)<br/><?= $this->getSum() ?> руб.</b>
 <?php } else { ?>
-<a href="/cart">Корзина</a>
+<b><a href="/cart">Корзина</a></b>
 <?php } ?>

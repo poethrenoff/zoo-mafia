@@ -16,14 +16,16 @@
             <div class="header">
                 <div class="left">
                     <div class="logo">
-                        <a href="/">Логотип</a>
+                        <a href="/"></a>
                     </div>
+                </div>
+                <div class="center">
                     <div class="phone">
 <?= Adminko\Module\TextModule::getByTag('phone') ?>
                     </div>
                     <div class="clear"></div>
                     <div class="callback">
-                        <a href="" onclick="return callback()">Обратный звонок</a>
+                        <input type="button" class="button" value="Заказать звонок" onclick="return callback()" />
                     </div>
                 </div>
                 <div class="right">
@@ -31,29 +33,28 @@
 <?= $this->search ?>
                     </div>
                     <div class="clear"></div>
-                    <div class="compare">
-<?= $this->compare ?>
-                    </div>
+                    <div class="client">
+<?= $this->client ?>
+                    </div>                
+                    <div class="clear"></div>
                     <div class="cart">
 <?= $this->cart ?>
                     </div>
                     <div class="clear"></div>
-                    <div class="purchase">
-                        <a href="/purchase">Оформить заказ</a>
+                    <div class="compare">
+<?= $this->compare ?>
                     </div>
                     <div class="clear"></div>
-                    <div class="client">
-<?= $this->client ?>
-                    </div>                
                 </div>
             </div>
-            <div class="menu">
+            <div class="main">
+                <div class="menu">
 <?= $this->menu ?> 
-            </div>
-            <div class="sidebar">
+                </div>
+                <div class="sidebar">
 <?= $this->catalogue ?>       
-            </div>
-            <div class="content">
+                </div>
+                <div class="content">
 <?php if ($this->banner) { ?>
 <?= $this->banner ?>
 <?php } ?>
@@ -64,18 +65,19 @@
 <?= $this->brand ?>
 <?php } ?>
 <?= $this->content ?>
-            </div>
-            <div class="footer">
-                <div class="subcontact">
+                </div>
+                <div class="footer">
+                    <div class="subcontact">
 <?= Adminko\Module\TextModule::getByTag('subcontact') ?>
-                </div>
-                <div class="submenu">
+                    </div>
+                    <div class="submenu">
 <?= $this->submenu ?>
-                </div>
-                <div class="copyright">
+                    </div>
+                    <div class="copyright">
 <?= Adminko\Module\TextModule::getByTag('copyright') ?>
-                </div>
-            </div>            
+                    </div>
+                </div>            
+            </div>
         </div>            
     </body>
 </html>
