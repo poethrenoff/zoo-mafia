@@ -125,4 +125,7 @@ $(function() {
     $('.product_dec').click(function() {
         return product_shift(this, -1);
     });
+    
+    $('.brand-slideshow').cycle();
+    $('.teaser-slideshow').cycle();    
 });

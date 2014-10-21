@@ -1,3 +1,17 @@
+<div class="brand-wrapper">
+    <a href="" id="brand-prev" class="brand-nav"><img src="/image/brand-prev.png"></a>
+    <div class="brand-slideshow" 
+        data-cycle-fx=carousel
+        data-cycle-timeout=0
+        data-cycle-next="#brand-next"
+        data-cycle-prev="#brand-prev"
+        data-cycle-carousel-visible=5
+        data-cycle-carousel-vertical=true
+        data-cycle-slides="> a"
+        >
 <?php foreach ($this->brand_list as $brand_item) { ?>
-<a href="<?= $brand_item->getBrandUrl() ?>"><img src="<?= $brand_item->getBrandImage() ?>" /></a>
+        <a href="<?= $brand_item->getBrandUrl() ?>"><img src="<?= $brand_item->getBrandImage() ?>"/></a>
 <?php } ?>
+    </div>
+    <a href="" id="brand-next" class="brand-nav"><img src="/image/brand-next.png"></a>
+</div>

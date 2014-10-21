@@ -9,6 +9,8 @@
         <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="/js/jquery.form.min.js"></script>
         <script type="text/javascript" src="/js/jquery.simplemodal.1.4.4.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.cycle2.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.cycle2.carousel.min.js"></script>
         <script type="text/javascript" src="/js/interface.js"></script>
     </head>
     <body>
@@ -52,30 +54,35 @@
 <?= $this->menu ?> 
                 </div>
                 <div class="sidebar">
-<?= $this->catalogue ?>       
+<?= $this->catalogue ?> 
+<?php if ($this->brand) { ?>
+<?= $this->brand ?> 
+<?php } ?>
                 </div>
                 <div class="content">
-<?php if ($this->banner) { ?>
-<?= $this->banner ?>
+<?php if ($this->teaser) { ?>
+<?= $this->teaser ?>
 <?php } ?>
 <?php if ($this->marker) { ?>
 <?= $this->marker ?>
 <?php } ?>
-<?php if ($this->brand) { ?>
-<?= $this->brand ?>
-<?php } ?>
 <?= $this->content ?>
                 </div>
                 <div class="footer">
-                    <div class="subcontact">
-<?= Adminko\Module\TextModule::getByTag('subcontact') ?>
-                    </div>
-                    <div class="submenu">
+                    <div class="left">
+                        <div class="submenu">
 <?= $this->submenu ?>
-                    </div>
-                    <div class="copyright">
+                        </div>
+                        <div class="clear"></div>
+                        <div class="copyright">
 <?= Adminko\Module\TextModule::getByTag('copyright') ?>
+                        </div>
                     </div>
+                    <div class="right">
+                        <div class="subcontact">
+<?= Adminko\Module\TextModule::getByTag('subcontact') ?>
+                        </div>
+                    </div>            
                 </div>            
             </div>
         </div>            

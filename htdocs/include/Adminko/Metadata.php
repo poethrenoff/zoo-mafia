@@ -48,16 +48,17 @@ class Metadata
         ),
         
         /**
-         * Таблица "Баннеры"
+         * Таблица "Тизеры"
          */
-        'banner' => array(
-            'title' => 'Баннеры',
+        'teaser' => array(
+            'title' => 'Тизеры',
             'fields' => array(
-                'banner_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
-                'banner_title' => array('title' => 'Заголовок', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
-                'banner_image' => array('title' => 'Изображение', 'type' => 'image', 'upload_dir' => 'banner', 'errors' => array('require')),
-                'banner_url' => array('title' => 'URL', 'type' => 'string', 'show' => 1, 'errors' => array('require')),
-                'banner_active' => array('title' => 'Видимость', 'type' => 'active'),
+                'teaser_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
+                'teaser_title' => array('title' => 'Заголовок', 'type' => 'string', 'show' => 1, 'main' => 1, 'errors' => array('require')),
+                'teaser_image' => array('title' => 'Изображение', 'type' => 'image', 'upload_dir' => 'teaser', 'errors' => array('require')),
+                'teaser_url' => array('title' => 'URL', 'type' => 'string', 'errors' => array('require')),
+                'teaser_order' => array('title' => 'Порядок', 'type' => 'order'),
+                'teaser_active' => array('title' => 'Видимость', 'type' => 'active'),
             ),
         ),
         
