@@ -1,29 +1,42 @@
 <?php $pid = uniqid(); ?>
-<div style="display: inline-block; width: 200px;">
-    <a href="<?= $this->getProductUrl() ?>">
-        <img src="<?= $this->getProductImage() ?>/c/200/200"/>
-    </a><br/>
+<div class="product">
+    <div class="title">
+        <a href="<?= $this->getProductUrl() ?>"><?= $this->getProductTitle() ?></a>
+    </div>
 <?php $marker_list = $this->getMarkerList(); ?>
 <?php if ($marker_list) { ?>
+    <div class="marker">
 <?php      foreach ($marker_list as $marker) { ?>
-    <img src="<?= $marker->getMarkerImage() ?>"><br/>
+        <img src="<?= $marker->getMarkerImage() ?>" /><br/>
 <?php      } ?>
+    </div>
 <?php } ?>
-    <a href="<?= $this->getProductUrl() ?>"><?= $this->getProductTitle() ?></a><br/>
-    <span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?></span><br/>
+    <div class="image">
+        <a href="<?= $this->getProductUrl() ?>"><img src="<?= $this->getProductImage() ?>/c/150/150"/></a>
+    </div>
 <?php $package_list = $this->getPackageList(); ?>
 <?php if ($package_list) { ?>
-    <select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
+    <div class="in-basket" pid="<?= $pid ?>">
+        Товар отправлен в корзину.<br/><a href="/purchase">Оформить заказ?</a>
+    </div>
+    <div class="price">
+        <select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
 <?php   foreach ($package_list as $package) { ?>
-        <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
+            <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
 <?php   } ?>
-    </select>
-    <a href="" class="product_dec" pid="<?= $pid ?>">-</a>
-    <input type="text" value="1" style="width: 10px" maxlength="1" class="product_value" pid="<?= $pid ?>" />
-    <a href="" class="product_inc" pid="<?= $pid ?>">+</a>
-    <a href="" onclick="return buyItem(this);">Купить</a>
-<?php } ?>
+        </select>
+        
+        <a href="" class="product_dec" pid="<?= $pid ?>"></a>
+        <span class="product_value" pid="<?= $pid ?>">1</span>
+        <a href="" class="product_inc" pid="<?= $pid ?>"></a>
+        
+        <span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?> руб</span>
+    </div>
+    <div class="control">
+        <input type="button" class="button" value="Купить" onclick="return buyItem(this);" pid="<?= $pid ?>" />
 <?php if (!Adminko\Compare::factory()->in($this->getId())) { ?>
-    <a href="" onclick="return compareItem(<?= $this->getId() ?>, this);">Сравнить</a>
+        <input type="button" class="button" value="Сравнить" onclick="return compareItem(<?= $this->getId() ?>, this);" pid="<?= $pid ?>" />
+<?php } ?>
+    </div>
 <?php } ?>
 </div>

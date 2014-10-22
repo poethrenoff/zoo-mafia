@@ -14,12 +14,18 @@ function compareItem(id, compareLink, confirm){
 }
 
 function buyItem(buyLink){
-    var $buyLink = $(buyLink);
-    var id = $buyLink.siblings('select').val();
-    var quantity = $buyLink.siblings('input').val();
+    var pid = $(buyLink).attr('pid');
+    var $product_value = $('.product_value[pid=' + pid + ']');
+    var $product_select = $('.product_select[pid=' + pid + ']');
+    
+    var $in_basket = $('.in-basket[pid=' + pid + ']');
+    
+    var id = $product_select.val();
+    var quantity = $product_value.html();
     
     $.get('/cart/add/' + id + '/', {quantity: quantity}, function (response){
         $(".cart").html(response);
+        $in_basket.show('slow');
     });
     
     return false;
@@ -102,11 +108,11 @@ function consultItem(id){
 function product_shift(productLink, shift) {
     var pid = $(productLink).attr('pid');
     var $product_value = $('.product_value[pid=' + pid + ']');
-    var product_value = parseInt($product_value.val());
+    var product_value = parseInt($product_value.html());
     if (!isNaN(product_value)) {
         product_value = product_value + shift;
         if (product_value > 0 && product_value < 10) {
-            $product_value.val(product_value);
+            $product_value.html(product_value);
         }
     }
     return false;        
@@ -116,7 +122,7 @@ $(function() {
     $('.product_select').change(function() {
         var pid = $(this).attr('pid');
         var product_price = $(this).find('option:selected').attr('price');
-        $('.product_price[pid=' + pid + ']').html(product_price);
+        $('.product_price[pid=' + pid + ']').html(product_price + ' руб');
     }).change();
 
     $('.product_inc').click(function() {
@@ -127,5 +133,12 @@ $(function() {
     });
     
     $('.brand-slideshow').cycle();
-    $('.teaser-slideshow').cycle();    
+    $('.teaser-slideshow').cycle();
+    
+    $(document).bind('click', function(e) {
+        var $target = $(e.target);
+        if (!($target.is('.in-basket') || $target.parents('.in-basket').length)) {
+            $('.in-basket').hide('slow');
+        }
+    });
 });

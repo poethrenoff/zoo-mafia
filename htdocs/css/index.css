@@ -4,15 +4,29 @@ body {
 	background-color: #ffffff;
 }
 
-p, a, div, td, input, textarea, select {
+* {
 	color: #000000;
     font-size: 14px;
-	font-family: 'Calibri';
+    font-family: 'Calibri';
 }
 
 h1, h2, h3, h4, h5, h6 {
     color: #b32529;
-	font-family: 'Calibri';
+}
+a:hover {
+    color: #b32529;
+}
+
+h1 {
+    font-size: 18px;
+    text-transform: uppercase;
+}
+h2 {
+    font-size: 17px;
+}
+h3, h4, h5, h6 {
+    font-size: 16px;
+    font-style: italic;
 }
 
 .wrapper {
@@ -97,7 +111,6 @@ h1, h2, h3, h4, h5, h6 {
         }
         .header .right a:hover {
             color: #b32529;
-            text-decoration: underline;
         }  
         .header .right .cart *, .header .right .compare * {
             font-size: 18px;
@@ -130,10 +143,10 @@ h1, h2, h3, h4, h5, h6 {
         }
 
 .sidebar {
-    float: left;
     width: 200px;
-    min-height: 200px;
     padding-top: 30px;
+    display: inline-block;
+    vertical-align: top;
 }
     .sidebar ul {
         list-style: none;
@@ -161,8 +174,10 @@ h1, h2, h3, h4, h5, h6 {
                 }
 
 .content {
-    padding-left: 200px;
-    min-height: 300px;
+    width: 740px;
+    padding-top: 35px;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .footer {
@@ -181,8 +196,6 @@ h1, h2, h3, h4, h5, h6 {
             .footer .left .submenu * {
                 margin: 0px;
                 color: #000000;
-                font-size: 12px;
-                font-family: 'Tahoma';
                 text-decoration: none;
             }
                 .footer .left .submenu a:hover {
@@ -197,7 +210,7 @@ h1, h2, h3, h4, h5, h6 {
             .footer .left .copyright * {
                 margin: 0px;
                 color: #b32529;
-                font-size: 12px;
+                font-size: 14px;
                 font-family: 'Tahoma';
             }
     
@@ -212,14 +225,89 @@ h1, h2, h3, h4, h5, h6 {
         }
             .footer .right .subcontact * {
                 margin: 0px;
-                color: #000000;
-                font-size: 12px;
-                font-family: 'Tahoma';
             }    
 
 .clear {
     clear: both;
 }
+
+/* Catalogue */
+
+.product {
+    display: inline-block;
+    width: 240px;
+    vertical-align: top;
+}
+    .product .title {
+        height: 35px;
+        text-align: center;
+    }
+            .product .title  a {
+                font-weight: bold;
+                text-decoration: none;
+            }
+    .product .marker {
+        width: 200px;
+        z-index: 100;
+        text-align: right;
+        position: absolute;
+    }
+    .product .image {
+        text-align: center;
+    }
+    .product .price {
+        text-align: center;
+        vertical-align: bottom;
+    }
+        .product .price .product_dec, .product .price .product_inc {
+            display: inline-block;
+            width: 11px;
+            height: 15px;
+            background-position: bottom;
+            background-repeat: no-repeat;
+        }
+        .product .price .product_dec {
+            background-image: url('/image/product-dec.png');
+        }
+        .product .price .product_inc {
+            background-image: url('/image/product-inc.png');
+        }
+        .product .price .product_select {
+            width: 60px;
+            margin-right: 10px;
+        }
+        .product .price .product_value {
+            display: inline-block;
+            width: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .product .price .product_price {
+            margin-left: 10px;
+            color: #b32529;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+    .product .control {
+        margin-top: 7px;
+        text-align: center;
+    }
+    .product .in-basket {
+        display: none;
+        width: 200px;
+        z-index: 200;
+        text-align: left;
+        position: absolute;
+        margin-top: -30px;
+        margin-left: 10px;
+        background: white;
+        border: 1px solid #000000;
+        padding: 10px;
+        box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    }
+
 
 /* Forms */
 
@@ -232,7 +320,7 @@ input.button {
     color: #b32529;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 0px 10px 0px 10px;
+    padding: 0px 15px 0px 15px;
 }
     input.button:hover {
         cursor: pointer;
@@ -323,7 +411,7 @@ input.search-button {
         }
 
 .teaser-wrapper {
-    margin-top: 10px;
+    
 }
     .teaser-slideshow {
         margin: auto;
