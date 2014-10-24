@@ -7,27 +7,27 @@
         });
     </script>
     
-    <h3>Заказать консультацию ветеринара</h4>
+    <h1>Заказать консультацию ветеринара</h1>
 
     <form id="consult" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'consult', 'id' => $this->product->getId())) ?>">
-        Ваше имя, фамилия, отчество *<br/>
-        <input type="text" name="consult_person" value="<?= $this->escape($this->fromRequest('consult_person', $this->client ? $this->escape($this->client->getClientTitle()): '')) ?>" />
+        <label>Ваше имя <span class="require">*</span></label>
+        <input type="text" class="text" name="consult_person" value="<?= $this->escape($this->fromRequest('consult_person', $this->client ? $this->escape($this->client->getClientTitle()): '')) ?>" />
     <?php if ($this->error['consult_person']) { ?>
         <span class="error"><?= $this->error['consult_person'] ?></span>
     <?php } ?>
         <br/>
-        Телефон *<br/>
-        <input type="text" name="consult_phone" value="<?= $this->escape($this->fromRequest('consult_phone', $this->client ? $this->escape($this->client->getClientPhone()): '')) ?>" />
+        <label>Телефон <span class="require">*</span></label>
+        <input type="text" class="text" name="consult_phone" value="<?= $this->escape($this->fromRequest('consult_phone', $this->client ? $this->escape($this->client->getClientPhone()): '')) ?>" />
     <?php if ($this->error['consult_phone']) { ?>
         <span class="error"><?= $this->error['consult_phone'] ?></span>
     <?php } ?>
         <br/>
-        Ваш вопрос *<br/>
+        <label>Ваш вопрос <span class="require">*</span></label><br/>
         <textarea name="consult_question"><?= $this->escape($this->fromRequest('consult_question', preg_replace('/{product_title}/', $this->product->getProductTitle(), get_preference('consult_question')))) ?></textarea>
     <?php if ($this->error['consult_question']) { ?>
         <span class="error"><?= $this->error['consult_question'] ?></span>
     <?php } ?>
         <br/>
-        <input type="submit" value="Заказать консультацию" />
+        <input type="submit" class="button" value="Заказать консультацию" />
     </form>
 </div>

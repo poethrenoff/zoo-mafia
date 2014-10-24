@@ -1,20 +1,24 @@
 <?= Adminko\View::block('module/client/menu') ?>
 
-<h3>Ваши адреса</h3>
 <?php $address_list = $this->client->getAddressList(); ?>
 <?php if ($address_list) { ?>
 <?php   foreach ($address_list as $address) { ?>
-<div style="padding: 10px;<?php if ($address->getAddressDefault()) { ?> background: #f0f0f0;<?php } ?>">
-    <p><?= $this->escape($address->getAddressText()) ?></p>
-    <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'edit_address', 'id' => $address->getId())) ?>">Изменить</a>
-    <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'delete_address', 'id' => $address->getId())) ?>" onclick="return confirm('Вы действительно хотите удалить адрес?')">Удалить</a>
+<div class="purchase <?php if ($address->getAddressDefault()) { ?>selected<?php } ?>">
+    <p><b><?= $this->escape($address->getAddressText()) ?></b></p>
+    <input type="button" class="button" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'edit_address', 'id' => $address->getId())) ?>" value="Изменить" />
+    <input type="button" class="button" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'delete_address', 'id' => $address->getId())) ?>" onclick="return confirm('Вы действительно хотите удалить адрес?')" value="Удалить" />
 <?php if (!$address->getAddressDefault()) { ?>
-    <br/>
-    <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'default_address', 'id' => $address->getId())) ?>">Сделать по умолчанию</a>
+    <p class="default"><a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'default_address', 'id' => $address->getId())) ?>">Сделать по умолчанию</a></p>
+<?php } else { ?>
+    <p class="default">Используется по умолчанию</p>
 <?php } ?>
 </div>                                                  
 <?php   } ?>
 <?php } else { ?>
-<h4>У вас нет ни одного адреса</h4>
+<div class="purchase">
+    <p>У вас нет ни одного адреса</p>
+</div>
 <?php } ?>
-<a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'add_address')) ?>">Добавить</a>
+<div class="purchase">
+    <input type="button" class="button" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'add_address')) ?>" value="Добавить" />
+</div>

@@ -1,13 +1,15 @@
 <?php if ($this->catalogue) { ?>
-<h3><?= $this->catalogue->getCatalogueTitle() ?></h3>
+<h1><?= $this->catalogue->getCatalogueTitle() ?></h1>
 <?php } ?>
 
 <? foreach ($this->catalogue_list as $catalogue_item) { ?>
-<div style="display: inline-block; width: 200px;">
-    <a href="<?= $catalogue_item->getCatalogueUrl() ?>">
-        <img src="<?= $catalogue_item->getCatalogueImage() ?>"/>
-    </a><br/>
-    <a href="<?= $catalogue_item->getCatalogueUrl() ?>"><?= $catalogue_item->getCatalogueTitle() ?></a>
+<div class="product">
+    <div class="image">
+        <a href="<?= $catalogue_item->getCatalogueUrl() ?>"><img src="<?= $catalogue_item->getCatalogueImage() ?>/c/150/150"/></a>
+    </div>    
+    <div class="link">
+        <a href="<?= $catalogue_item->getCatalogueUrl() ?>"><?= $catalogue_item->getCatalogueTitle() ?></a>
+    </div>    
 </div>
 <? } ?>
 

@@ -141,4 +141,8 @@ $(function() {
             $('.in-basket').hide('slow');
         }
     });
+
+    $('input[href]').bind('click', function(e) {
+        location.href = $(this).attr('href');
+    });
 });

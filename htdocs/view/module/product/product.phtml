@@ -34,9 +34,11 @@
     </div>
     <div class="control">
         <input type="button" class="button" value="Купить" onclick="return buyItem(this);" pid="<?= $pid ?>" />
-<?php if (!Adminko\Compare::factory()->in($this->getId())) { ?>
+<?php   if (Adminko\System::controller() == 'client') { ?>
+        <input type="button" class="button" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'deleteProduct', 'id' => $this->getId())) ?>"value="Удалить" />
+<?php   } elseif (!Adminko\Compare::factory()->in($this->getId())) { ?>
         <input type="button" class="button" value="Сравнить" onclick="return compareItem(<?= $this->getId() ?>, this);" pid="<?= $pid ?>" />
-<?php } ?>
+<?php   } ?>
     </div>
 <?php } ?>
 </div>

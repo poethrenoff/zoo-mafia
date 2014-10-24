@@ -1,17 +1,17 @@
 <?= Adminko\View::block('module/client/menu') ?>
 
-<h3>Ваша скидка</h3>
-
-Возможные скидки:<br/>
+<div class="purchase selected">
+    <p><b>Возможные скидки:</b></p>
+    <ul>
 <?php foreach ($this->discount_list as $discount) { ?>
-    <?= $discount->getDiscountSum() ?> руб - <?= $discount->getDiscountValue() ?>%<br/>
+        <li><?= $discount->getDiscountSum() ?> руб - <?= $discount->getDiscountValue() ?>%</li>
 <?php } ?>
-
-<h4>Сумма ваших заказов: <?= $this->client->getClientSum() ?> руб</h4>
-
+    </ul>
+    <p class="total">Сумма ваших заказов: <b><?= number_format($this->client->getClientSum(), 0, ',', ' ') ?> руб</b></p>
 <?php $client_discount = $this->client->getClientDiscount(); ?>
 <?php if ($cliPent_discount <> 1) { ?>
-<h4>Ваша скидка: <?= 100 - 100 * $client_discount ?>%</h4>
+    <p class="total">Ваша скидка: <b><?= 100 - 100 * $client_discount ?>%</b></p>
 <?php } else { ?>
-<h4>Сумма ваших заказов недостаточна, чтобы получить скидку</h4>
+    <p class="total">Сумма ваших заказов недостаточна, чтобы получить скидку.</p>
 <?php } ?>
+</div>

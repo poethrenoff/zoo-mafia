@@ -1,3 +1,5 @@
-<h3><?= Adminko\Date::get($this->getNewsDate(), 'd.m.Y') ?> - <?= $this->getNewsTitle() ?></h3>
+<h1>Новости</h1>
+
+<h3><?= Adminko\Date::get($this->getNewsDate(), 'd.m.Y') ?><br/><?= $this->getNewsTitle() ?></h3>
 <?= $this->getNewsContent() ?>
 <a href="<?= Adminko\System::urlFor(array('controller' => 'news')) ?>">К списку новостей</a>

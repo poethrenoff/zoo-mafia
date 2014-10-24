@@ -231,20 +231,48 @@ h3, h4, h5, h6 {
     clear: both;
 }
 
+.pages {
+    margin: 10px;
+    text-align: right;
+}
+    .pages * {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+    .pages a.next-page, .pages a.prev-page {
+        display: inline-block;
+        width: 8px;
+        height: 10px;
+    }
+    .pages a.next-page {
+        background: url('/image/page-inc.png') bottom no-repeat;
+    }
+    .pages a.prev-page {
+        background: url('/image/page-dec.png') bottom no-repeat;
+    }
+
 /* Catalogue */
 
 .product {
     display: inline-block;
     width: 240px;
     vertical-align: top;
+    margin-bottom: 20px;
 }
     .product .title {
         height: 35px;
         text-align: center;
     }
-            .product .title  a {
+            .product .title a {
                 font-weight: bold;
                 text-decoration: none;
+            }
+    .product .link {
+        height: 35px;
+        text-align: center;
+    }
+            .product .link  a {
+                color: #b32529;
             }
     .product .marker {
         width: 200px;
@@ -308,6 +336,45 @@ h3, h4, h5, h6 {
         box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
     }
 
+/* Client */
+
+div.purchase {
+    padding: 10px;
+}
+    div p {
+        margin: 0px 0px 5px 0px;
+    }
+    div p.total {
+        color: #b32529;
+        font-style: italic;
+    }
+        div p.total b {
+            color: #b32529;
+        }
+    div p.default {
+        margin: 5px 0px 5px 0px;
+        color: #4d4d4d;
+        font-style: italic;
+    }
+        div p.default a {
+            color: #b32529;
+            font-style: italic;
+        }
+    div.purchase.selected {
+        background: #ececec;
+    }
+.client_menu {
+    margin-bottom: 20px;
+}
+.client_menu input.button {
+    color: #4d4d4d;
+    text-transform: none;
+}
+.client_menu input.button.selected {
+    color: #b32529;
+    box-shadow: inset 0px 2px 7px 0px rgba(0, 0, 0, 0.5);
+}
+
 
 /* Forms */
 
@@ -316,7 +383,7 @@ input.button {
     border: none;
     border-radius: 10px;
     background: #dfdfdf;
-    box-shadow: inset 0px -2px 10px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px -2px 7px 0px rgba(0, 0, 0, 0.5);
     color: #b32529;
     font-weight: bold;
     text-transform: uppercase;
@@ -326,14 +393,42 @@ input.button {
         cursor: pointer;
         color: #4d4d4d;
     }
+form input.button {
+    margin: 7px 0px 0px 153px;
+}
 
+input.text {
+    width: 180px;
+    height: 20px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    padding: 0px 10px 0px 10px;
+}
+
+form textarea {
+    width: 330px;
+    height: 50px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    padding: 0px 10px 0px 10px;
+}
+
+form label {
+    display: inline-block;
+    width: 150px;
+    margin-top: 10px;
+}
+span.require, span.error {
+    color: #b32529;
+}
+    
 input.search-field {
     width: 180px;
     height: 24px;
     border: none;
     border-radius: 10px;
     background: #ffffff;
-    box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 2px 10px 0px rgba(0, 0, 0, 0.5);
     padding: 0px 10px 0px 10px;
 }
 
@@ -355,8 +450,8 @@ input.search-button {
     background-color: #fff;
     border: 1px solid #000; 
     padding: 20px; 
-    width: 530px;
-    height: 350px;
+    width: 360px;
+    height: 280px;
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.5);
 }
 #simplemodal-container a.modalCloseImg {

@@ -1,7 +1,9 @@
-<ul>
-    <li><a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'purchase')) ?>">Ваши заказы</a></li>
-    <li><a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'profile')) ?>">Ваши настройки</a></li>
-    <li><a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'address')) ?>">Ваши адреса</a></li>
-    <li><a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'product')) ?>">Ваши товары</a></li>
-    <li><a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'discount')) ?>">Ваша скидка</a></li>
-</ul>
+<h1>Личный кабинет</h1>
+
+<div class="client_menu">
+    <input type="button" class="button<?php if (Adminko\System::action() == 'profile') { ?> selected<?php } ?>" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'profile')) ?>" value="Ваши настройки" />
+    <input type="button" class="button<?php if (Adminko\System::action() == 'purchase') { ?> selected<?php } ?>" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'purchase')) ?>" value="Ваши заказы" />
+    <input type="button" class="button<?php if (in_array(Adminko\System::action(), array('address', 'add_address', 'edit_address'))) { ?> selected<?php } ?>" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'address')) ?>" value="Ваши адреса" />
+    <input type="button" class="button<?php if (Adminko\System::action() == 'product') { ?> selected<?php } ?>" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'product')) ?>" value="Ваши товары" />
+    <input type="button" class="button<?php if (Adminko\System::action() == 'discount') { ?> selected<?php } ?>" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'discount')) ?>" value="Ваша скидка" />
+</div>

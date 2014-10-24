@@ -1,19 +1,17 @@
 <?= Adminko\View::block('module/client/menu') ?>
 
-<h3>Ваши адреса</h3>
-
 <form action="<?= Adminko\System::selfUrl() ?>" method="post">
-    Адрес *
+    <label>Адрес <span class="require">*</span></label><br/>
     <textarea name="address_text"><?= $this->escape($this->fromRequest('address_text', $this->address->getAddressText())) ?></textarea>
 <?php if ($this->error['address_text']) { ?>
     <span class="error"><?= $this->error['address_text'] ?></span>
 <?php } ?>
 <?php if (!$this->address->getAddressDefault()) { ?>
     <br/>
-    По умолчанию
+    <label>По умолчанию</label>
     <input type="checkbox" value="on" name="address_default" <?php if ($this->fromRequest('address_default', $this->address->getAddressDefault())) { ?> checked="checked"<?php } ?> />
 <?php } ?>
     <br/>
-    <input type="submit" value="Сохранить" />
+    <input type="submit" class="button" value="Сохранить" />
 </form>
 <a href="<?= Adminko\System::urlFor(array('controller' => 'client/address')) ?>">Вернуться к списку</a>

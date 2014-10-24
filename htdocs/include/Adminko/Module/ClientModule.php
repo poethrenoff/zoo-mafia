@@ -377,8 +377,6 @@ class ClientModule extends Module
         }
         $this->client->save();
 
-        $_SESSION[self::SESSION_VAR] = $this->client;
-
         if (init_cookie('client')) {
             self::setClientCookie($this->client);
         }

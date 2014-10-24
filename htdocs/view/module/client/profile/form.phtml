@@ -1,43 +1,41 @@
 <?= Adminko\View::block('module/client/menu') ?>
 
-<h3>Ваши настройки</h3>
-
 <form action="<?= Adminko\System::selfUrl() ?>" method="post">
-    Имя *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_title', $this->client->getClientTitle())) ?>" name="client_title" />
+    <label>Имя <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_title', $this->client->getClientTitle())) ?>" name="client_title" />
 <? if ($this->error['client_title']) { ?>
     <span class="error"><?= $this->error['client_title'] ?></span>
 <? } ?>
     <br/>
-    E-mail *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_email', $this->client->getClientEmail())) ?>" name="client_email" />
+    <label>E-mail <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_email', $this->client->getClientEmail())) ?>" name="client_email" />
 <? if ($this->error['client_email']) { ?>
     <span class="error"><?= $this->error['client_email'] ?></span>
 <? } ?>
     <br/>
-    Телефон *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_phone', $this->client->getClientPhone())) ?>" name="client_phone" />
+    <label>Телефон <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_phone', $this->client->getClientPhone())) ?>" name="client_phone" />
 <? if ($this->error['client_phone']) { ?>
     <span class="error"><?= $this->error['client_phone'] ?></span>
 <? } ?>
     <br/>
-    Старый пароль
-    <input type="password" value="" name="client_password_old" />
+    <label>Старый пароль</label>
+    <input type="password" class="text" value="" name="client_password_old" />
 <? if ($this->error['client_password_old']) { ?>
     <span class="error"><?= $this->error['client_password_old'] ?></span>
 <? } ?>
     <br/>
-    Новый пароль
-    <input type="password" value="" name="client_password" />
+    <label>Новый пароль</label>
+    <input type="password" class="text" value="" name="client_password" />
 <? if ($this->error['client_password']) { ?>
     <span class="error"><?= $this->error['client_password'] ?></span>
 <? } ?>
     <br/>
-    Подтверждение
-    <input type="password" value="" name="client_password_confirm" />
+    <label>Подтверждение</label>
+    <input type="password" class="text" value="" name="client_password_confirm" />
 <? if ($this->error['client_password_confirm']) { ?>
     <span class="error"><?= $this->error['client_password_confirm'] ?></span>
 <? } ?>
     <br/>
-    <input type="submit" value="Сохранить" />
+    <input type="submit" class="button" value="Сохранить" />
 </form>

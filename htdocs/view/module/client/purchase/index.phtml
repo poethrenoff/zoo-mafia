@@ -1,19 +1,20 @@
 <?= Adminko\View::block('module/client/menu') ?>
 
-<h3>Ваши заказы</h3>
+<?php $purchase_index = 1; ?>
 <?php foreach ($this->purchase_list as $purchase) { ?>
-<p>
-    <?= Adminko\Date::get($purchase->getPurchaseDate(), 'long') ?><br/>
-<?php $item_index = 1; ?>
+<div class="purchase <?php if ($purchase_index++ % 2) { ?>selected<?php } ?>">
+    <p><b><?= Adminko\Date::get($purchase->getPurchaseDate(), 'long') ?></b></p>
+    <ol>
 <?php foreach ($purchase->getItemList() as $purchase_item) { ?>
 <?php   $package = Adminko\Model\Model::factory('package')->get($purchase_item->getItemPackage()); ?>
 <?php 	$product = Adminko\Model\Model::factory('product')->get($purchase_item->getItemProduct()); ?>
-    <?= $item_index ?>. <?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?> - <?= $purchase_item->getItemQuantity() ?> шт.<br/>
+        <li><?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?> - <?= $purchase_item->getItemQuantity() ?> шт.</li>
 <?php   $item_index++; ?>
 <?php } ?>
-    Общая стоимость заказа: <?= $purchase->getPurchaseSum() ?> р.<br/>
-    Статус заказа: <?= $purchase->getPurchaseStatusTitle() ?><br/>
-</p>
+    </ol>
+    <p class="total">Общая стоимость заказа: <b><?= number_format($purchase->getPurchaseSum(), 0, ',', ' ') ?> руб</b></p>
+    <p class="total">Статус заказа: <b><?= $purchase->getPurchaseStatusTitle() ?></b></p>
+</div>
 <?php } ?>
 
 <?= $this->pages ?>
