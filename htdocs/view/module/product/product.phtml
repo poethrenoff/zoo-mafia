@@ -20,17 +20,21 @@
         Товар отправлен в корзину.<br/><a href="/purchase">Оформить заказ?</a>
     </div>
     <div class="price">
-        <select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
+        <div class="product_select_container">
+            <select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
 <?php   foreach ($package_list as $package) { ?>
-            <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
+             <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
 <?php   } ?>
-        </select>
-        
-        <a href="" class="product_dec" pid="<?= $pid ?>"></a>
-        <span class="product_value" pid="<?= $pid ?>">1</span>
-        <a href="" class="product_inc" pid="<?= $pid ?>"></a>
-        
-        <span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?> руб</span>
+            </select>
+        </div>
+        <div class="product_value_container">
+            <a href="" class="product_dec" pid="<?= $pid ?>"></a>
+            <span class="product_value" pid="<?= $pid ?>">1</span>
+            <a href="" class="product_inc" pid="<?= $pid ?>"></a>
+        </div>
+        <div class="product_price_container">
+            <span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?> руб</span>
+        </div>
     </div>
     <div class="control">
         <input type="button" class="button" value="Купить" onclick="return buyItem(this);" pid="<?= $pid ?>" />

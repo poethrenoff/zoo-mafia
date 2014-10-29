@@ -145,4 +145,13 @@ $(function() {
     $('input[href]').bind('click', function(e) {
         location.href = $(this).attr('href');
     });
+    
+    $('select').selectric({
+        inheritOriginalWidth: true
+    });
+    
+    
+    $('.brand select').on('change', function(){
+        $(this).parents('form:first').submit();
+    });
 });
