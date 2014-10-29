@@ -1,4 +1,4 @@
-<h3>Корзина</h3>
+<h1>Корзина</h1>
 <?php if ($this->getQuantity()) { ?>
 <form id="cart" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'save')) ?>">
     <table border="1">
@@ -78,5 +78,5 @@
 &nbsp;&nbsp;&nbsp;
 <a href="<?= Adminko\System::urlFor(array('controller' => 'cart', 'action' => 'clear')) ?>" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</a>
 <?php } else { ?>
-<h4>Ваша корзина пуста.</h4>
+<h2>Ваша корзина пуста</h2>
 <?php } ?>

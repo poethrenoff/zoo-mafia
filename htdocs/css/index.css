@@ -13,9 +13,12 @@ body {
 h1, h2, h3, h4, h5, h6 {
     color: #b32529;
 }
-a:hover {
+a {
     color: #b32529;
 }
+    a:hover {
+        color: #767676;
+    }
 
 h1 {
     font-size: 18px;
@@ -264,8 +267,12 @@ h3, h4, h5, h6 {
         text-align: center;
     }
             .product .title a {
+                color: #000000;
                 font-weight: bold;
                 text-decoration: none;
+            }
+            .product .title a:hover {
+                color: #b32529;
             }
     .product .link {
         height: 35px;
@@ -336,6 +343,31 @@ h3, h4, h5, h6 {
         box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
     }
 
+/* Compare */
+
+table.compare {
+    border-collapse: collapse;
+}
+    table.compare td {
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #cecece;
+    }
+    table.compare td {
+        width: 100px;
+    }
+        table.compare td.property {
+            width: 180px;
+        }
+        table.compare td.title {
+            font-weight: bold;
+        }
+        table.compare td.equal {
+            color: #b7b7b7;
+        }
+    
+    
 /* Client */
 
 div.purchase {
@@ -363,6 +395,7 @@ div.purchase {
     div.purchase.selected {
         background: #ececec;
     }
+
 .client_menu {
     margin-bottom: 20px;
 }
@@ -379,7 +412,7 @@ div.purchase {
 /* Forms */
 
 input.button {
-    height: 24px;
+    height: 21px;
     border: none;
     border-radius: 10px;
     background: #dfdfdf;

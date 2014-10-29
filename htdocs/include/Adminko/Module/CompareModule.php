@@ -28,15 +28,16 @@ class CompareModule extends Module
                 }
             }
             foreach ($property_compare_list as $property_id => $property_value_list) {
-                $property_compare_list[$property_id]['equals'] = count($property_value_list) > 1 &&
-                    count($property_value_list) == $compare->count() && count(array_unique($property_value_list)) == 1;
-                if ($property_compare_list[$property_id]['equals'] && init_string('show') == 'diff') {
-                    unset($property_compare_list[$property_id]);
+                $property_list[$property_id]->setIsEqual(count($property_value_list) > 1 &&
+                    count($property_value_list) == $compare->count() && count(array_unique($property_value_list)) == 1);
+                if ($property_list[$property_id]->getIsEqual() && init_string('show') == 'diff') {
+                    unset($property_list[$property_id]);
                 }
             }
             
             $this->view->assign('product_list', $product_list);
             $this->view->assign('property_list', $property_list);
+            
             $this->view->assign('property_compare_list', $property_compare_list);
         }
         
@@ -57,11 +58,7 @@ class CompareModule extends Module
         $compare = Compare::factory();
         $limit = max(1, intval($this->getParam('limit')));
         
-        if ($compare->count() >= $limit) {
-            $this->content = json_encode(array(
-                'error' => 'Извините, сравнение более ' . declOfNum($limit, array('товара', 'товаров', 'товаров')) . ' не предусмотрено',
-            ));
-        } elseif ($compare->getType() && $compare->getType() != $product->getProductCatalogue() && !isset($_REQUEST['confirm'])) {
+        if ($compare->getType() && $compare->getType() != $product->getProductCatalogue() && !isset($_REQUEST['confirm'])) {
             $this->content = json_encode(array(
                 'confirm' => 'Сравнение товаров разных типов невозможно. Добавить новый товар, удалив прежний список?',
             ));

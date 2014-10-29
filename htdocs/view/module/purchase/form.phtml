@@ -10,7 +10,7 @@
         $delivery_sum[$delivery->getId()] = $free_delivery ? "0" : $delivery->getDeliveryPrice();
     }
 ?>
-<h3>Оформление заказа</h3>
+<h1>Оформление заказа</h1>
 <?php if ($this->cart->getQuantity()) { ?>
 <script type="text/javascript">
     var purchase_sum = "<?= $purchase_sum ?>";
@@ -150,5 +150,5 @@
     <a href="/cart">Изменить заказ</a>
 </form>
 <?php } else { ?>
-<h4>Ваша корзина пуста.</h4>
+<h2>Ваша корзина пуста</h2>
 <?php } ?>
