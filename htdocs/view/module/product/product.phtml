@@ -16,8 +16,11 @@
     </div>
 <?php $package_list = $this->getPackageList(); ?>
 <?php if ($package_list) { ?>
-    <div class="in-basket" pid="<?= $pid ?>">
-        Товар отправлен в корзину.<br/><a href="/purchase">Оформить заказ?</a>
+    <div class="in-cart" pid="<?= $pid ?>">
+        Товар отправлен в корзину.<br/><a href="/purchase">Оформить заказ</a>
+    </div>
+    <div class="in-compare" pid="<?= $pid ?>">
+        Товар добавлен к сравнению.<br/><a href="/compare">Перейти к результатам</a>
     </div>
     <div class="price">
         <div class="product_select_container">
@@ -42,6 +45,8 @@
         <input type="button" class="button" href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'deleteProduct', 'id' => $this->getId())) ?>"value="Удалить" />
 <?php   } elseif (!Adminko\Compare::factory()->in($this->getId())) { ?>
         <input type="button" class="button" value="Сравнить" onclick="return compareItem(<?= $this->getId() ?>, this);" pid="<?= $pid ?>" />
+<?php   } else { ?>
+        <input type="button" class="button" value="Сравнить" disabled="disabled" />
 <?php   } ?>
     </div>
 <?php } ?>

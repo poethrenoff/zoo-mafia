@@ -295,57 +295,63 @@ h3, h4, h5, h6 {
     .product .price {
         margin-left: 25px;
     }
-        .product .price .product_select_container {
+        .product_select_container {
             display: table-cell;
             vertical-align: bottom;
             padding-right: 15px;
         }
-            .product .price .product_select {
+            .product_select_container .product_select {
                 width: 65px;
             }
-        .product .price .product_value_container {
+        .product_value_container {
             display: table-cell;
             vertical-align: bottom;
             padding-bottom: 1px;
         }
-            .product .price .product_value {
+            .product_value_container .product_value {
                 display: inline-block;
                 width: 15px;
                 font-size: 20px;
                 font-weight: bold;
                 text-align: center;
             }
-            .product .price .product_dec, .product .price .product_inc {
+            .product_value_container .product_dec, .product_value_container .product_inc {
                 display: inline-block;
                 width: 11px;
                 height: 15px;
                 background-position: bottom;
                 background-repeat: no-repeat;
             }
-            .product .price .product_dec {
+            .product_value_container .product_dec {
                 background-image: url('/image/product-dec.png');
             }
-            .product .price .product_inc {
+            .product_value_container .product_inc {
                 background-image: url('/image/product-inc.png');
             }
-        .product .price .product_price_container {
+        .product_price_container {
             display: table-cell;
             vertical-align: bottom;
             padding-left: 10px;
             padding-bottom: 4px;
         }
-            .product .price .product_price {
+            .product_price_container .product_price {
                 display: inline-block;
                 color: #b32529;
                 font-size: 16px;
                 font-weight: bold;
             }
+        .product_cart_container {
+            display: table-cell;
+            vertical-align: bottom;
+            padding-left: 30px;
+            padding-bottom: 3px;
+        }
         
     .product .control {
         margin-top: 7px;
         text-align: center;
     }
-    .product .in-basket {
+    .in-cart, .in-compare {
         display: none;
         width: 200px;
         z-index: 200;
@@ -408,7 +414,6 @@ h3, h4, h5, h6 {
         display: inline-block;
         text-align: center;
         vertical-align: top;
-        border: 1px solid red;
     }
         .card .picture .marker {
             width: 250px;
@@ -420,26 +425,84 @@ h3, h4, h5, h6 {
         width: 430px;
         display: inline-block;
         vertical-align: top;
-        border: 1px solid blue;
     }
+        .card .property .price {
+            float: right;
+        }
+            .card .property .price .product_price_container {
+                padding-right: 20px;
+            }
+        .card .property .control {
+            float: right;
+            text-align: right;
+            margin-top: 5px;
+            line-height: 35px;
+        }
+        .card .property .info {
+            width: 430px;
+            display: inline-block;
+        }
+            .card .property .info .brand {
+                margin-left: 25px;
+                font-weight: bold;
+            }
+
     .card .social {
-        width: 300px;
+        width: 290px;
         display: inline-block;
         vertical-align: top;
-        border: 1px solid green;
-        height: 30px;
+        padding-top: 10px;
+        padding-left: 10px;
+        
     }
+        .card .social .share42init {
+            position: absolute;
+            margin-top: -18px;
+            margin-left: 90px;
+        }
+    
     .card .rating {
-        width: 430px;
+        width: 140px;
         display: inline-block;
         vertical-align: top;
-        border: 1px solid magenta;
-        height: 30px;
+        padding-top: 10px;
+        padding-left: 270px;
     }
-    .card .description {
-        border: 1px solid cyan;
-        height: 100px;
+        .card .rating .vote {
+            position: absolute;
+            margin-top: -3px;
+            margin-left: 60px;
+        }
+
+    .card .tabs {
+        margin-top: 10px;
+        padding-left: 20px;
     }
+        .card .tabs div {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 3px 40px 3px 30px;
+            border-left: 4px solid white;
+            border-top: 4px solid white;
+            border-radius: 15px 15px 0px 0px;
+            margin-left: -20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: inset 0px -5px 20px 0px rgba(0, 0, 0, 0.5);
+        }
+        .card .tabs div.on {
+            display: none;
+            position: absolute;
+            background: white;
+            cursor: default;
+            box-shadow: none;
+        }
+    
+    .card .areas div[rel] {
+        display: none;
+        padding: 10px;
+    }
+ 
 
 /* Compare */
 
@@ -524,6 +587,10 @@ input.button {
         cursor: pointer;
         color: #4d4d4d;
     }
+    input.button:disabled {
+        cursor: default;
+        color: #a0a0a0;
+    }
 form input.button {
     margin: 7px 0px 0px 153px;
 }
@@ -531,7 +598,7 @@ form input.button {
 input.text {
     width: 180px;
     height: 20px;
-    border: none;
+    border: 1px solid #f0f0f0;
     border-radius: 10px;
     padding: 0px 10px 0px 10px;
     box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.5);
@@ -540,7 +607,7 @@ input.text {
 form textarea {
     width: 330px;
     height: 50px;
-    border: none;
+    border: 1px solid #f0f0f0;
     border-radius: 10px;
     padding: 0px 10px 0px 10px;
     box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.5);
@@ -611,9 +678,9 @@ input.search-button {
 }
 .vote .star{
     display: inline-block;
-    width: 13px;
-    height: 13px;
-    background: url(/image/stars.png) 13px 0px;
+    width: 17px;
+    height: 17px;
+    background: url(/image/stars.png) 17px 0px;
 }
 .vote .star.active{
     background: url(/image/stars.png) 0px 0px;

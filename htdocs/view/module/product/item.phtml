@@ -1,6 +1,4 @@
-<?php $pid = uniqid(); ?>
 <h1><?= $this->getProductTitle() ?></h1>
-
 <div class="card">
     <div class="picture">
 <?php $marker_list = $this->getMarkerList(); ?>
@@ -25,101 +23,127 @@
                 data-cycle-slides="> a"
                 >
 <?php   foreach ($picture_list as $picture) { ?>
-                <a href="<?= $picture->getPictureImage() ?>/c/500/500"> 
-                    <img src="<?= $picture->getPictureImage() ?>/c/120/120" />
+                <a href="<?= $picture->getPictureImage() ?>/c/600/600"> 
+                    <img src="<?= $picture->getPictureImage() ?>/c/210/210" />
                 </a>
 <?php   } ?>
             </div>
         </div>
 <?php } else { ?>
-        <img src="<?= $this->getProductImage() ?>/c/210/210"/>
+        <div class="picture-slideshow">
+            <a href="<?= $this->getProductImage() ?>/c/600/600"> 
+                <img src="<?= $this->getProductImage() ?>/c/210/210" />
+            </a>
+        </div>
 <?php } ?>
     </div>
     <div class="property">
-        ...
+<?php $pid = uniqid(); ?>
+<?php $package_list = $this->getPackageList(); ?>
+<?php if ($package_list) { ?>
+        <div class="in-cart" pid="<?= $pid ?>">
+            Товар отправлен в корзину.<br/><a href="/purchase">Оформить заказ</a>
+        </div>
+        <div class="in-compare" pid="<?= $pid ?>">
+            Товар добавлен к сравнению.<br/><a href="/compare">Перейти к результатам</a>
+        </div>
+        <div class="price">
+            <div class="product_price_container">
+                <span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?> руб</span>
+            </div>
+            <div class="product_select_container">
+                <select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
+<?php   foreach ($package_list as $package) { ?>
+                 <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
+<?php   } ?>
+                </select>
+            </div>
+            <div class="product_value_container">
+                <a href="" class="product_dec" pid="<?= $pid ?>"></a>
+                <span class="product_value" pid="<?= $pid ?>">1</span>
+                <a href="" class="product_inc" pid="<?= $pid ?>"></a>
+            </div>
+            <div class="product_cart_container">
+                <input type="button" class="button" value="Купить" onclick="return buyItem(this);" pid="<?= $pid ?>" />
+            </div>
+        </div>
+        <div class="control">
+<?php if (!Adminko\Compare::factory()->in($this->getId())) { ?>
+            <input type="button" class="button" value="Сравнить" onclick="return compareItem(<?= $this->getId() ?>, this);" pid="<?= $pid ?>" />
+<?php   } else { ?>
+            <input type="button" class="button" value="Сравнить" disabled="disabled" />
+<?php   } ?>
+            <br/>
+            <input type="button" class="button" value="Консультация ветеринара" onclick="return consultItem(<?= $this->getId() ?>);" pid="<?= $pid ?>" />
+        </div>
+        <div class="info">
+            <ul>
+<?php   foreach ($this->getPropertyList() as $property) { ?>
+                <li>
+                    <?= $property->getPropertyTitle() ?>:
+<?php       if ($property->getPropertyKind() == 'boolean') { ?>
+                    <?= $property->getPropertyValue() ? 'Да' : 'Нет' ?>
+<?php       } else { ?>
+                    <?= $property->getPropertyValue() ?>
+<?php		} ?>
+                    <?= $property->getPropertyUnit() ?>
+                </li>
+<?php   } ?>            
+            </ul>
+            <div class="brand">
+                <?= $this->getBrand()->getBrandTitle() ?>
+            </div>
+        </div>
+<?php } ?>
     </div>
     <div class="clear"></div>
     <div class="social">
-        ...
+        <div class="share42init" style="display: table-cell;"></div>
+        <script type="text/javascript" src="/js/share42/share42.js"></script>
+        Поделиться
     </div>
     <div class="rating">
-        ...
+<?php $rating = round($this->getProductRating()); ?>
+        <div class="vote" rating="<?= $rating ?>">
+<?php for ($i = 1; $i <= 5; $i++) { ?>
+            <div class="star<? if ($rating >= $i) { ?> active<? } ?>" id="<?= $this->getId() ?>" mark="<?= $i ?>"></div>
+<?php } ?>
+        </div>
+        Рейтинг
     </div>
-    <div class="clear"></div>
-    <div class="description">
-        ...
+    <div class="tabs">
+        <div class="on" for="description">Описание</div><div class="off" for="description">Описание</div>
+        <div class="on" for="review">Отзывы покупателей</div><div class="off" for="review">Отзывы покупателей</div>
+        <div class="on" for="other">Другие товары от <?= $this->getBrand()->getBrandTitle() ?></div><div class="off" for="other">Другие товары от <?= $this->getBrand()->getBrandTitle() ?></div>
+        <div class="on" for="viewed">Вы уже смотрели</div><div class="off" for="viewed">Вы уже смотрели</div>
     </div>
-</div>
-
-<br/>
-
-<?php $marker_list = $this->getMarkerList(); ?>
-<?php if ($marker_list) { ?>
-<?php      foreach ($marker_list as $marker) { ?>
-<img src="<?= $marker->getMarkerImage() ?>"><br/>
-<?php      } ?>
-<?php } ?>
-
-<span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?></span><br/>
-<?php $package_list = $this->getPackageList(); ?>
-<?php if ($package_list) { ?>
-<select<?php if (count($package_list) == 1) { ?> disabled="disabled"<?php } ?> class="product_select" pid="<?= $pid ?>">
-<?php   foreach ($package_list as $package) { ?>
-    <option value="<?= $package->getId() ?>" price="<?= $package->getPackagePrice() ?>"><?= $package->getPackageTitle() ?></option>
-<?php   } ?>
-</select>
-<a href="" class="product_dec" pid="<?= $pid ?>">-</a>
-<input type="text" value="1" style="width: 10px" maxlength="1" class="product_value" pid="<?= $pid ?>" />
-<a href="" class="product_inc" pid="<?= $pid ?>">+</a>
-<a href="" onclick="return buyItem(this);">Купить</a>
-<?php } ?>
-<?php if (!Adminko\Compare::factory()->in($this->getId())) { ?>
-<a href="" onclick="return compareItem(<?= $this->getId() ?>, this);">Сравнить</a>
-<?php } ?>
-<a href="" onclick="return consultItem(<?= $this->getId() ?>);">Консультация ветеринара</a>
-
-<h4>Рейтинг</h4>
-<? $rating = round($this->getProductRating()); ?>
-<div class="vote" rating="<?= $rating ?>">
-<? for ($i = 1; $i <= 5; $i++) { ?>
-    <div class="star<? if ($rating >= $i) { ?> active<? } ?>" id="<?= $this->getId() ?>" mark="<?= $i ?>"></div>
-<? } ?>
-</div>
-<div class="clear"></div>
-
-<h4>Свойства</h4>
-<?php foreach ($this->getPropertyList() as $property) { ?>
-    <?= $property->getPropertyTitle() ?>:
-<?php       if ($property->getPropertyKind() == 'boolean') { ?>
-                <?= $property->getPropertyValue() ? 'Да' : 'Нет' ?>
-<?php       } else { ?>
-                <?= $property->getPropertyValue() ?>
-<?php		} ?>
-    <?= $property->getPropertyUnit() ?>
-    <br/>
-<?php } ?>
-
-<h4>Описание</h4>
+    <div class="areas">
+        <div rel="description">
 <?= $this->getProductDescription() ?>
-
-<h4>Отзывы</h4>
+        </div>
+        <div rel="review">
 <?php if ($this->client) { ?>
-<a href="" onclick="return addReview();">Оставить отзыв</a><br/>
-<form id="review" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'product', 'action' => 'review', 'id' => $this->getId())) ?>" style="display: none">
-    <textarea name="review_text"></textarea>
-    <br/>
-    <input type="submit" value="Оставить отзыв" />
-</form>
+            <a href="" onclick="return addReview();">Оставить отзыв</a><br/>
+            <form id="review" method="post" action="<?= Adminko\System::urlFor(array('controller' => 'product', 'action' => 'review', 'id' => $this->getId())) ?>" style="display: none">
+                <textarea name="review_text"></textarea>
+                <br/>
+                <input type="submit" value="Оставить отзыв" />
+            </form>
 <?php } else { ?>
-<a href="<?= Adminko\System::urlFor(array('controller' => 'client')) ?>">Авторизуйтесь, чтобы добавить отзыв</a><br/>
+            <a href="<?= Adminko\System::urlFor(array('controller' => 'client')) ?>">Авторизуйтесь, чтобы добавить отзыв</a><br/>
 <?php } ?>
-
 <?php foreach ($this->getReviewList() as $review) { ?>
-<p><b><?= $this->escape($review->getClient()->getClientTitle()) ?></b>, <?= Adminko\date::get($review->getReviewDate()) ?><br/>
-<p><?= nl2br($this->escape($review->getReviewText())) ?><p>
+            <p><b><?= $this->escape($review->getClient()->getClientTitle()) ?></b>, <?= Adminko\date::get($review->getReviewDate()) ?><br/>
+            <p><?= nl2br($this->escape($review->getReviewText())) ?><p>
 <?php } ?>
-
-<h4>Другие товары от <?= $this->getBrand()->getBrandTitle() ?></h4>
+        </div>
+        <div rel="other">
 <?php foreach ($this->getByBrand() as $product_item) { ?>
 <?= Adminko\View::block('module/product/product', $product_item) ?>
 <?php } ?>
+        </div>
+        <div rel="viewed">
+            ...
+        </div>
+    </div>
+</div>

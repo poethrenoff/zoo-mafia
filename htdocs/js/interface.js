@@ -1,5 +1,8 @@
 function compareItem(id, compareLink, confirm){
+    var pid = $(compareLink).attr('pid');
     var $compareLink = $(compareLink);
+    var $in_compare = $('.in-compare[pid=' + pid + ']');
+    
     $.get('/compare/add/' + id, {'confirm': confirm}, function (response){
         if (response.error) {
             alert(response.error);
@@ -7,7 +10,8 @@ function compareItem(id, compareLink, confirm){
             compareItem(id, compareLink, true);
         } else if (response.message) {
             $('.compare').html(response.message);
-            $compareLink.hide('slow');
+            $compareLink.prop('disabled', true);
+            $in_compare.show('slow');
         }
     }, 'json');
     return false;
@@ -17,15 +21,14 @@ function buyItem(buyLink){
     var pid = $(buyLink).attr('pid');
     var $product_value = $('.product_value[pid=' + pid + ']');
     var $product_select = $('.product_select[pid=' + pid + ']');
-    
-    var $in_basket = $('.in-basket[pid=' + pid + ']');
+    var $in_cart = $('.in-cart[pid=' + pid + ']');
     
     var id = $product_select.val();
     var quantity = $product_value.html();
     
     $.get('/cart/add/' + id + '/', {quantity: quantity}, function (response){
         $(".cart").html(response);
-        $in_basket.show('slow');
+        $in_cart.show('slow');
     });
     
     return false;
@@ -146,18 +149,23 @@ $(function() {
     $('.picture-slideshow').cycle();
     
     $('.picture-slideshow a').click(function(){
-        $.modal("<img src='" + $(this).attr('href') + "' width='500' height='500'/>", {
-            opacity: 30,
-            overlayClose: true,
-            closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
-        });
+        var image = new Image();
+        image.src = $(this).attr('href');
+        image.onload = function() {
+            $.modal("<img src='" + image.src + "'/>", {
+                opacity: 30,
+                overlayClose: true,
+                closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
+            });
+        };
         return false;
     });
 
     $(document).bind('click', function(e) {
         var $target = $(e.target);
-        if (!($target.is('.in-basket') || $target.parents('.in-basket').length)) {
-            $('.in-basket').hide('slow');
+        if (!($target.is('.in-cart') || $target.parents('.in-cart').length ||
+                $target.is('.in-compare') || $target.parents('.in-compare').length)) {
+            $('.in-cart').hide('slow'); $('.in-compare').hide('slow');
         }
     });
 
@@ -183,6 +191,16 @@ $(function() {
     $('.vote').mouseleave(function(){
         setMark($(this).attr('rating'));
     });
+    
+    $('.card .tabs div.off').click(function(){
+        $('.card .tabs div.on').css('display', 'none');
+        $('.card .tabs div.on[for="' + $(this).attr('for') + '"]')
+            .css('display', 'inline-block');
+    
+        $('.card .areas div[rel]').hide();
+        $('.card .areas div[rel="' + $(this).attr('for') + '"]').show();
+    });
+    $('.card .tabs div.off:first').click();
 
     $('#review').ajaxForm({
         dataType: 'json',

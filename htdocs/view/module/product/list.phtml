@@ -11,9 +11,10 @@
     </div>
 <?= Adminko\View::block('module/product/sort', array('sort' => $this->sort, 'order' => $this->order)) ?>
     <div class="clear"></div>
-
+<?php $property_list = $this->catalogue->getPropertyList(true); ?>
+<?php if ($property_list) { ?>
     <div class="filter">
-<?php   foreach ($this->catalogue->getPropertyList(true) as $property) { ?>
+<?php   foreach ($property_list as $property) { ?>
         <div class="filter_property_container">
             <b><?= $property->getPropertyTitle() ?></b>
         </div>
@@ -46,6 +47,7 @@
             <input type="submit" class="button" value="Применить" />
         </div>
     </div>
+<?php } ?>
 </form>
 <?php } ?>
 <?php if ($this->brand) { ?>
