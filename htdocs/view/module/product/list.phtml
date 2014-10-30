@@ -9,21 +9,9 @@
 <?php   } ?>
         </select>
     </div>
-
-    <div class="sort">
-<?php if ($this->sort == 'price') { ?>
-        <a href="<?= Adminko\System::requestUrl(array('sort' => 'price', 'order' => $this->order == 'asc' ? 'desc' : 'asc')) ?>">По цене</a>&nbsp;<?php if ($this->order == 'asc') { ?><img src="/image/up.png" /><?php } else { ?><img src="/image/down.png" /><?php } ?></b>
-<?php } else { ?>
-        <a href="<?= Adminko\System::requestUrl(array('sort' => 'price', 'order' => 'asc')) ?>">По цене</a>
-<?php } ?>
-        &nbsp;
-<?php if ($this->sort == 'name') { ?>
-        <a href="<?= Adminko\System::requestUrl(array('sort' => 'name', 'order' => $this->order == 'asc' ? 'desc' : 'asc')) ?>">По названию</a>&nbsp;<?php if ($this->order == 'asc') { ?><img src="/image/up.png" /><?php } else { ?><img src="/image/down.png" /><?php } ?></b>
-<?php } else { ?>
-        <a href="<?= Adminko\System::requestUrl(array('sort' => 'name', 'order' => 'asc')) ?>">По названию</a>
-<?php } ?>
-    </div>    
+<?= Adminko\View::block('module/product/sort', array('sort' => $this->sort, 'order' => $this->order)) ?>
     <div class="clear"></div>
+
     <div class="filter">
 <?php   foreach ($this->catalogue->getPropertyList(true) as $property) { ?>
         <div class="filter_property_container">
@@ -61,18 +49,22 @@
 </form>
 <?php } ?>
 <?php if ($this->brand) { ?>
-<h3><?= $this->brand->getBrandTitle() ?></h3>
+<h1><?= $this->brand->getBrandTitle() ?></h1>
 <form action="<?= Adminko\System::selfUrl() ?>" method="get">
-    <select name="catalogue" onchange="$(this).parent().submit()">
-        <option value="">Выберите раздел</option>
+    <div class="brand">
+        <select name="catalogue">
+            <option value="">Выберите раздел</option>
 <?php   foreach ($this->brand->getCatalogueList()->getChildren() as $catalogue_group) { ?>
-        <optgroup label="<?= $catalogue_group->getCatalogueTitle() ?>">
+        <option value="<?= $catalogue_group->getId() ?>" disabled="disabled"><?= $catalogue_group->getCatalogueTitle() ?></option>
 <?php       foreach ($catalogue_group->getChildren() as $catalogue) { ?>
-            <option value="<?= $catalogue->getId() ?>"<?php if ($this->inRequest('catalogue', $catalogue->getId())) { ?> selected="selected"<?php } ?>><?= $catalogue->getCatalogueTitle() ?></option>
+        <option value="<?= $catalogue->getId() ?>"<?php if ($this->inRequest('catalogue', $catalogue->getId())) { ?> selected="selected"<?php } ?>>&nbsp;&nbsp;&nbsp;<?= $catalogue->getCatalogueTitle() ?></option>
 <?php       } ?>
         </optgroup>
 <?php   } ?>
-    </select>
+        </select>
+    </div>
+<?= Adminko\View::block('module/product/sort', array('sort' => $this->sort, 'order' => $this->order)) ?>
+    <div class="clear"></div>
 </form>
 <?php } ?>
 

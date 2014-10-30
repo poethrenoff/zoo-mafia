@@ -174,8 +174,8 @@
   background: #C38D8D;
 }
 .selectricItems li.disabled {
-  background: #F5F5F5;
-  color: #BBB;
+  font-weight: bold;
   border-top-color: #FAFAFA;
   cursor: default;
+  
 }

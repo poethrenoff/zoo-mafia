@@ -1,52 +1,65 @@
-<script type="text/javascript">
-    function setMark(mark) {
-        $('.vote .star').removeClass('active');
-        $('.vote .star:lt(' + mark + ')').addClass('active');
-    }
-    function addReview() {
-        $('#review').show('slow');
-        return false;
-    }
-
-    $(function(){
-        $('.vote .star').mouseenter(function(){
-            setMark($(this).attr('mark'));
-        }).click(function(){
-            $.post('/product/vote/<?= $this->getId() ?>', {mark: $(this).attr('mark')}, function(data){
-                var rating = Math.round(data.rating);
-                $('.vote').attr('rating', rating); $('.vote').mouseleave();
-            }, 'json');
-        });
-        $('.vote').mouseleave(function(){
-            setMark($(this).attr('rating'));
-        });
-        
-        $('#review').ajaxForm({
-            dataType: 'json',
-            success: function (response){
-                if (response.error) {
-                    alert(response.error);
-                } else if (response.message) {
-                    $('#review').hide(function() {
-                        $('#review textarea').val('');
-                        alert(response.message);
-                    });
-                }
-            }
-        });
-    });
-</script>
 <?php $pid = uniqid(); ?>
-<h3><?= $this->getProductTitle() ?></h3>
-<h4><?= $this->getBrand()->getBrandTitle() ?></h4>
-<img src="<?= $this->getProductImage() ?>/c/300/300"/>
+<h1><?= $this->getProductTitle() ?></h1>
+
+<div class="card">
+    <div class="picture">
+<?php $marker_list = $this->getMarkerList(); ?>
+<?php if ($marker_list) { ?>
+        <div class="marker">
+<?php      foreach ($marker_list as $marker) { ?>
+            <img src="<?= $marker->getMarkerImage() ?>" /><br/>
+<?php      } ?>
+        </div>
+<?php } ?>
+<?php $picture_list = $this->getPictureList(); ?>
+<?php if (count($picture_list) > 1) { ?>
+        <div class="picture-wrapper">
+            <a href="" id="picture-prev" class="picture-prev"><img src="/image/picture-prev.png"></a>
+            <a href="" id="picture-next" class="picture-next"><img src="/image/picture-next.png"></a>
+            <div class="picture-slideshow" 
+                data-cycle-fx=carousel
+                data-cycle-timeout=0
+                data-cycle-carousel-visible=1
+                data-cycle-next="#picture-next"
+                data-cycle-prev="#picture-prev"
+                data-cycle-slides="> a"
+                >
+<?php   foreach ($picture_list as $picture) { ?>
+                <a href="<?= $picture->getPictureImage() ?>/c/500/500"> 
+                    <img src="<?= $picture->getPictureImage() ?>/c/120/120" />
+                </a>
+<?php   } ?>
+            </div>
+        </div>
+<?php } else { ?>
+        <img src="<?= $this->getProductImage() ?>/c/210/210"/>
+<?php } ?>
+    </div>
+    <div class="property">
+        ...
+    </div>
+    <div class="clear"></div>
+    <div class="social">
+        ...
+    </div>
+    <div class="rating">
+        ...
+    </div>
+    <div class="clear"></div>
+    <div class="description">
+        ...
+    </div>
+</div>
+
 <br/>
+
 <?php $marker_list = $this->getMarkerList(); ?>
 <?php if ($marker_list) { ?>
 <?php      foreach ($marker_list as $marker) { ?>
 <img src="<?= $marker->getMarkerImage() ?>"><br/>
 <?php      } ?>
 <?php } ?>
+
 <span class="product_price" pid="<?= $pid ?>"><?= $this->getProductPrice() ?></span><br/>
 <?php $package_list = $this->getPackageList(); ?>
 <?php if ($package_list) { ?>
@@ -69,7 +82,7 @@
 <? $rating = round($this->getProductRating()); ?>
 <div class="vote" rating="<?= $rating ?>">
 <? for ($i = 1; $i <= 5; $i++) { ?>
-    <div class="star<? if ($rating >= $i) { ?> active<? } ?>" mark="<?= $i ?>"></div>
+    <div class="star<? if ($rating >= $i) { ?> active<? } ?>" id="<?= $this->getId() ?>" mark="<?= $i ?>"></div>
 <? } ?>
 </div>
 <div class="clear"></div>

@@ -361,16 +361,17 @@ h3, h4, h5, h6 {
 
 .brand {
     float: left;
+    margin-bottom: 10px;
 }
     .brand select {
-        width: 130px;
+        width: 150px;
     }
 .sort {
     float: right;
+    margin-bottom: 10px;
 }
 .filter {
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
     .filter input.button {
         margin: 0px;
@@ -399,6 +400,46 @@ h3, h4, h5, h6 {
         padding-bottom: 3px;
     }
 
+.card {
+
+}
+    .card .picture {
+        width: 300px;
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+        border: 1px solid red;
+    }
+        .card .picture .marker {
+            width: 250px;
+            z-index: 100;
+            text-align: right;
+            position: absolute;
+        }
+    .card .property {
+        width: 430px;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid blue;
+    }
+    .card .social {
+        width: 300px;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid green;
+        height: 30px;
+    }
+    .card .rating {
+        width: 430px;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid magenta;
+        height: 30px;
+    }
+    .card .description {
+        border: 1px solid cyan;
+        height: 100px;
+    }
 
 /* Compare */
 
@@ -532,6 +573,10 @@ input.search-button {
     background: url('/image/search.png');
 }
 
+.modal-form {
+    width: 360px;
+    height: 280px;
+}
 
 /* Modal dialog */
 
@@ -540,10 +585,8 @@ input.search-button {
 }
 #simplemodal-container {
     background-color: #fff;
-    border: 1px solid #000; 
+    border: 1px solid #000;
     padding: 20px; 
-    width: 360px;
-    height: 280px;
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.5);
 }
 #simplemodal-container a.modalCloseImg {
@@ -628,3 +671,26 @@ input.search-button {
             .teaser-pager span.cycle-pager-active {
                 color: #b32529;
             }
+
+.picture-wrapper {
+    width: 300px;
+}
+    .picture-slideshow {
+        margin: auto;
+    }
+        .picture-slideshow img {
+            width: 210px;
+            height: 210px;
+        }
+    .picture-wrapper .picture-prev {
+        display: block;
+        position: absolute;
+        margin-top: 100px;
+        margin-left: 20px;
+    }
+    .picture-wrapper .picture-next {
+        display: block;
+        position: absolute;
+        margin-top: 100px;
+        margin-left: 265px;
+    }

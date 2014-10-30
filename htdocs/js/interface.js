@@ -4,7 +4,7 @@ function compareItem(id, compareLink, confirm){
         if (response.error) {
             alert(response.error);
         } else if (response.confirm && window.confirm(response.confirm)) {
-            compareItem(id, button, true);
+            compareItem(id, compareLink, true);
         } else if (response.message) {
             $('.compare').html(response.message);
             $compareLink.hide('slow');
@@ -118,6 +118,15 @@ function product_shift(productLink, shift) {
     return false;        
 }
 
+function setMark(mark) {
+    $('.vote .star').removeClass('active');
+    $('.vote .star:lt(' + mark + ')').addClass('active');
+}
+function addReview() {
+    $('#review').show('slow');
+    return false;
+}
+
 $(function() {
     $('.product_select').change(function() {
         var pid = $(this).attr('pid');
@@ -134,7 +143,17 @@ $(function() {
     
     $('.brand-slideshow').cycle();
     $('.teaser-slideshow').cycle();
+    $('.picture-slideshow').cycle();
     
+    $('.picture-slideshow a').click(function(){
+        $.modal("<img src='" + $(this).attr('href') + "' width='500' height='500'/>", {
+            opacity: 30,
+            overlayClose: true,
+            closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
+        });
+        return false;
+    });
+
     $(document).bind('click', function(e) {
         var $target = $(e.target);
         if (!($target.is('.in-basket') || $target.parents('.in-basket').length)) {
@@ -149,9 +168,33 @@ $(function() {
     $('select').selectric({
         inheritOriginalWidth: true
     });
-    
-    
     $('.brand select').on('change', function(){
         $(this).parents('form:first').submit();
+    });
+
+    $('.vote .star').mouseenter(function(){
+        setMark($(this).attr('mark'));
+    }).click(function(){
+        $.post('/product/vote/' + $(this).attr('id'), {mark: $(this).attr('mark')}, function(data){
+            var rating = Math.round(data.rating);
+            $('.vote').attr('rating', rating); $('.vote').mouseleave();
+        }, 'json');
+    });
+    $('.vote').mouseleave(function(){
+        setMark($(this).attr('rating'));
+    });
+
+    $('#review').ajaxForm({
+        dataType: 'json',
+        success: function (response){
+            if (response.error) {
+                alert(response.error);
+            } else if (response.message) {
+                $('#review').hide(function() {
+                    $('#review textarea').val('');
+                    alert(response.message);
+                });
+            }
+        }
     });
 });

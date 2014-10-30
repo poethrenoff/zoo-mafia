@@ -1,0 +1,13 @@
+<div class="sort">
+<?php if ($this->sort == 'price') { ?>
+    <a href="<?= Adminko\System::requestUrl(array('sort' => 'price', 'order' => $this->order == 'asc' ? 'desc' : 'asc')) ?>">По цене</a>&nbsp;<?php if ($this->order == 'asc') { ?><img src="/image/up.png" /><?php } else { ?><img src="/image/down.png" /><?php } ?></b>
+<?php } else { ?>
+    <a href="<?= Adminko\System::requestUrl(array('sort' => 'price', 'order' => 'asc')) ?>">По цене</a>
+<?php } ?>
+    &nbsp;
+<?php if ($this->sort == 'name') { ?>
+    <a href="<?= Adminko\System::requestUrl(array('sort' => 'name', 'order' => $this->order == 'asc' ? 'desc' : 'asc')) ?>">По названию</a>&nbsp;<?php if ($this->order == 'asc') { ?><img src="/image/up.png" /><?php } else { ?><img src="/image/down.png" /><?php } ?></b>
+<?php } else { ?>
+    <a href="<?= Adminko\System::requestUrl(array('sort' => 'name', 'order' => 'asc')) ?>">По названию</a>
+<?php } ?>
+</div>

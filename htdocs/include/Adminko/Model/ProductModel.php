@@ -26,7 +26,7 @@ class ProductModel extends Model
     }
     
     // Возвращает изображения товара
-    public function getImageList()
+    public function getPictureList()
     {
         return Model::factory('picture')->getList(
             array('picture_product' => $this->getId()), array('picture_order' => 'asc')
