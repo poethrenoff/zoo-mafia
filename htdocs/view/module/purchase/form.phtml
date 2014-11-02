@@ -35,54 +35,54 @@
         }).change();
     });
 </script>
-<h3>Вы заказали:</h3>
-<table border="1">
-    <tr>
-        <td width="50">
-            &nbsp;
-        </td>
-        <td class="ac">
-            <b>Товар</b>
-        </td>
-        <td width="50">
-            <b>Цена</b>
-        </td>
-        <td width="50">
-            <b>Кол-во</b>
-        </td>
-        <td width="50">
-            <b>Стоимость</b>
-        </td>
-    </tr>
+<h2>Вы заказали:</h2>
+    <table class="cart">
+        <tr>
+            <td class="title name">
+                Товар
+            </td>
+            <td class="title price">
+                Цена
+            </td>
+            <td class="title quantity">
+                Количество
+            </td>
+            <td class="title cost">
+                Стоимость
+            </td>
+        </tr>
 <?php 		foreach ($this->cart->get() as $item) { ?>
 <?php 			$package = Adminko\Model\Model::factory('package')->get($item->id); ?>
 <?php 			$product = Adminko\Model\Model::factory('product')->get($package->getPackageProduct()); ?>
-    <tr>
-        <td width="50">
-            <img src="<?= $product->getProductImage() ?>/c/50/50" />
-        </td>
-        <td>
-            <?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?>
-        </td>
-        <td width="50">
-            <?= $item->price ?>
-        </td>
-        <td width="50">
-            <?= $item->quantity ?>
-        </td>
-        <td width="50">
-            <?= $item->quantity * $item->price ?>
-        </td>
-    </tr>
+        <tr>
+            <td class="name">
+                <div class="cart_image_container">
+                    <img src="<?= $product->getProductImage() ?>/c/100/100"/>
+                </div>
+                <div class="cart_title_container">
+                    <a href="<?= $product->getProductUrl() ?>"><?= $product->getProductTitle() ?>, <?= $package->getPackageTitle() ?></a>
+                </div>
+            </td>
+            <td class="price">
+                <?= $item->price ?>
+            </td>
+            <td class="quantity">
+                <?= $item->quantity ?>
+            </td>
+            <td class="cost">
+                <?= $item->quantity * $item->price ?>
+            </td>
+        </tr>
 <?php 		} ?>
-</table>
-<h4>Стоимость товаров: <?= $cart_sum ?> руб</h4>
+    </table>
+<h3>Стоимость товаров: <?= $cart_sum ?> руб</h3>
 <?php if ($this->client && $purchase_sum < $cart_sum) { ?>
-<h4>Стоимость с учетом <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'discount')) ?>">скидки</a>: <?= $purchase_sum ?> руб</h4>
+<h3>Стоимость с учетом <a href="<?= Adminko\System::urlFor(array('controller' => 'client', 'action' => 'discount')) ?>">скидки</a>: <?= $purchase_sum ?> руб</h3>
 <?php } ?>
 <form action="<?= Adminko\System::selfUrl() ?>" method="post">
-    Способ доставки *<br/>
-    <select name="purchase_delivery">
+    <p>Способ доставки *</p>
+    <select name="purchase_delivery" style="width: 280px;">
+        <option value="">Выберите способ доставки...</option>
 <?php foreach ($this->delivery_list as $delivery) { ?>
         <option value="<?= $delivery->getId() ?>"<?php if ($this->inRequest('purchase_delivery', $delivery->getId())) { ?> selected="selected"<?php } ?>>
            <?= $delivery->getDeliveryTitle() ?>, <?php if (!$free_delivery) { ?><?= $delivery->getDeliveryPrice() ?> руб<?php } else { ?>бесплатно<?php } ?>
@@ -92,45 +92,46 @@
 <?php if ($this->error['purchase_delivery']) { ?>
     <span class="error"><?= $this->error['purchase_delivery'] ?></span>
 <?php } ?>
-    <h4>Итоговая стоимость заказа: <span id="total_sum"></span> руб</h4>
+    <h3>Итоговая стоимость заказа: <span id="total_sum"></span> руб</h3>
 <?php   if (!$this->client) { ?>
-    Имя *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_title')) ?>" name="client_title" />
+    <label>Имя <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_title')) ?>" name="client_title" />
 <?php if ($this->error['client_title']) { ?>
     <span class="error"><?= $this->error['client_title'] ?></span>
 <?php } ?>
     <br/>
-    E-mail *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_email')) ?>" name="client_email" />
+    <label>E-mail <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_email')) ?>" name="client_email" />
 <?php if ($this->error['client_email']) { ?>
     <span class="error"><?= $this->error['client_email'] ?></span>
 <?php } ?>
     <br/>
-    Телефон *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_phone')) ?>" name="client_phone" />
+    <label>Телефон <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_phone')) ?>" name="client_phone" />
 <?php if ($this->error['client_phone']) { ?>
     <span class="error"><?= $this->error['client_phone'] ?></span>
 <?php } ?>
     <br/>
-    Адрес доставки *<br/>
+    <label>Адрес доставки <span class="require">*</span></label><br/>
     <textarea name="client_address_text"><?= $this->escape($this->fromRequest('client_address_text')) ?></textarea>
 <?php if ($this->error['client_address_text']) { ?>
     <span class="error"><?= $this->error['client_address_text'] ?></span>
 <?php } ?>
     <br/>
 <?php   } else { ?>
-    Телефон *
-    <input type="text" value="<?= $this->escape($this->fromRequest('client_phone', $this->client->getClientPhone())) ?>" name="client_phone" />
+    <label>Телефон <span class="require">*</span></label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_phone', $this->client->getClientPhone())) ?>" name="client_phone" />
 <?php if ($this->error['client_phone']) { ?>
     <span class="error"><?= $this->error['client_phone'] ?></span>
 <?php } ?>
     <br/>
-    Адрес доставки *<br/>
+    <label>Адрес доставки <span class="require">*</span></label><br/>
 <?php   if ($address_list = $this->client->getAddressList()) { ?>
     <div id="client_address">
 <?php       foreach ($address_list as $address) { ?>
         <input type="radio" name="client_address" value="<?= $address->getId() ?>"<?php if (!$this->inRequest('client_address') && $address->getAddressDefault() || $this->inRequest('client_address', $address->getId())) { ?> checked="checked"<?php } ?>/> <?= $this->escape($address->getAddressText()) ?><br/>
 <?php       } ?>
+        <br/>
     </div>
     <input type="checkbox" name="client_address_new" value="on"<?php if ($this->inRequest('client_address_new')) { ?> checked="checked"<?php } ?>/> Новый адрес<br/>
 <?php   } ?>
@@ -140,14 +141,14 @@
 <?php } ?>
     <br/>    
 <?php   } ?>
-    Желаемая дата и время доставки<br/>
-    <input type="text" value="<?= $this->escape($this->fromRequest('purchase_request')) ?>" name="purchase_request" />
+    <label>Желаемая дата и время доставки</label>
+    <input type="text" class="text" value="<?= $this->escape($this->fromRequest('purchase_request')) ?>" name="purchase_request" />
     <br/>
-    Комментарий<br/>
+    <label>Комментарий</label><br/>
     <textarea name="purchase_comment"><?= $this->escape($this->fromRequest('purchase_comment')) ?></textarea>
     <br/>
-    <input type="submit" value="Отправить" />
-    <a href="/cart">Изменить заказ</a>
+    <input type="submit" class="button" value="Отправить" />
+    <input type="button" class="button" href="/cart" value="Изменить заказ" />
 </form>
 <?php } else { ?>
 <h2>Ваша корзина пуста</h2>

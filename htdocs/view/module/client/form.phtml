@@ -1,7 +1,7 @@
 <h1>Авторизация</h1>
 
 <form action="<?= Adminko\System::selfUrl() ?>" method="post">
-   <label>E-mail <span class="require">*</span></label>
+    <label>E-mail <span class="require">*</span></label>
     <input type="text" class="text" value="<?= $this->escape($this->fromRequest('client_email')) ?>" name="client_email" />
 <? if ($this->error['client_email']) { ?>
     <span class="error"><?= $this->error['client_email'] ?></span>

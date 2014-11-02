@@ -9,7 +9,7 @@ function compareItem(id, compareLink, confirm){
         } else if (response.confirm && window.confirm(response.confirm)) {
             compareItem(id, compareLink, true);
         } else if (response.message) {
-            $('.compare').html(response.message);
+            $('div.compare').html(response.message);
             $compareLink.prop('disabled', true);
             $in_compare.show('slow');
         }
@@ -27,7 +27,7 @@ function buyItem(buyLink){
     var quantity = $product_value.html();
     
     $.get('/cart/add/' + id + '/', {quantity: quantity}, function (response){
-        $(".cart").html(response);
+        $("div.cart").html(response);
         $in_cart.show('slow');
     });
     
@@ -48,14 +48,14 @@ function shiftItem(shiftLink, shift){
     var $priceInput = $row.find('input[name^=price]');
     var qnt = parseInt($qntInput.val());
     var price = parseInt($priceInput.val());
-    var $qntCell = $row.find('td').eq(3);
-    var $costCell = $row.find('td').eq(4);
+    var $qntCell = $row.find('td').eq(2);
+    var $costCell = $row.find('td').eq(3);
     
     qnt = qnt + shift;
     
     if (qnt > 0) {
         $qntInput.val(qnt);
-        $qntCell.html(qnt);
+        $qntCell.find('span').html(qnt);
         $costCell.html(qnt * price);
         
         updateCart();
@@ -76,13 +76,13 @@ function updateCart(){
     });
     
     var $totalRow = $('#cart').find('tr:last');
-    var $totalQntCell = $totalRow.find('td').eq(1);
-    var $totalSumCell = $totalRow.find('td').eq(2);
-    $totalQntCell.find('strong').html(totalQnt);
-    $totalSumCell.find('strong').html(totalSum);
+    var $totalQntCell = $totalRow.find('td').eq(2);
+    var $totalSumCell = $totalRow.find('td').eq(3);
+    $totalQntCell.html(totalQnt);
+    $totalSumCell.html(totalSum);
     
     $('#cart').ajaxSubmit(function(response){
-        $(".cart").html(response);
+        $("div.cart").html(response);
     });
 }
 
@@ -125,7 +125,7 @@ function setMark(mark) {
     $('.vote .star').removeClass('active');
     $('.vote .star:lt(' + mark + ')').addClass('active');
 }
-function addReview() {
+function addReview(reviewLink) {
     $('#review').show('slow');
     return false;
 }
@@ -170,7 +170,9 @@ $(function() {
     });
 
     $('input[href]').bind('click', function(e) {
-        location.href = $(this).attr('href');
+        if (!$(this).attr('confirm') || confirm($(this).attr('confirm'))) {
+            location.href = $(this).attr('href');
+        }
     });
     
     $('select').selectric({

@@ -142,6 +142,8 @@ class ProductModel extends Model
                 from
                     property
                     left join product_property on product_property.property_id = property.property_id
+                    inner join product on product_property.product_id = product.product_id and
+                        product.product_catalogue = property.property_catalogue
                     left join property_value on property_value.value_property = property.property_id and
                         property_value.value_id = product_property.value
                 where

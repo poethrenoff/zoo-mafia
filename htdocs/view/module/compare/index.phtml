@@ -2,7 +2,7 @@
 <?php if (count($this->product_list)) { ?>
 <table class="compare">
     <tr>
-        <td rowspan="2" class="title property">
+        <td rowspan="2" class="title name">
             Товары
         </td>
         <td colspan="<?= count($this->property_list) ?>" class="title">
@@ -18,8 +18,8 @@
     </tr>
 <?php foreach ($this->product_list as $product) { ?>
     <tr>
-        <td>
-            <i><?= $product->getProductTitle() ?></i>
+        <td class="name">
+            <a href="<?= $product->getProductUrl() ?>"><?= $product->getProductTitle() ?></a>
             &nbsp;&nbsp;
             <a href="<?= Adminko\System::urlFor(array('controller' => 'compare', 'action' => 'delete', 'id' => $product->getId())) ?>" onclick="return confirm( 'Вы уверены, что хотите удалить товар из сравнения?' )"><img src="/image/delete.png" /></a><br/>
             <img src="<?= $product->getProductImage() . '/c/100/100' ?>" alt=""/>

@@ -8,6 +8,10 @@ use Adminko\Model\Model;
 
 class ProductModule extends Module
 {
+    const MAX_VIEWED = 15;
+        
+    const SESSION_VAR = '__viewed__';
+    
     protected $sort_field = '';
 
     protected $sort_order = '';
@@ -97,7 +101,10 @@ class ProductModule extends Module
     {
         $product = $this->getProduct(System::id());
         
+        $viewed_list = $this->addViewed($product);
+        
         $this->view->assign($product);
+        $this->view->assign('viewed_list', $viewed_list);
         $this->view->assign('client', ClientModule::getInfo());
         $this->content = $this->view->fetch('module/product/item');
     }
@@ -202,7 +209,24 @@ class ProductModule extends Module
         
         return $review;
     }
-    
+
+    // Сохраняет ID просмотренного товара
+    protected function addViewed($product)
+    {
+        $viewed = (array) $_SESSION[self::SESSION_VAR];
+        
+        if (!in_array($product->getId(), $viewed)) {
+            $viewed[] = $product->getId();
+        }
+        
+        $_SESSION[self::SESSION_VAR] = $viewed;
+        
+        return Model::factory('product')
+            ->getList(array('product_id in (' . array_make_in($viewed) . ')',
+                'product_id  not in(' . $product->getId() . ')'),
+                    array(), self::MAX_VIEWED);
+    }
+
     /**
      * Получение товара
      */
