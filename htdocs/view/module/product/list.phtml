@@ -28,8 +28,8 @@
         <div class="filter_select_container">
             <select name="property[<?= $property->getId() ?>]" style="width: 53px">
                 <option value=""></option>
-                <option value="yes"<?php if ($this->inRequest("property[" . $property->getId() . "]", 'yes')) { ?> selected="selected"<?php } ?>>Да</option>
-                <option value="no"<?php if ($this->inRequest("property[" . $property->getId() . "]", 'no')) { ?> selected="selected"<?php } ?>>Нет</option>
+                <option value="yes"<?php if ($this->inRequest("property[" . $property->getId() . "]", 'yes')) { ?> selected="selected"<?php } ?>>есть</option>
+                <option value="no"<?php if ($this->inRequest("property[" . $property->getId() . "]", 'no')) { ?> selected="selected"<?php } ?>>нет</option>
             </select>
         </div>
 <?php       } elseif ($property->getPropertyKind() == 'select') { ?>
@@ -51,7 +51,7 @@
 </form>
 <?php } ?>
 <?php if ($this->brand) { ?>
-<h1><?= $this->brand->getBrandTitle() ?></h1>
+<h1><?= $this->brand->getBrandLong() ?: $this->brand->getBrandTitle() ?></h1>
 <form action="<?= Adminko\System::selfUrl() ?>" method="get">
     <div class="brand">
         <select name="catalogue">
@@ -75,3 +75,8 @@
 <?php } ?>
 
 <div class="clear"></div>
+
+<?php if ($this->catalogue) { ?>
+<?= $this->catalogue->getCatalogueDescription() ?>
+<?php } ?>
+

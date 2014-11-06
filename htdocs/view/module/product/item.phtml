@@ -23,16 +23,16 @@
                 data-cycle-slides="> a"
                 >
 <?php   foreach ($picture_list as $picture) { ?>
-                <a href="<?= $picture->getPictureImage() ?>/c/600/600"> 
-                    <img src="<?= $picture->getPictureImage() ?>/c/210/210" />
+                <a href="<?= $picture->getPictureImage() ?>/r/600/600"> 
+                    <img src="<?= $picture->getPictureImage() ?>/r/210/210" />
                 </a>
 <?php   } ?>
             </div>
         </div>
 <?php } else { ?>
         <div class="picture-slideshow">
-            <a href="<?= $this->getProductImage() ?>/c/600/600"> 
-                <img src="<?= $this->getProductImage() ?>/c/210/210" />
+            <a href="<?= $this->getProductImage() ?>/r/600/600"> 
+                <img src="<?= $this->getProductImage() ?>/r/210/210" />
             </a>
         </div>
 <?php } ?>
@@ -82,7 +82,7 @@
                 <li>
                     <?= $property->getPropertyTitle() ?>:
 <?php       if ($property->getPropertyKind() == 'boolean') { ?>
-                    <?= $property->getPropertyValue() ? 'Да' : 'Нет' ?>
+                    <?= $property->getPropertyValue() ? 'есть' : 'нет' ?>
 <?php       } else { ?>
                     <?= $property->getPropertyValue() ?>
 <?php		} ?>
@@ -91,7 +91,7 @@
 <?php   } ?>            
             </ul>
             <div class="brand">
-                <?= $this->getBrand()->getBrandTitle() ?>
+                Производитель: <?= $this->getBrand()->getBrandLong() ?: $this->getBrand()->getBrandTitle() ?>
             </div>
         </div>
 <?php } ?>
@@ -114,7 +114,7 @@
     <div class="tabs">
         <div class="on" for="description">Описание</div><div class="off" for="description">Описание</div>
         <div class="on" for="review">Отзывы покупателей</div><div class="off" for="review">Отзывы покупателей</div>
-        <div class="on" for="other">Другие товары от <?= $this->getBrand()->getBrandTitle() ?></div><div class="off" for="other">Другие товары от <?= $this->getBrand()->getBrandTitle() ?></div>
+        <div class="on" for="other">Другие товары производителя</div><div class="off" for="other">Другие товары производителя</div>
         <div class="on" for="viewed">Вы уже смотрели</div><div class="off" for="viewed">Вы уже смотрели</div>
     </div>
     <div class="areas">

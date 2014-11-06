@@ -223,11 +223,13 @@ function to_translit($string)
     return iconv("UTF-8", "UTF-8//IGNORE", strtr($string, $replace));
 }
 
-function to_file_name($string)
+function to_file_name($string, $strict = false)
 {
     $result = strtolower(to_translit($string));
-    $result = preg_replace('/\s/', '_', $result);
-    $result = preg_replace('/[^a-z0-9_\.\,\[\]\(\)\~\-]/i', '', $result);
+    $result = preg_replace('/\s+/', '_', $result);
+    
+    $pattern = 'a-z0-9\_\-' . ($strict ? '' : '\.\,\[\]\(\)\~');
+    $result = preg_replace('/[^' . $pattern .']/i', '', $result);
     
     return $result;
 }

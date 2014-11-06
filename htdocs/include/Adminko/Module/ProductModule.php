@@ -213,7 +213,11 @@ class ProductModule extends Module
     // Сохраняет ID просмотренного товара
     protected function addViewed($product)
     {
-        $viewed = (array) $_SESSION[self::SESSION_VAR];
+        if (isset($_SESSION[self::SESSION_VAR]) && is_array($_SESSION[self::SESSION_VAR])) {
+            $viewed = $_SESSION[self::SESSION_VAR];
+        } else {
+            $viewed = array();
+        }
         
         if (!in_array($product->getId(), $viewed)) {
             $viewed[] = $product->getId();
