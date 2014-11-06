@@ -63,7 +63,7 @@ h3, h4, h5, h6 {
             }
 
     .header .center {
-        width: 420px;        
+        width: 420px;
         float: left;
     }
         .header .center .phone {
@@ -296,10 +296,11 @@ h3, h4, h5, h6 {
         }
     
     .product .image {
+        height: 150px;
         text-align: center;
     }
     .product .price {
-        margin-left: 25px;
+        margin-left: 10px;
     }
         .product_select_container {
             display: table-cell;
@@ -374,7 +375,7 @@ h3, h4, h5, h6 {
     margin-bottom: 10px;
 }
     .brand select {
-        width: 150px;
+        width: 180px;
     }
 .sort {
     float: right;

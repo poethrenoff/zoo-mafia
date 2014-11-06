@@ -3,7 +3,7 @@
 <form action="<?= Adminko\System::selfUrl() ?>" method="get">
     <div class="brand">
         <select name="brand">
-            <option value="">Выберите бренд</option>
+            <option value="">Все бренды</option>
 <?php   foreach ($this->catalogue->getBrandList() as $brand) { ?>
             <option value="<?= $brand->getId() ?>"<?php if ($this->inRequest('brand', $brand->getId())) { ?> selected="selected"<?php } ?>><?= $brand->getBrandTitle() ?></option>
 <?php   } ?>
@@ -55,7 +55,7 @@
 <form action="<?= Adminko\System::selfUrl() ?>" method="get">
     <div class="brand">
         <select name="catalogue">
-            <option value="">Выберите раздел</option>
+            <option value="">Все разделы</option>
 <?php   foreach ($this->brand->getCatalogueList()->getChildren() as $catalogue_group) { ?>
         <option value="<?= $catalogue_group->getId() ?>" disabled="disabled"><?= $catalogue_group->getCatalogueTitle() ?></option>
 <?php       foreach ($catalogue_group->getChildren() as $catalogue) { ?>

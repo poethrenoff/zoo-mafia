@@ -2,6 +2,7 @@
 namespace Adminko\Admin\Table;
 
 use Adminko\Metadata;
+use Adminko\Admin\Admin;
 use Adminko\Model\Model;
 
 class PackageTable extends Table
@@ -61,10 +62,6 @@ class PackageTable extends Table
     
     protected function setDefaultPrice($product_id)
     {
-        Metadata::$objects['product']['fields']['product_price']['no_edit'] = false;
-        
         Model::factory('product')->get($product_id)->setDefaultPrice()->save();
-        
-        Metadata::$objects['product']['fields']['product_price']['no_edit'] = true;
     }
 }

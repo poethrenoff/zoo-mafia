@@ -1,16 +1,18 @@
 <?php
 namespace Adminko\Admin\Table;
 
+use Adminko\Metadata;
 use Adminko\System;
 use Adminko\Db\Db;
 use Adminko\Field\Field;
+use Adminko\Model\Model;
 
 class ProductTable extends Table
 {
     protected function actionCopySave($redirect = true)
     {
         $primary_field = parent::actionCopySave(false);
-
+        
         // Копируем свойства товара
         $product_properties = Db::selectAll('
             select property_id, value from product_property where product_id = :product_id', array('product_id' => System::id()));
@@ -25,6 +27,7 @@ class ProductTable extends Table
             unset($product_package['package_id']);
             Db::insert('package', array('package_product' => $primary_field) + $product_package);
         }
+        $this->setDefaultPrice($primary_field);
 
         if ($redirect) {
             $this->redirect();
@@ -151,5 +154,10 @@ class ProductTable extends Table
                 'id' => $record[$this->primary_field])));
 
         return $actions;
+    }
+    
+    protected function setDefaultPrice($product_id)
+    {
+        Model::factory('product')->get($product_id)->setDefaultPrice()->save();
     }
 }
