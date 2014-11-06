@@ -261,9 +261,10 @@ h3, h4, h5, h6 {
 
 .product {
     display: inline-block;
-    width: 240px;
+    width: 230px;
     vertical-align: top;
     margin-bottom: 20px;
+    padding: 0px 5px;
 }
     .product .title {
         height: 50px;
