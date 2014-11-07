@@ -68,7 +68,7 @@ class ProductTable extends Table
 
         $form_fields = array();
         foreach ($properties as $property_index => $property_value) {
-            $property_type = $property_value['property_kind'] == 'number' ? 'float' : $property_value['property_kind'];
+            $property_type = $property_value['property_kind'] == 'number' ? 'float' : 'select';
             $property_errors = $property_type == 'float' ? array('float') : array();
 
             $form_fields['property[' . $property_value['property_id'] . ']'] = array(
@@ -89,6 +89,10 @@ class ProductTable extends Table
                 }
 
                 $form_fields['property[' . $property_value['property_id'] . ']']['values'] = $value_records;
+            } elseif ($property_value['property_kind'] == 'boolean') {
+                $form_fields['property[' . $property_value['property_id'] . ']']['values'] = array(
+                    array('value' => "1", 'title' => 'есть'), array('value' => "0", 'title' => 'нет')
+                );
             }
         }
 
@@ -124,7 +128,7 @@ class ProductTable extends Table
 
         $insert_fields = array();
         foreach ($properties as $property_index => $property_value) {
-            $property_type = $property_value['property_kind'] == 'number' ? 'float' : $property_value['property_kind'];
+            $property_type = $property_value['property_kind'] == 'number' ? 'float' : 'select';
             $property_errors = $property_type == 'float' ? array('float') : array();
 
             $field = Field::factory($property_type)->set($property_values[$property_value['property_id']]);

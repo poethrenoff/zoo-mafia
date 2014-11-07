@@ -45,10 +45,10 @@ class ProductModule extends Module
             $property_request = init_array('property');
             foreach ($catalogue->getPropertyList(true) as $property) {
                 if ($property->getPropertyKind() == 'select' && isset($property_request[$property->getId()]) && !is_empty($property_request[$property->getId()])) {
-                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = " . intval($property_request[$property->getId()]) . ")";
+                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = '" . intval($property_request[$property->getId()]) . "')";
                 }
                 if ($property->getPropertyKind() == 'boolean' && isset($property_request[$property->getId()]) && !is_empty($property_request[$property->getId()]) && in_array($property_request[$property->getId()], array('yes', 'no'))) {
-                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = " . ($property_request[$property->getId()] == 'no' ? 0 : 1) . ")";
+                    $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value = '" . ($property_request[$property->getId()] == 'no' ? 0 : 1) . "')";
                 }
                 if ($property->getPropertyKind() == 'number' && isset($property_request[$property->getId()]['from']) && !is_empty($property_request[$property->getId()]['from'])) {
                     $product_filter[] = "exists(select true from product_property where product_id = product.product_id and property_id = {$property->getId()} and value >= " . intval($property_request[$property->getId()]['from']) . ")";

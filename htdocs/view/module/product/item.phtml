@@ -79,16 +79,20 @@
         <div class="info">
             <ul>
 <?php   foreach ($this->getPropertyList() as $property) { ?>
+<?php       if ($property->getPropertyKind() == 'number' && !is_null($property->getPropertyValue()) ||
+                    $property->getPropertyKind() == 'boolean' && $property->getPropertyValue() !== '' ||
+                    $property->getPropertyKind() == 'select' && $property->getPropertyValue()) { ?>
                 <li>
                     <?= $property->getPropertyTitle() ?>:
-<?php       if ($property->getPropertyKind() == 'boolean') { ?>
+<?php           if ($property->getPropertyKind() == 'boolean') { ?>
                     <?= $property->getPropertyValue() ? 'есть' : 'нет' ?>
-<?php       } else { ?>
+<?php           } else { ?>
                     <?= $property->getPropertyValue() ?>
-<?php		} ?>
+<?php           } ?>
                     <?= $property->getPropertyUnit() ?>
                 </li>
-<?php   } ?>            
+<?php       } ?>
+<?php   } ?>
             </ul>
             <div class="brand">
                 Производитель: <?= $this->getBrand()->getBrandLong() ?: $this->getBrand()->getBrandTitle() ?>

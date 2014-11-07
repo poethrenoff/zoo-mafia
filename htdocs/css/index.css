@@ -797,7 +797,8 @@ input.search-button {
         margin: auto;
         width: 100px;
     }
-        .brand-slideshow img {
+        .brand-slideshow a {
+            display: inline-block;
             width: 100px;
             height: 100px;
         }
@@ -840,9 +841,10 @@ input.search-button {
     .picture-slideshow {
         margin: auto;
     }
-        .picture-slideshow img {
-            max-width: 210px;
-            max-height: 210px;
+        .picture-slideshow a {
+            display: inline-block;
+            width: 210px;
+            height: 210px;
         }
     .picture-wrapper .picture-prev {
         display: block;
