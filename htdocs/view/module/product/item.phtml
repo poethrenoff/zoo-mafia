@@ -138,7 +138,7 @@
 <?php } ?>
 <?php foreach ($this->getReviewList() as $review) { ?>
             <div class="review">
-                <p><b><?= $this->escape($review->getClient()->getClientTitle()) ?></b>, <?= Adminko\date::get($review->getReviewDate()) ?><br/>
+                <p><b><?= $this->escape($review->getClient()->getClientTitle()) ?></b>, <?= Adminko\Date::get($review->getReviewDate()) ?><br/>
                 <p><?= nl2br($this->escape($review->getReviewText())) ?><p>
             </div>
 <?php } ?>
