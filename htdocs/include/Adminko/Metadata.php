@@ -141,6 +141,7 @@ class Metadata
                 'package_product' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product', 'errors' => array('require')),
                 'package_title' => array('title' => 'Фасовка', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
                 'package_price' => array('title' => 'Цена', 'type' => 'float', 'sort' => 'asc', 'show' => 1, 'errors' => array('require')),
+                'package_order' => array('title' => 'Порядок', 'type' => 'order', 'group' => array('package_product')),
             )
         ),
         
