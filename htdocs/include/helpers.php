@@ -226,10 +226,8 @@ function to_translit($string)
 function to_file_name($string, $strict = false)
 {
     $result = strtolower(to_translit($string));
-    $result = preg_replace('/\s+/', '_', $result);
-    
-    $pattern = 'a-z0-9\_\-' . ($strict ? '' : '\.\,\[\]\(\)\~');
-    $result = preg_replace('/[^' . $pattern .']/i', '', $result);
+    $result = preg_replace('/\s+' . ($strict ? '|\-' : '') . '/', '_', $result);
+    $result = preg_replace('/[^a-z0-9\_' . ($strict ? '' : '\.\,\[\]\(\)\~\-') . ']/i', '', $result);
     
     return $result;
 }

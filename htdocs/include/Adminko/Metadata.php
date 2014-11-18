@@ -73,7 +73,7 @@ class Metadata
                 'brand_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
                 'brand_title' => array('title' => 'Название', 'type' => 'string', 'main' => 1, 'errors' => array('require')),
                 'brand_long' => array('title' => 'Длинное название', 'type' => 'string'),
-                'brand_name' => array( 'title' => 'Ссылка', 'type' => 'string', 'no_add' => 1, 'group' => array(), 'errors' => array()),
+                'brand_name' => array( 'title' => 'Ссылка', 'type' => 'string', 'no_add' => 1, 'group' => array(), 'errors' => array('require')),
                 'brand_image' => array('title' => 'Логитип', 'type' => 'image', 'upload_dir' => 'brand', 'errors' => array('require')),
                 'brand_order' => array('title' => 'Порядок', 'type' => 'order'),
             ),
@@ -341,7 +341,7 @@ class Metadata
             'no_add' => true,
             'fields' => array(
                 'item_id' => array('title' => 'Идентификатор', 'type' => 'pk'),
-                'item_purchase' => array('title' => 'Заказ', 'type' => 'table', 'table' => 'purchase', 'errors' => 'require'),
+                'item_purchase' => array('title' => 'Заказ', 'type' => 'table', 'table' => 'purchase', 'errors' => array('require')),
                 'item_product' => array('title' => 'Товар', 'type' => 'table', 'table' => 'product', 'main' => 1, 'errors' => array('require')),
                 'item_package' => array('title' => 'Фасовка', 'type' => 'table', 'table' => 'package', 'show' => 1, 'errors' => array('require')),
                 'item_price' => array('title' => 'Цена', 'type' => 'float', 'show' => 1, 'errors' => array('require')),
