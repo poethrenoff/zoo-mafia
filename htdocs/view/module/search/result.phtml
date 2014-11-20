@@ -1,10 +1,14 @@
-<h1>Результаты поиска ("<?= $this->escape($this->fromRequest('search')) ?>")</h1>
+<h1>Результаты поиска</h1>
 
+<?php if ($this->product_list) { ?>
 <?= Adminko\View::block('module/product/sort', array('sort' => $this->sort, 'order' => $this->order)) ?>
 <div class="clear"></div>
 
-<?php foreach ($this->product_list as $product_item) { ?>
+<?php   foreach ($this->product_list as $product_item) { ?>
 <?= Adminko\View::block('module/product/product', $product_item) ?>
+<?php   } ?>
+<?php } else { ?>
+<h2>По вашему запросу ничего не найдено</h2>
 <?php } ?>
 
 <div class="clear"></div>
